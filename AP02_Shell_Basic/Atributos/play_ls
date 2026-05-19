@@ -1,1 +1,2 @@
-ls -ctp | tr '\n' ' '
+ls -ctp | tr '
+' ' '

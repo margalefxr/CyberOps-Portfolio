@@ -1,1 +1,1 @@
-echo "ip a | grep 'link/ether'" > ip.sh
+ip a | grep 'link/ether'
