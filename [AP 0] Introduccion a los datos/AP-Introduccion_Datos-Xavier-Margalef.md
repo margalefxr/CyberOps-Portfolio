@@ -1,7 +1,17 @@
+<style>
+  table {
+    width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-size: 10px; /* Reduce el tamaño para que quepa mejor */
+  }
+</style>
 # Informe Técnico: AP Introducción a los Datos
 **Analista:** Xavier Margalef  
 **Fecha:** 2026-05-20  
 **Clasificación:** Interna / Formación
+
+*Hecho en md pasado a pdf con extension markdown pdf*
 
 ## AP 1.1 | Estudio de Producción
 ### Análisis
