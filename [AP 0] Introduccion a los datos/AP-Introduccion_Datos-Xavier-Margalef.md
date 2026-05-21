@@ -11,7 +11,7 @@
 | Calculo | 500.235 KiB x 1024 bytes = 512.240.640 bytes, 512.240.640 bytes/1.000.000 = 512,24 MB |
 | Tamaño en MB | 512.24 MB  |
 | Overhead (8%) | 600 Mbps x **0,08** = 48 Mbps, 600 - 48 = 552 Mbps, pasamos a MB para igualar al archivo 552 Mbps/8 = 69MB/s
-| Aprendizaje clase | Realmente no le podemos restar el 8% a la linea de 600 pq la linea tiene ese ancho de banda lo que hay que calcular es el 8% de mas al archivo original
+| Aprendizaje clase | *Realmente no le podemos restar el 8% a la linea de 600 pq la linea tiene ese ancho de banda lo que hay que calcular es el 8% de mas al archivo original*
 | **Tiempo de Transferencia** | **512,24MB/69 MB/s = 7,42 secs** |
 | **Tiempo de Transferencia V2** | **512,24MB x 0,08 = 40,97 = 553,21989** luego 600mbps/8 = 75 MB/s luego** 553,21989/75 = 7,37 segundos** |
 
