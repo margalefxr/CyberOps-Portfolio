@@ -6,6 +6,7 @@
     font-size: 10px; /* Reduce el tamaño para que quepa mejor */
   }
 </style>
+
 # Informe Técnico: AP Introducción a los Datos
 **Analista:** Xavier Margalef  
 **Fecha:** 2026-05-20  
