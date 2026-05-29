@@ -1,2 +1,2 @@
 #!/bin/bash
-ip address | grep "link/ether"
+ip link | grep "link/ether"
