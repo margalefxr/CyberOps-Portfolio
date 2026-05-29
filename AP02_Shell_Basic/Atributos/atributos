@@ -1,0 +1,16 @@
+1234567890123456789012345678901234567890 
+
+ ~/Desktop/CyberOps-Portfolio/AP02_Shell_Basic | on main !7 ?2     at 16:33:58
+> ls
+Atributos      atributos_plus
+
+ ~/Desktop/CyberOps-Portfolio/AP02_Shell_Basic | on main !7 ?2     at 16:33:59
+> cd Atributos
+
+ ~/De/CyberOps-Portfolio/AP02/Atributos | on main !7 ?2            at 16:34:02
+> ls
+atributos      count_files.sh ip.sh          linux.sh       play_ls
+
+ ~/De/CyberOps-Portfolio/AP02/Atributos | on main !7 ?2            at 16:34:03
+> ls -la atributos
+-r-xr-xr-x@ 1 xaviermargalef  staff  40 29 may.  16:32 atributos

@@ -1,0 +1,20 @@
+ ~/Desktop/CyberOps-Portfolio/AP02_Shell_Basic | on main !11 ?6    at 16:36:59
+> cd atributos_plus
+
+ ~/De/CyberOps-Portfolio/AP02/atributos_plus | on main !11 ?6      at 16:37:05
+> ls
+dir1             editable.txt     file1            solo_lectura.txt
+dir2             enlace           script.sh
+
+ ~/De/CyberOps-Portfolio/AP02/atributos_plus | on main !11 ?6      at 16:37:06
+> ls -la
+total 32
+drwxr-xr-x@ 9 xaviermargalef  staff  288 29 may.  16:30 .
+drwxr-xr-x@ 8 xaviermargalef  staff  256 29 may.  16:35 ..
+drwxr-xr-x@ 2 xaviermargalef  staff   64 29 may.  16:30 dir1
+drwx--x--x@ 2 xaviermargalef  staff   64 29 may.  16:30 dir2
+-rw-rw-r--@ 1 xaviermargalef  staff   12 29 may.  16:33 editable.txt
+lrwxr-xr-x@ 1 xaviermargalef  staff    5 29 may.  16:30 enlace -> file1
+-rw-r-----@ 1 xaviermargalef  staff    8 29 may.  16:33 file1
+-rwx--x--x@ 1 xaviermargalef  staff    5 29 may.  16:33 script.sh
+-r--r--r--@ 1 xaviermargalef  staff   10 29 may.  16:30 solo_lectura.txt
