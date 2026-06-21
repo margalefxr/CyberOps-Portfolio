@@ -1,0 +1,12 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Reacción Inmediata}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}¿Qué tipo de auditoría debe ejecutarse en este mismo momento y por qué?}{2}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Análisis}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Paso 1: XSS en portal web obsoleto → robo de sesión}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Paso 2: Red sin segmentación → acceso desde soporte a bases de datos de tarjetas}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Paso 3: Credenciales en texto plano}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Gestión de Proyectos IT (fallo estructural)}{4}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Normativa}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}¿Qué auditoría específica acaba de reprobar estrepitosamente la empresa en el paso 4, enfrentándose a multas millonarias?}{4}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Reacciones}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Respuesta al Director General (CEO)}{5}{subsection.4.1}%

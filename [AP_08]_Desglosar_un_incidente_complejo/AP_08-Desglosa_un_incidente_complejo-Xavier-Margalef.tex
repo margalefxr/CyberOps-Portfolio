@@ -1,0 +1,329 @@
+\documentclass[11pt,a4paper]{article}
+
+% --------------------------------------------------
+% PAQUETES
+% --------------------------------------------------
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage[a4paper,
+            left=2.8cm,
+            right=2.8cm,
+            top=3cm,
+            bottom=3cm]{geometry}
+
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{parskip}
+
+% --------------------------------------------------
+% CONFIGURACIÓN
+% --------------------------------------------------
+
+\definecolor{mainblue}{RGB}{25,55,109}
+\definecolor{lightblue}{RGB}{235,242,250}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=mainblue,
+    urlcolor=mainblue
+}
+
+\setstretch{1.15}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{AP 08 - Desglose de un incidente complejo}
+\fancyhead[R]{Xavier Margalef Riestra}
+\fancyfoot[C]{\thepage}
+
+\titleformat{\section}
+{\Large\bfseries\color{mainblue}}
+{\thesection.}{0.5em}{}
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+{\normalsize\bfseries}
+{\thesubsubsection.}{0.5em}{}
+
+\tcbset{
+    colback=lightblue,
+    colframe=mainblue,
+    arc=2mm
+}
+
+% --------------------------------------------------
+% DOCUMENTO
+% --------------------------------------------------
+
+\begin{document}
+
+% ==================================================
+% PORTADA
+% ==================================================
+
+\begin{titlepage}
+
+\centering
+
+\vspace*{2cm}
+
+{\Huge\bfseries Desglose de un Incidente Complejo \par}
+
+\vspace{0.5cm}
+
+{\Large Actividad Práctica AP 08\par}
+
+\vspace{2cm}
+
+\rule{\textwidth}{1.2pt}
+
+\vspace{1cm}
+
+{\Large\bfseries Seguridad de la Información y Ciberseguridad}
+
+\vspace{1cm}
+
+\rule{\textwidth}{1.2pt}
+
+\vfill
+
+\begin{tabular}{ll}
+\textbf{Alumno:} & Xavier Margalef Riestra \\
+\\
+\textbf{Actividad:} & AP 08 - Desglosar un incidente complejo \\
+\\
+\textbf{Fecha de entrega:} & 14 de Julio de 2026 \\
+\end{tabular}
+
+\vfill
+
+{\large Informe Técnico}
+
+\vspace{1cm}
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ==================================================
+% CONTENIDO
+% ==================================================
+
+\section{Reacción Inmediata}
+
+\subsection{¿Qué tipo de auditoría debe ejecutarse en este mismo momento y por qué?}
+
+\textbf{Respuesta a Incidentes dentro de Seguridad de la Información y Ciberseguridad}
+
+Habría que realizar un \textbf{DFIR (Digital Forensics and Incident Response)}, ya que entra en acción después de que se ha producido un incidente o ciberataque. En esta ocasión el ataque ya ha sido perpetrado y ha generado consecuencias, por lo que debemos identificar y recopilar información sobre lo ocurrido y determinar cómo reaccionar.
+
+\begin{tcolorbox}
+Objetivos principales del DFIR:
+\end{tcolorbox}
+
+\begin{itemize}
+    \item Identificar el origen del ataque.
+    \item Reconstruir la cadena de eventos (\textit{timeline}).
+    \item Preservar evidencias digitales (logs, memoria y discos).
+    \item Establecer el alcance real de la exfiltración de datos.
+\end{itemize}
+
+En este caso concreto, el \textbf{DFIR} es crítico porque existe:
+
+\begin{itemize}
+    \item Fuga masiva de datos.
+    \item Impacto legal derivado de la investigación gubernamental.
+    \item Riesgo de pérdida de licencias de Visa y Mastercard.
+\end{itemize}
+
+\subsubsection*{CAATs utilizados en esta fase}
+
+\begin{itemize}
+    \item \textbf{ELK Stack / Splunk} → análisis de grandes volúmenes de logs.
+    \item \textbf{Wireshark} → análisis de tráfico de red sospechoso.
+    \item \textbf{Autopsy} → análisis forense de discos.
+    \item \textbf{Snort / OSSEC} → detección de intrusiones previas.
+\end{itemize}
+
+% ==================================================
+
+\section{Análisis}
+
+\textit{Si GlobalPay hubiera hecho bien su trabajo antes del ataque, ¿qué tres tipos específicos de auditorías preventivas habrían detectado y evitado los pasos 1, 2 y 3 del atacante? Relaciona cada auditoría con su paso correspondiente.}
+
+\vspace{0.5em}
+
+Aquí aplicamos conceptos de Gestión de Proyectos IT, SDLC, Seguridad de la Información y Ciberseguridad.
+
+% --------------------------------------------------
+
+\subsection{Paso 1: XSS en portal web obsoleto → robo de sesión}
+
+Se utilizaría una auditoría de \textbf{Aplicaciones y Desarrollo (SDLC)} mediante análisis web enfocado en \textbf{Seguridad en Aplicaciones y APIs (OWASP)}.
+
+\textbf{Habría detectado:}
+
+\begin{itemize}
+    \item Vulnerabilidades OWASP Top 10 (XSS).
+    \item Falta de validación de entradas.
+    \item Ausencia de pruebas de seguridad dentro del ciclo de vida del software.
+\end{itemize}
+
+\textbf{Herramientas típicas:}
+
+\begin{itemize}
+    \item OWASP ZAP.
+    \item Burp Suite.
+    \item Pruebas basadas en OWASP Top 10.
+\end{itemize}
+
+% --------------------------------------------------
+
+\subsection{Paso 2: Red sin segmentación → acceso desde soporte a bases de datos de tarjetas}
+
+Se utilizaría una auditoría de \textbf{Seguridad de la Información y Ciberseguridad} centrada en \textbf{Network Security Assessment}.
+
+\textbf{Habría detectado:}
+
+\begin{itemize}
+    \item Falta de segmentación mediante VLAN.
+    \item Ausencia de arquitectura Zero Trust.
+    \item Movimiento lateral libre entre redes críticas.
+\end{itemize}
+
+\textbf{CAATs utilizados:}
+
+\begin{itemize}
+    \item Nmap → mapeo de red.
+    \item Snort / IDS-IPS → detección de intrusiones.
+    \item MITRE ATT\&CK → modelado de técnicas de ataque.
+\end{itemize}
+
+% --------------------------------------------------
+
+\subsection{Paso 3: Credenciales en texto plano}
+
+\textbf{Escenario:} Script de backup con contraseña de administrador expuesta.
+
+Se utilizaría una auditoría de \textbf{Aplicaciones y Desarrollo (SDLC)} mediante \textbf{Análisis de Código (DevSecOps / Software Security)}.
+
+\textbf{Habría detectado:}
+
+\begin{itemize}
+    \item Credenciales hardcodeadas.
+    \item Malas prácticas de programación.
+    \item Ausencia de revisiones de código.
+\end{itemize}
+
+\textbf{CAATs utilizados:}
+
+\begin{itemize}
+    \item SAST (Static Application Security Testing).
+    \item Análisis de repositorios de código.
+    \item Scripts de auditoría en Python y SQL.
+\end{itemize}
+
+% --------------------------------------------------
+
+\subsection{Gestión de Proyectos IT (fallo estructural)}
+
+Este problema constituye la causa raíz organizativa y no forma parte directamente del patrón de ataque.
+
+\textbf{Problema detectado:}
+
+Portal sin actualizar durante dos años.
+
+\textbf{Auditoría aplicable:}
+
+Gestión de Proyectos IT.
+
+\textbf{Habría detectado:}
+
+\begin{itemize}
+    \item Falta de mantenimiento del software.
+    \item Mala planificación de actualizaciones.
+    \item Ausencia de controles de calidad en las entregas.
+\end{itemize}
+
+\textbf{Resultado:}
+
+El sistema no habría quedado obsoleto y la superficie de ataque se habría reducido significativamente.
+
+% ==================================================
+
+\section{Normativa}
+
+\subsection{¿Qué auditoría específica acaba de reprobar estrepitosamente la empresa en el paso 4, enfrentándose a multas millonarias?}
+
+\begin{tcolorbox}
+\textbf{Auditoría fallida: Auditoría de Cumplimiento Normativo (Compliance)}
+\end{tcolorbox}
+
+\textbf{Normativas incumplidas:}
+
+\begin{itemize}
+    \item PCI-DSS.
+    \item RGPD / LOPDGDD.
+    \item ISO 27001.
+\end{itemize}
+
+\textbf{Consecuencias:}
+
+\begin{itemize}
+    \item Multas económicas elevadas.
+    \item Investigación gubernamental.
+    \item Pérdida de licencias para el procesamiento de pagos.
+\end{itemize}
+
+% ==================================================
+
+\section{Reacciones}
+
+\subsection{Respuesta al Director General (CEO)}
+
+El CEO propone contratar urgentemente una Auditoría de Seguridad Física para evitar que el incidente vuelva a ocurrir.
+
+Como Auditor Jefe, respondería que la auditoría de seguridad física no es prioritaria en este caso, ya que el origen del ataque es exclusivamente lógico y se encuentra en fallos relacionados con el SDLC, la segmentación de red y la gestión de credenciales.
+
+Por ejemplo, el fallo de SDLC se observa cuando una aplicación web se publica con vulnerabilidades como XSS descritas en OWASP, equivalente a dejar una puerta abierta en una aplicación accesible desde Internet.
+
+La falta de segmentación de red permite que, una vez comprometido el sistema de soporte, el atacante alcance bases de datos críticas. Es comparable a un edificio donde todas las salas pueden abrirse sin restricciones. Una arquitectura Zero Trust evitaría este comportamiento.
+
+La mala gestión de credenciales se produce al almacenar contraseñas en texto plano, situación equivalente a dejar una llave maestra visible y accesible para cualquier persona.
+
+Por tanto, la respuesta adecuada consiste en realizar una auditoría integral de ciberseguridad basada en:
+
+\begin{itemize}
+    \item OWASP.
+    \item Zero Trust.
+    \item DevSecOps.
+    \item PCI-DSS.
+\end{itemize}
+
+La seguridad física únicamente tendría un papel complementario dentro de una estrategia global de protección.
+
+\vfill
+
+\begin{center}
+\rule{0.4\textwidth}{0.4pt}
+
+\vspace{0.3cm}
+
+\textbf{Fin del informe}
+\end{center}
+
+\end{document}
