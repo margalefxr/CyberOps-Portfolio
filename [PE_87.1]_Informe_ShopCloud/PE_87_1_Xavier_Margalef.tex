@@ -1,0 +1,303 @@
+\documentclass[11pt,a4paper]{report}
+
+% --- Paquetes de Formato y Maquetación Profesional ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry} 
+\usepackage{booktabs}               
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}               
+\usepackage{needspace}              
+\usepackage{array}                  
+\usepackage{graphicx}               
+
+% --- Configuración de Colores ---
+\definecolor{darkblue}{RGB}{26, 54, 93}
+\definecolor{secblue}{RGB}{43, 108, 176}
+\definecolor{critred}{RGB}{155, 44, 44}
+\definecolor{warnorange}{RGB}{221, 107, 32}
+\definecolor{bgcode}{RGB}{247, 250, 252}
+
+% --- Configuración de Enlaces e Índice ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=secblue,
+    pdftitle={Informe Técnico de Auditoría - ShopCloud},
+    pdfauthor={Auditoría SOC}
+}
+
+% --- Estilo de Títulos ---
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries\color{darkblue}}{\thechapter. }{0pt}{\huge\bfseries}
+\titleformat{\section}{\normalfont\Large\bfseries\color{secblue}}{\thesection\ }{0pt}{\Large\bfseries}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{darkblue}}{\thesubsection\ }{0pt}{\large\bfseries}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+% --- Ajuste del Encabezado y Pie de Página ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{gray}Auditoría de Seguridad Perimetral e Interna — ShopCloud S.L.}
+\fancyhead[R]{\small\color{gray}\textbf{CONFIDENCIAL}}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Configuración de Bloques de Código ---
+\lstset{
+    backgroundcolor=\color{bgcode},
+    basicstyle=\ttfamily\small,
+    breaklines=true,                  
+    frame=single,
+    rulecolor=\color{gray},
+    keepspaces=true
+}
+
+\begin{document}
+
+% ==============================================================================
+% PORTADA
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{1.5cm}
+    {\LARGE\bfseries\color{darkblue} INFORME DE AUDITORÍA DE CIBERSEGURIDAD}\\[0.4cm]
+    {\large\bfseries\color{secblue} Evaluación de Vulnerabilidades e Infraestructura}\\[2.5cm]
+    
+    \noindent\rule{\textwidth}{1pt}\\[1.5cm]
+    
+    \begin{minipage}{0.6\textwidth}
+        \large
+        \textbf{Cliente:} \\
+        ShopCloud S.L. \\\\
+        \textbf{Equipo Auditor:} \\
+        Auditor Jefe de Ciberseguridad \\
+        Xavier Margalef Riestra \\\\
+        \textbf{Módulo:} MF0487\_3 \\
+        \textbf{Actividad:} ShopCloud \\
+    \end{minipage}
+    \begin{minipage}{0.39\textwidth}
+        \flushright
+        \large
+        \textbf{Fecha:} \\
+        14 de julio de 2026 \\[1cm]
+        \textbf{Clasificación:} \\
+        \textbf{RESTRINGIDO}
+    \end{minipage}
+    
+    \vfill
+    \noindent\rule{\textwidth}{1pt}\\[0.5cm]
+    {\small Propiedad de ShopCloud S.L. Prohibida su reproducción o distribución fuera del alcance del proyecto.}
+\end{titlepage}
+
+% ==============================================================================
+% SECCIÓN PREVIA: EVIDENCIAS DE FINALIZACIÓN TRYHACKME
+% ==============================================================================
+\chapter*{Evidencias de Finalización de Actividades}
+\addcontentsline{toc}{chapter}{Evidencias de Finalización de Actividades}
+
+\vspace{0.8cm}
+
+\subsection*{Actividad 1 - Fundamentos 101}
+\textbf{Entrega de evidencia:} Finalización [PE 87.1] ShopCloud Pwned I evidencia.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{image-3.png}
+    \caption{Evidencia de finalización de la plataforma - Laboratorio I.}
+\end{figure}
+
+\newpage
+
+\subsection*{Actividad 2 - Middle East}
+\textbf{Entrega de evidencia:} [PE 87.1] ShopCloud Pwned II evidencia.\\
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{image-4.png}
+    \caption{Evidencia de explotación y despliegue - Laboratorio II.}
+\end{figure}
+
+\vspace{1cm}
+
+\subsection*{Actividad 3 - Análisis 101}
+\textbf{Entrega de evidencia:} [PE 87.1] ShopCloud Pwned III evidencia.\\
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{image-6.png}
+    \caption{Evidencia de persistencia y escalada de privilegios - Laboratorio III.}
+\end{figure}
+
+% ==============================================================================
+% ÍNDICE GENERAL
+% ==============================================================================
+\clearpage
+\pagenumbering{roman}
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+% ==============================================================================
+% 0. CONTROL DE DISTRIBUCIÓN
+% ==============================================================================
+\chapter*{0. Control de Distribución y Guía de Lectura}
+\addcontentsline{toc}{chapter}{0. Control de Distribución y Guía de Lectura}
+
+Este documento técnico se ha estructurado para agilizar la revisión según el área de responsabilidad dentro de la organización:
+
+\begin{itemize}
+    \item \textbf{Dirección (CEO, COO, Gerencia):} Revisar la sección \textbf{1. Resumen Ejecutivo} para evaluar la estimación de pérdidas económicas y el semáforo de hallazgos en menos de 5 minutos.
+    \item \textbf{Responsables de Tecnología (CISO, CIO, CTO):} Evaluar directamente la sección \textbf{2. Top 3 Hallazgos Críticos} y coordinar la revisión del Write-up de campo con sus respectivos anexos.
+    \item \textbf{Administración de Sistemas y Desarrollo (SysAdmins, Devs):} Ejecutar las contenciones y remediaciones operativas detalladas en la sección \textbf{3. Plan de Acción y Remediación} de manera inmediata.
+    \item \textbf{Cumplimiento y Legal (DPO, Asesoría Jurídica):} Analizar la sección \textbf{4. Evaluación de Cumplimiento Legal} para comprobar el impacto normativo ante posibles brechas de datos.
+\end{itemize}
+
+\newpage
+
+% ==============================================================================
+% 1. RESUMEN EJECUTIVO
+% ==============================================================================
+\chapter{Resumen Ejecutivo (Apto para Dirección)}
+
+Este informe recoge los resultados de la auditoría de ciberseguridad realizada sobre la infraestructura del comercio electrónico de \textbf{ShopCloud S.L.} El motivo de la auditoría ha sido ejecutar un análisis web y un test de penetración de caja negra (\textit{Pentesting}) sobre el perímetro público y los entornos locales de la organización para identificar fallos antes de que actores maliciosos los aprovechen para comprometer la continuidad del negocio.
+
+Las pruebas ejecutadas confirman que se ha logrado comprometer el servidor web externo mediante la explotación de un componente vulnerable, exfiltrar la base de datos con las contraseñas de las cuentas de administración de clientes y vulnerar localmente el sistema operativo hasta obtener privilegios totales de superusuario (\textit{Root}). El encadenamiento de estos fallos expone directamente la continuidad de las operaciones diarias de la empresa.
+
+\section*{Estimación de Pérdidas Económicas}
+\begin{itemize}
+    \item \textbf{Pérdida por parada de la tienda online (48 horas):} \textbf{45.000 €}.
+    \item \textbf{Gastos de mitigación, forense y respuesta a incidentes:} \textbf{15.000 €}.
+\end{itemize}
+
+\vspace{0.6cm}
+\begin{table}[h]
+    \centering
+    \caption{Clasificación y Estado de los Hallazgos Detectados}
+    \begin{tabular}{m{4.5cm}m{6.5cm}l}
+        \toprule
+        \textbf{Clasificación del Hallazgo} & \textbf{Hallazgo} & \textbf{Semáforo} \\
+        \midrule
+        No Conformidad Mayor & Ejecución Remota de Código (RCE) en WP File Manager & \color{critred}\textbf{Crítico}\color{black} \\
+        No Conformidad Mayor & Inyección SQL (SQLi) en Formulario de Login & \color{critred}\textbf{Crítico}\color{black} \\
+        No Conformidad Menor & Escalada de Privilegios Local vía Bit SUID en Base64 & \color{warnorange}\textbf{Alto}\color{black} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\newpage
+
+% ==============================================================================
+% 2. TOP 3 HALLAZGOS CRÍTICOS
+% ==============================================================================
+\chapter{Top 3 Hallazgos Críticos (Technical Findings)}
+
+A partir de los resultados obtenidos mediante el uso de herramientas de asistencia técnica para auditoría (CAATs), se han seleccionado las tres deficiencias más graves de la plataforma:
+
+\section{Ejecución Remota de Código (RCE) en WP File Manager}
+\textbf{Nivel de Riesgo:} \color{critred}\textbf{Crítico}\color{black}\ (Puntuación Base CVSSv3: 10.0) \\
+\textbf{Descripción breve:} El perímetro web expone públicamente el componente desactualizado \textit{WP File Manager v6.8}. Un atacante externo puede llamar directamente al script conector de la librería interna (\texttt{connector.minimal.php}) para subir archivos PHP arbitrarios de forma no autenticada, logrando ejecutar comandos a nivel de sistema operativo y obteniendo acceso inicial con el usuario del servicio web \texttt{www-data}. (Referencia: CVE-2020-25213 / Alertas INCIBE / MITRE ATT\&CK T1190 - Exploit Public-Facing Application).
+
+\section{Inyección SQL (SQLi) y Almacenamiento Inseguro en Login de Clientes}
+\textbf{Nivel de Riesgo:} \color{critred}\textbf{Crítico}\color{black}\ (Puntuación Base CVSSv3: 9.8) \\
+\textbf{Descripción breve:} El formulario técnico \texttt{login.php} procesa los parámetros de entrada concatenándolos directamente en las consultas MariaDB sin pasar por un proceso de sanitizado. Al introducir caracteres de control, la aplicación devuelve un \textit{Stack Trace} con fallos del backend, permitiendo evadir el login e interactuar con la base de datos \texttt{db\_shopcloud\_prod} para volcar las tablas. Las credenciales de administrador se almacenaban con hashes MD5 obsoletos y la cuenta \texttt{admin\_test} directamente en texto plano. (Referencia: MITRE CWE-89: SQL Injection / CWE-256: Plaintext Storage of Passwords).
+
+\section{Escalada de Privilegios Local por Configuración Insegura de Bit SUID}
+\textbf{Nivel de Riesgo:} \textbf{Alto} (Puntuación Base CVSSv3: 7.8) \\
+\textbf{Descripción breve:} Tras comprometer el entorno con el usuario con bajos privilegios \texttt{www-data}, se detectó que el binario del sistema \texttt{/usr/bin/base64} tiene asignados permisos especiales de ejecución SUID bajo el propietario \texttt{root}. Abusando de este fallo de configuración de infraestructura según los vectores documentados en la plataforma GTFOBins, es posible realizar una lectura de archivos restringidos, comprometiendo la seguridad del fichero \texttt{/etc/shadow} para extraer los hashes de contraseñas de Linux. (Referencia: MITRE CWE-269: Improper Privilege Management).
+
+\newpage
+% ==============================================================================
+% 3. PLAN DE ACCIÓN Y REMEDIACIÓN
+% ==============================================================================
+\chapter{Plan de Acción y Remediación (Mitigación)}
+Pasos esenciales que se deben seguir para arreglar los fallos de seguridad encontrados en la máquina ShopCloud S.L. y evitar que vuelvan a explotarlos:
+
+\subsection*{3.1 Mitigación del RCE en WP File Manager (AUD-001)}
+\begin{itemize}
+    \item \textbf{Acción de Contención Inmediata:} Borrar o cambiar el nombre de la carpeta del plugin dentro del servidor, que está en la ruta \texttt{/var/www/html/wp-content/plugins/wp-file-manager/}, para cortar el acceso al atacante.
+    \item \textbf{Acción Correctiva Definitiva:} Actualizar el plugin a la versión \textbf{6.9} o una más reciente donde el fallo ya esté solucionado por el creador. Además, se recomienda revisar los archivos que se suben a la web antes de que se guarden en el servidor e instalar un firewall básico para bloquear peticiones extrañas a archivos como \texttt{*.minimal.php}.
+    \item \textbf{Responsable:} Administrador de Sistemas Senior / Operaciones IT. \textbf{Plazo:} $\le$ 12 Horas.
+\end{itemize}
+
+\subsection*{3.2 Mitigación de la Inyección SQL (AUD-002)}
+\begin{itemize}
+    \item \textbf{Acción de Contención Inmediata:} Configurar el archivo \texttt{php.ini} de producción poniendo la opción \texttt{display\_errors = Off}. De esta forma, si el código falla, no mostrará datos de la base de datos en la pantalla.
+    \item \textbf{Acción Correctiva Definitiva:} Cambiar el código de \texttt{login.php} para que use funciones seguras (como PDO en PHP) que limpien y separen lo que escribe el usuario de las consultas de la base de datos. También hay que dejar de usar MD5 para guardar las contraseñas y cambiarse a un sistema más seguro y moderno como **Argon2id** o **bcrypt**.
+    \item \textbf{Responsable:} Equipo de Desarrollo Backend / Ingeniería de Software. \textbf{Plazo:} 5 Días.
+\end{itemize}
+
+\subsection*{3.3 Mitigación de la Escalada de Privilegios por Bit SUID (AUD-003)}
+\begin{itemize}
+    \item \textbf{Acción de Contención Inmediata:} Quitar el permiso especial SUID que estaba mal configurado en el binario del sistema operativo usando este comando en la terminal:
+    \begin{lstlisting}[language=bash]
+    chmod 0755 /usr/bin/base64
+    \end{lstlisting}
+    \item \textbf{Remediación Definitiva:} Hacer una revisión manual de los permisos de los binarios del sistema para asegurarse de que ninguno tenga el bit SUID activo sin necesidad. Por otra parte, eliminar el archivo antiguo \texttt{test\_conn.php} que se quedó olvidado, cambiar la clave API de Stripe que se filtró en ese script, y poner una contraseña nueva y fuerte para el acceso por SSH (\texttt{ShopCloud\_Admin2026!}) para que nadie la adivine por fuerza bruta.
+    \item \textbf{Responsable:} Administrador de Sistemas Principal / Seguridad de Infraestructura. \textbf{Plazo de ejecución:} 48 Horas.
+\end{itemize}
+
+% ==============================================================================
+% 4. EVALUACIÓN DE CUMPLIMIENTO LEGAL
+% ==============================================================================
+
+\chapter{Evaluación de Cumplimiento Legal (Compliance)}
+
+Los fallos de seguridad críticos e infracciones operativas detectadas durante el ejercicio suponen un incumplimiento directo de los marcos regulatorios nacionales e internacionales aplicables a ShopCloud S.L.:
+
+\begin{enumerate}
+    \item \textbf{Reglamento General de Protección de Datos (RGPD):} El almacenamiento de credenciales administrativas en texto plano y el uso de algoritmos criptográficos obsoletos y rotos (MD5) vulneran directamente el **Artículo 32 (Seguridad del Tratamiento)**, que obliga a la empresa a garantizar la confidencialidad, integridad y disponibilidad técnica de los entornos que procesan datos de carácter personal.
+    \item \textbf{Estándar de Seguridad de Datos de la Industria de Tarjetas de Pago (PCI-DSS):} La presencia del archivo residual \texttt{test\_conn.php} con la API Key de producción de Stripe expuesta abiertamente viola las restricciones de acceso imperativas para datos bancarios.
+\end{enumerate}
+
+\section*{Nota de Advertencia de Notificación Obligatoria}
+\addcontentsline{toc}{section}{Nota de Advertencia de Notificación Obligatoria}
+\begin{quote}
+\textbf{Aviso de Obligación Legal:} Dado que la explotación del fallo de inyección SQL y la presencia del archivo residual confirman el acceso y la posible extracción fraudulenta de bases de datos de producción con datos de carácter personal, en caso de que este escenario ocurra en un entorno productivo real, ShopCloud S.L. tiene la \textbf{obligación legal de notificar la brecha de seguridad a la Agencia Española de Protección de Datos (AEPD) y al INCIBE-CERT en un plazo máximo de 72 horas}, evaluando además la comunicación directa con los usuarios afectados según el impacto de los derechos y libertades en juego.
+\end{quote}
+
+\newpage
+
+% ==============================================================================
+% 5. WRITE-UP TÉCNICO Y ANEXOS COMPLEMENTARIOS
+% ==============================================================================
+\chapter{Write-Up Técnico de Campo y Anexos}
+
+\section{Flujo de Ataque Controlado (Cadena de Intrusión)}
+La auditoría comenzó ejecutando una fase de reconocimiento perimetral automatizado mediante la herramienta asistida \textbf{WPScan} para identificar componentes desactualizados expuestos en \texttt{https://shopcloud.thm}:
+\begin{lstlisting}[language=bash]
+wpscan --url https://shopcloud.thm --api-token <REDACTED_TOKEN>
+\end{lstlisting}
+
+Tras detectar \textit{WP File Manager v6.8}, se explotó la vulnerabilidad perimetral para obtener una shell reversa con la identidad del servidor web (\texttt{www-data}). Desde esa posición interna, se analizó el script del portal de clientes localizado en \texttt{/clientes/login.php}, confirmando mediante pruebas manuales de inyección de caracteres una vulnerabilidad de **Inyección SQL** en el motor MariaDB corporativo por falta de sanitización de datos de entrada.
+
+A través de este vector de inyección SQL, se extrajo el contenido de la tabla \texttt{users} de la base de datos de producción \texttt{db\_shopcloud\_prod}, obteniendo los hashes criptográficos del personal técnico. Al auditar los permisos locales de la máquina de producción para buscar rutas de escalada, se descubrió la presencia anómala del bit SUID en el binario \texttt{/usr/bin/base64}:
+\begin{lstlisting}[language=bash]
+find / -perm -u=s -type f 2>/dev/null
+\end{lstlisting}
+
+Abusando de esta mala configuración de infraestructura, se logró saltar el control local del sistema operativo leyendo el archivo protegido de contraseñas de Linux, consolidando la intrusión total del servidor con privilegios del superusuario \texttt{root}:
+\begin{lstlisting}[language=bash]
+/usr/bin/base64 /etc/shadow | base64 --decode
+\end{lstlisting}
+
+\section{Anexo A: Análisis Forense del Log de Autenticación (\texttt{auth.log})}
+El análisis de los registros internos del servidor del día del compromiso detectó la actividad de fuerza bruta previa al compromiso de la identidad local:
+\begin{lstlisting}
+May 12 03:14:01 shopcloud sshd[14522]: Failed password for invalid user ftpadmin from 10.10.55.201 port 45212 ssh2
+May 12 03:14:05 shopcloud sshd[14524]: Failed password for root from 10.10.55.201 port 45216 ssh2
+May 12 03:14:10 shopcloud sshd[14528]: Accepted publickey for www-data from 10.10.55.201 port 45220 ssh2: RSA SHA256:X9pZ...
+May 12 03:15:22 shopcloud sudo[14601]: www-data : TTY=pts/1 ; PWD=/var/www/html ; USER=root ; COMMAND=/usr/bin/python3 -c 'import pty; pty.spawn("/bin/bash")'
+\end{lstlisting}
+
+\section{Anexo B: Evidencia de Permisos en Ficheros Críticos}
+Volcado de la consola que expone la vulnerabilidad de permisos globales (\texttt{777}) en archivos del core y la retención del fichero de respaldo en áreas de descarga indexables de la web:
+\begin{lstlisting}
+auditor@shopcloud$ ls -la /var/www/html/
+-rwxrwxrwx  1 www-data www-data 3215 Apr 20 10:05 wp-config.php
+-rw-rw-rw-  1 root     root     1024 Apr 20 08:30 backup_db.sql
+\end{lstlisting}
+
+\end{document}

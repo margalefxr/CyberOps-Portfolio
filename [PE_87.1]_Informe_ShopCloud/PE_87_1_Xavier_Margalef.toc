@@ -1,0 +1,15 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Evidencias de Finalización de Actividades}{1}{chapter*.1}%
+\contentsline {chapter}{0. Control de Distribución y Guía de Lectura}{1}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Resumen Ejecutivo (Apto para Dirección)}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Top 3 Hallazgos Críticos (Technical Findings)}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Ejecución Remota de Código (RCE) en WP File Manager}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Inyección SQL (SQLi) y Almacenamiento Inseguro en Login de Clientes}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Escalada de Privilegios Local por Configuración Insegura de Bit SUID}{3}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Plan de Acción y Remediación (Mitigación)}{4}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Evaluación de Cumplimiento Legal (Compliance)}{5}{chapter.4}%
+\contentsline {section}{Nota de Advertencia de Notificación Obligatoria}{5}{Item.2}%
+\contentsline {chapter}{\numberline {5}Write-Up Técnico de Campo y Anexos}{6}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Flujo de Ataque Controlado (Cadena de Intrusión)}{6}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Anexo A: Análisis Forense del Log de Autenticación (\texttt {auth.log})}{6}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Anexo B: Evidencia de Permisos en Ficheros Críticos}{6}{section.5.3}%

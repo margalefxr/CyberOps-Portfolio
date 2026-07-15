@@ -1,0 +1,269 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Configuración de Idioma y Tipografía Nativa ---
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[T1]{fontenc}
+
+% --- Geometría y Configuración de Página ---
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{parskip} % Espaciado automático limpio entre párrafos sin sangría
+
+% --- Paquetes para Gráficos, Matemáticas y Tablas Profesionales ---
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+
+% Definición de columnas automáticas con alineación a la izquierda
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\begin{document}
+
+% ==============================================================================
+% PORTADA
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries INFORME TÉCNICO}\\[0.6cm]
+    {\large\bfseries AP13 · Propagación del impacto por dependencias}\\[0.4cm]
+    {\Large\bfseries Fortune Bank}\\[2cm]
+    
+    \begin{center}
+        \textbf{Alumno:} Xavier Margalef Riestra\\[0.3cm]
+        \textbf{Metodología:} MAGERIT v3 · Esquema Nacional de Seguridad (ENS)\\[0.3cm]
+        \textbf{Actividad:} Dependencias entre activos y propagación del impacto\\[0.3cm]
+        \textbf{Fecha:} Julio 2026
+    \end{center}
+    
+    \vfill
+    
+    \includegraphics[width=0.5\textwidth]{image-2.png}
+    
+    \vspace*{2cm}
+\end{titlepage}
+
+\pagebreak
+
+% ==============================================================================
+% INTRODUCCIÓN Y PLANTEAMIENTO
+% ==============================================================================
+\section*{Introducción}
+Este informe analiza la propagación del impacto entre activos bajo el modelo de la metodología \textbf{MAGERIT v3}. El objetivo es determinar cómo una degradación operativa en un activo de soporte escala verticalmente afectando a los componentes superiores, calculando el impacto final transferido al servicio de negocio. 
+
+Asimismo, se evalúa la eficacia de la implementación de \textbf{salvaguardas} para la obtención del impacto residual y la determinación del patrón estructural de dependencias de la arquitectura.
+
+\section*{Planteamiento}
+Evaluación del comportamiento del sistema de transferencias de \textbf{Fortune Bank} ante una caída por fallo de hardware.
+
+La infraestructura consta de los siguientes componentes:
+\begin{itemize}
+    \item \textbf{Activo A:} Sistema Core de transferencias.
+    \item \textbf{Nodo B:} Middleware de procesamiento.
+    \item \textbf{Nodo C:} Middleware de procesamiento.
+    \item \textbf{Servidor D:} Servidor hardware base del que dependen ambos middlewares.
+\end{itemize}
+
+\textbf{Métricas del escenario:}
+\begin{itemize}
+    \item El \textbf{Servidor D} sufre una degradación inicial del \textbf{50 \%} por fallo físico.
+    \item Los nodos \textbf{B} y \textbf{C} tienen un grado de dependencia del \textbf{70 \%} respecto al Servidor D.
+    \item El \textbf{Sistema Core (A)} depende en un \textbf{60 \%} de cada uno de los middlewares de forma independiente.
+    \item Las salvaguardas aplicadas presentan una eficacia frente al impacto del 50 \%.
+\end{itemize}
+
+\pagebreak
+
+% ==============================================================================
+% IDENTIFICACIÓN DE ACTIVOS Y TOPOLOGÍA
+% ==============================================================================
+\section*{Identificación de activos}
+Aplicando los criterios de \textbf{MAGERIT v3}, se clasifican los activos diferenciando los elementos esenciales de negocio de los activos de soporte de infraestructura.
+
+\begin{table}[h!]
+    \small
+    \centering
+    \begin{tabularx}{\textwidth}{l l L}
+        \toprule
+        \textbf{Activo} & \textbf{Tipo} & \textbf{Función} \\
+        \midrule
+        \textbf{Activo A} & Activo esencial & Sistema Core de transferencias. Servicio crítico de negocio. \\
+        \textbf{Nodo B} & Activo de soporte & \href{https://owasp.org/www-community/Application_Architecture}{Middleware} de procesamiento transaccional. \\
+        \textbf{Nodo C} & Activo de soporte & Middleware homólogo al Nodo B. \\
+        \textbf{Servidor D} & Soporte crítico & Servidor hardware compartido. Constituye un \href{https://en.wikipedia.org/wiki/Single_point_of_failure}{Single Point of Failure (SPOF)}. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Dado que el valor del negocio reside en el activo esencial, este se transmite de forma descendente. Consiguientemente, un incidente en el componente base \textbf{Servidor D} repercute de forma ascendente directa en la disponibilidad operativa del \textbf{Sistema Core}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{image.png}
+\end{figure}
+
+\section*{Topología de dependencias}
+El flujo jerárquico de dependencias se estructura de la siguiente manera:
+
+\begin{verbatim}
+          Activo A
+         /        \
+      60 %      60 %
+      /            \
+ Nodo B          Nodo C
+      \            /
+      70 %      70 %
+         \      /
+        Servidor D
+\end{verbatim}
+
+La arquitectura define una \textbf{dependencia convergente} (topología en diamante). El \textbf{Servidor D} actúa como un \textbf{SPOF}: un impacto en este componente compromete simultáneamente ambos canales intermedios, al carecer el diseño actual de mecanismos de tolerancia a fallos o balanceo de carga.
+
+\pagebreak
+
+% ==============================================================================
+% DESARROLLO MATEMÁTICO - IMPACTO INICIAL Y RESIDUAL
+% ==============================================================================
+\section*{1. Impacto inicial sobre el Sistema Core (Activo A)}
+Ante una degradación del 50 \% en el Servidor D, el cálculo del impacto repercutido se basa en la fórmula formal de la metodología:
+\[ \text{Impacto Repercutido} = \text{Degradación} \cdot \text{Grado de Dependencia} \]
+
+\subsection*{Paso 1: Del Servidor D a los Nodos intermedios de soporte}
+\begin{itemize}
+    \item \textbf{Nodo B:} \[ 0,50 \cdot 0,70 = 0,35 \rightarrow \mathbf{35\ \%\ \text{de impacto}} \]
+    \item \textbf{Nodo C:} \[ 0,50 \cdot 0,70 = 0,35 \rightarrow \mathbf{35\ \%\ \text{de impacto}} \]
+\end{itemize}
+
+\subsection*{Paso 2: De los Nodos intermedios al Activo Esencial (A)}
+Cada canal de procesamiento traslada el impacto acumulado hacia el Activo A aplicando su grado de dependencia correspondiente del \textbf{60 \%} ($0,60$):
+\begin{itemize}
+    \item \textbf{Ruta B $\rightarrow$ A:} \[ 0,35 \cdot 0,60 = 0,21 \rightarrow \mathbf{21\ \%\ \text{de impacto}} \]
+    \item \textbf{Ruta C $\rightarrow$ A:} \[ 0,35 \cdot 0,60 = 0,21 \rightarrow \mathbf{21\ \%\ \text{de impacto}} \]
+\end{itemize}
+
+\subsection*{Cálculo del Impacto Total Acumulado}
+Al coexistir dos rutas de transmisión convergentes simultáneas sin redundancia activa en esta fase, se agrega el impacto recibido por ambas vías sobre el activo de negocio:
+\[ 21\% + 21\% = 42\% \]
+\textbf{Impacto inicial total en el Sistema Core (Activo A): 42 \%.}
+
+\section*{2. Impacto residual tras implantar salvaguardas}
+Se introducen medidas orientadas a acotar la degradación (implementación de cachés locales en los Nodos B y C) con una eficacia frente al impacto ($e_i$) del \textbf{50 \%} ($0,50$). Aplicando la ecuación matemática de impacto residual:
+\[ \text{Impacto Residual} = \text{Impacto Inicial} \cdot (1 - e_i) \]
+
+\begin{itemize}
+    \item \textbf{Ruta B mitigada:} \[ 21\% \cdot (1 - 0,50) = 10,5\% \]
+    \item \textbf{Ruta C mitigada:} \[ 21\% \cdot (1 - 0,50) = 10,5\% \]
+\end{itemize}
+\textbf{Impacto residual final consolidado en el Core:} \[ 10,5\% + 10,5\% = \mathbf{21\%} \]
+
+\pagebreak
+
+% ==============================================================================
+% MATRIZ DE RESUMEN Y PATRÓN
+% ==============================================================================
+\section*{3. Patrón de dependencias y resumen}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{image-1.png}
+\end{figure}
+
+La expresión formal que define la topología estructural en diamante corresponde a:
+\[ (A \rightarrow B) \land (A \rightarrow C) \land (B \rightarrow D) \land (C \rightarrow D) \]
+
+\begin{table}[h!]
+    \small
+    \centering
+    \begin{tabularx}{\textwidth}{L r}
+        \toprule
+        \textbf{Concepto Técnico} & \textbf{Valor Operativo} \\
+        \midrule
+        Degradación inicial del Servidor D ($d$) & \textbf{50 \%} \\
+        Grado de Dependencia Nodos (B/C) $\rightarrow$ Servidor D & \textbf{70 \%} ($0,70$) \\
+        Impacto intermedio en Nodos B y C & \textbf{35 \%} \\
+        Grado de Dependencia Activo A $\rightarrow$ Nodos (B/C) & \textbf{60 \%} ($0,60$) \\
+        \midrule
+        \textbf{Impacto inicial total en Activo A} & \textbf{42 \%} \\
+        \textbf{Impacto residual total en Activo A} & \textbf{21 \%} \\
+        \midrule
+        Patrón estructural de la arquitectura & \textbf{Dependencia en Diamante} \\
+        Componente crítico detectado & \textbf{Servidor D (SPOF)} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\pagebreak
+
+% ==============================================================================
+% ESCENARIOS ALTERNATIVOS (INGENIERÍA INVERSA)
+% ==============================================================================
+\section*{Escenarios alternativos (Ingeniería Inversa)}
+
+Para evaluar los escenarios alternativos se realiza un análisis de ingeniería inversa. Partiendo del impacto final reflejado en el activo raíz ($i_A$), se realiza el despeje secuencial descendente para identificar la degradación requerida en el activo base de infraestructura.
+
+Las expresiones matemáticas utilizadas para el despeje directo son:
+\begin{enumerate}
+    \item \textbf{Impacto intermedio en el nivel de Middleware:} 
+    \[ \text{Impacto}_{\text{Nodo}} = \frac{\text{Impacto}_{\text{Ruta}}}{\text{grado}(A \rightarrow \text{Nodo})} \]
+    \item \textbf{Degradación requerida en el componente hardware raíz (Servidor D):} 
+    \[ \text{Degradación}_D = \frac{\text{Impacto}_{\text{Nodo}}}{\text{grado}(\text{Nodo} \rightarrow D)} \]
+\end{enumerate}
+\textit{Constantes fijas del sistema:} $\text{grado}(A \rightarrow B/C) = 0,60$ | $\text{grado}(B/C \rightarrow D) = 0,70$ | Eficacia de salvaguarda ($e_i$) = $50\%$.
+
+\vspace{0.3cm}
+
+\begin{table}[h!]
+    \footnotesize
+    \centering
+    \begin{tabularx}{\textwidth}{p{2.3cm} c L c c c}
+        \toprule
+        \textbf{Escenario} & \textbf{\bfseries $i_A$} & \textbf{Cálculo de Ingeniería Inversa (*Top-Down*)} & \textbf{Nodos} & \textbf{\bfseries $d_D$} & \textbf{\bfseries Residuo} \\
+        \midrule
+        \textbf{1. Diamante} & 42\% & 1. Por rama: $\text{Impacto}_{\text{Ruta}} = 21\%$.\newline 2. En nodo: $\text{Impacto}_B = \frac{0,21}{0,60} = 0,35$.\newline 3. En raíz: $\text{Degradación}_D = \frac{0,35}{0,70} = 0,50$. & \begin{tabular}{@{}c@{}}$d_B=35\%$\\$d_C=35\%$\end{tabular} & \textbf{50\%} & \textbf{21\%} \\
+        \midrule
+        \textbf{2. Ruta Única} & 21\% & 1. Un solo canal activo transmite: $\text{Impacto}_{\text{Ruta}} = 21\%$.\newline 2. En nodo: $\text{Impacto}_B = \frac{0,21}{0,60} = 0,35$.\newline 3. En raíz: $\text{Degradación}_D = \frac{0,35}{0,70} = 0,50$. & \begin{tabular}{@{}c@{}}$d_B=35\%$\\$d_C=0\%$\end{tabular} & \textbf{50\%} & \textbf{10,5\%} \\
+        \midrule
+        \textbf{3. Conexión Directa} & 35\% & 1. Arquitectura plana. A acopla directo a D ($\text{grado} = 0,70$).\newline 2. En raíz: $\text{Degradación}_D = \frac{0,35}{0,70} = 0,50$. & \begin{tabular}{@{}c@{}}$d_B=\text{N/A}$\\$d_C=\text{N/A}$\end{tabular} & \textbf{50\%} & \textbf{17,5\%} \\
+        \midrule
+        \textbf{4. Doble Salvaguarda} & 21\% & 1. Flujo idéntico de canal al Escenario 2.\newline 2. $\text{Impacto}_B = 35\% \rightarrow \text{Degradación}_D = 50\%$.\newline 3. Controles en serie: $21\% \cdot (1-0,50) \cdot (1-0,50)$. & \begin{tabular}{@{}c@{}}$d_B=35\%$\\$d_C=0\%$\end{tabular} & \textbf{50\%} & \textbf{5,25\%} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{image-3.png}
+\end{figure}
+
+\pagebreak
+
+% ==============================================================================
+% REFERENCIAS
+% ==============================================================================
+\section*{Referencias}
+\subsection*{Metodologías y Normativa Oficial}
+\begin{itemize}
+    \item \textbf{MAGERIT v3} -- Metodología de Análisis y Gestión de Riesgos de los Sistemas de Información. Ministerio de Asuntos Económicos y Transformación Digital.
+    \item \textbf{Esquema Nacional de Seguridad (ENS)} -- Real Decreto 311/2022. Centro Criptológico Nacional (CCN).
+    \item \textbf{ISO/IEC 27001:2022} -- Information Security Management Systems -- Requirements.
+\end{itemize}
+
+\subsection*{Marcos Técnicos}
+\begin{itemize}
+    \item \textbf{Single Point of Failure (SPOF)} -- OWASP Application Architecture Mitigation Standards.
+    \item \textbf{Defense in Depth} -- NIST Cybersecurity Framework (CSF 2.0).
+\end{itemize}
+
+\end{document}
