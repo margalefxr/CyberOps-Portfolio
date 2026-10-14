@@ -14,3 +14,7 @@ __MACOSX/
 *.log
 *.out
 *.synctex.gz
+
+# Python build artifacts
+__pycache__/
+*.pyc
