@@ -30,8 +30,8 @@ Metodología común a ambos: identificación de activos → análisis de riesgo 
 
 | Proyecto | Tipo | Resumen |
 |---|---|---|
-| [`audit-axezone-external-recon`](./audit-axezone-external-recon) | Reconocimiento externo (OSINT / recon pasivo) | Huella digital externa de una cadena de locales: 19 hallazgos, desde un DNS huérfano con riesgo de *subdomain takeover* (CVSS 8.2) hasta dependencias de terceros sin DPA verificado. Metodología propia **MSA-Recon**, correlación RGPD/LSSI-CE/ISO 27001/ENS. |
-| [`audit-moldtek-internal-network`](./audit-moldtek-internal-network) | Reconocimiento de red interna | Red corporativa `/24` (92 hosts activos): segmentación deficiente de infraestructura crítica, credenciales en claro, CVE sin parchear. Metodología propia **MSA-Interno**, correlación MITRE ATT&CK/ISO 27001/NIS2/CIS Controls v8. Incluye informe técnico + resumen ejecutivo de una página. |
+| [`audit-axezone-external-recon`](./audit-axezone-external-recon) | Reconocimiento externo (OSINT / recon pasivo) | Huella digital externa de una cadena de locales: 19 hallazgos, desde un DNS huérfano con riesgo de *subdomain takeover* (CVSS 8.2) hasta dependencias de terceros sin DPA verificado. Metodología propia **[MSA](https://github.com/margalefxr/MSA-Playbook)-Recon**, correlación RGPD/LSSI-CE/ISO 27001/ENS. |
+| [`audit-moldtek-internal-network`](./audit-moldtek-internal-network) | Reconocimiento de red interna | Red corporativa `/24` (92 hosts activos): segmentación deficiente de infraestructura crítica, credenciales en claro, CVE sin parchear. Metodología propia **[MSA](https://github.com/margalefxr/MSA-Playbook)-Interno**, correlación MITRE ATT&CK/ISO 27001/NIS2/CIS Controls v8. Incluye informe técnico + resumen ejecutivo de una página. |
 
 > **Confidencialidad:** los datos que permitirían identificar al cliente real (dominio, IPs públicas, proveedores, nombres de empleados) se sustituyeron por valores ficticios antes de publicarse, conforme al RGPD y a la confidencialidad profesional habitual. Metodología, hallazgos, severidad (CVSS/CWE) y correcciones son fieles al trabajo original. Cada carpeta detalla en su README qué se anonimizó.
 
@@ -65,6 +65,14 @@ Metodología común a ambos: identificación de activos → análisis de riesgo 
 **Metodologías:** MAGERIT v3 · ENS (RD 311/2022) · ISO/IEC 27001:2022 · NIST SP 800-115 · MITRE ATT&CK · CIS Controls v8 · PTES · OWASP WSTG
 **Normativa:** RGPD/LOPDGDD · LSSI-CE · NIS2
 **Plataformas / lenguajes:** Linux · Windows · Python · Bash · SQL · REST APIs · HTTP/S · DNS · TCP/IP · Git
+
+## 🔗 Repositorios relacionados
+
+| Repositorio | Qué es |
+|---|---|
+| [**MSA-Playbook**](https://github.com/margalefxr/MSA-Playbook) | Metodología propia de auditoría/pentesting (MSA) aplicada en las dos auditorías reales de este repositorio — de reconocimiento a plantilla de informe final |
+| [**OpsMatrix Lab**](https://github.com/margalefxr/opsmatrix-lab) | Infraestructura defensiva por capas (Suricata IDS, segmentación de red, TLS 1.3) — el lado Blue Team/arquitectura, en espejo de las auditorías ofensivas de aquí |
+| [**pe89-chacha20**](https://github.com/margalefxr/pe89-chacha20) | Análisis de seguridad criptográfica (ChaCha20, Diffie-Hellman) con tests y trazabilidad de decisiones |
 
 ## 📫 Contacto
 
