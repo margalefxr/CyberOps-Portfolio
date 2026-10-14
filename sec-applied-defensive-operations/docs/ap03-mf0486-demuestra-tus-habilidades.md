@@ -1,17 +1,16 @@
-# [AP 03] Demuestra tus habilidades 
-
-![Infraestructura de Red y Seguridad Lógica](https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&h=500&q=80)
-
----
+# Informe de Evaluación de Riesgos: Seis Escenarios de Incidente
 
 <div style="text-align: center; margin-top: 50px;">
-  <h3>Informe de Evaluación de Riesgos</h3>
-  <p><strong>Analista:</strong> Xavier Margalef Riestra</p>
+  <p><strong>Auditor:</strong> Xavier Margalef Riestra</p>
   <p><strong>Fecha:</strong> 2026-06-01</p>
-  <p><strong>Clasificación:</strong> Interna / Formación</p>
+  <p><strong>Metodología:</strong> Clasificación de salvaguardas (Técnica/Administrativa/Física) · Ciclo PDCA · Riesgo = Impacto × Probabilidad</p>
 </div>
 
 ---
+
+## Resumen
+
+El informe evalúa seis escenarios de incidente de naturaleza distinta — ransomware hospitalario, filtración de datos por error humano, fallo en un sistema industrial, acceso no autorizado a un servidor bancario, robo de equipos y fraude por ingeniería social — aplicando en cada caso el mismo marco de análisis: identificación de la amenaza y la vulnerabilidad explotada, clasificación de la salvaguarda más efectiva (técnica, administrativa o física), encaje en el ciclo de mejora continua PDCA, clasificación del incidente (seguridad de la información, ciberseguridad o seguridad física) y evaluación cuantitativa del riesgo.
 
 <div style="page-break-after: always;"></div>
 
@@ -21,7 +20,7 @@
 
 ---
 
-* **Vulnerabilidad:** entendemos vulnerabilidad como algo explotable como una tienda con escaparate, aquí la falta de copias de seguridad recientes y la posible falta de segmentación de red o del correcto uso de virtualización para segmentar servicios, que permite movilidad del malware.
+* **Vulnerabilidad:** la falta de copias de seguridad recientes, unida a la posible ausencia de segmentación de red o de un uso correcto de virtualización para aislar servicios, que permite la propagación lateral del malware.
 
 ---
 
@@ -50,7 +49,7 @@
 
 ### 2. Filtración de Datos en una Empresa de Tecnología
 
-* **Amenaza principal:** envío accidental de datos sensibles por error humano, negligencia profesional. Me sonaba que esto tenía un nombre y lo he buscado: [insider threat](https://www.microsoft.com/en-gb/security/business/security-101/what-is-insider-threat).
+* **Amenaza principal:** envío accidental de datos sensibles por error humano, categorizable como [insider threat](https://www.microsoft.com/en-gb/security/business/security-101/what-is-insider-threat) involuntario.
 
 ---
 
@@ -77,7 +76,7 @@
     
     Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
     * ***Impacto Alto***: debido a pérdida de confidencialidad de clientes que rompe uno de los principios de la seguridad de la información, sanciones por violaciones de confidencialidad, y daño reputacional.
-    * ***Probabilidad Alta***: realísticamente aunque haya políticas, herramientas y concienciación, tal y como indican las estadísticas, los errores humanos suponen la mayoría de causas de fallas a la seguridad de la información por lo que es probable que esto pase. De hecho, recientemente un usuario de Paramount envió una película entera de animación a un tercero sin querer y esta ha sido colgada en redes.
+    * ***Probabilidad Alta***: aunque existan políticas, herramientas y concienciación, las estadísticas del sector confirman que el error humano sigue siendo la causa predominante de fallas en seguridad de la información, lo que hace probable este tipo de incidente (un caso con paralelismos reales: el envío accidental de una película completa de animación por parte de un empleado de un gran estudio, posteriormente filtrada en redes).
 
 <div style="page-break-after: always;"></div>
 

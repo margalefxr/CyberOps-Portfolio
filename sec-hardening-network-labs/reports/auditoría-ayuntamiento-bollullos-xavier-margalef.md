@@ -1,20 +1,20 @@
 ---
-title: ""
-author: ""
-date: ""
+title: "AP12 · Auditoría de Riesgos — Ayuntamiento de Bollullos"
+author: "Xavier Margalef Riestra"
+date: "2026-07-14"
 ---
 
 <div class="cover">
 <div class="cover-inner">
 
-# AP12 · Auditoría – Ayuntamiento de Bollullos
+# AP12 · Auditoría de Riesgos – Ayuntamiento de Bollullos
 
-**Alumno:** Xavier Margalef  
-**Metodología:** MAGERIT v3 · ENS  
-**Fecha:** 14/07/2026  
-**Actividad:** [AP 12] Auditoría - Ayuntamiento Bollullos
+**Auditor:** Xavier Margalef Riestra
+**Metodología:** MAGERIT v3 · Esquema Nacional de Seguridad (ENS)
+**Fecha:** 14/07/2026
+**Actividad:** Cuantificación de impacto, riesgo residual y análisis coste-beneficio (ROSI) sobre un sistema de gestión municipal
 
-![bolludos](../assets/image-2.png)
+![Portada del informe](../assets/image-2.png)
 
 </div>
 </div>
@@ -52,7 +52,7 @@ El valor propio del Activo A en dimensiones del [Esquema Nacional de Seguridad (
 * **Au** (Autenticidad) = 4 *(Activo Crítico)*
 * **T** (Trazabilidad) = 3
 
-En ese caso, **40.000 €** simplemente sirve para calcular las pérdidas económicas en las dos últimas secciones.
+El valor de **40.000 €** se emplea más adelante para cuantificar las pérdidas económicas en las secciones 5 y 6.
 
 <div style="page-break-after: always;"></div>
 ---
@@ -80,7 +80,7 @@ Ese **24%** afecta a todas las dimensiones. Por tanto:
 | **Au** | $4 x 0.24$ | **0.96** |
 | **T** | $3 x 0.24$ | **0.72** |
 
-> **Interpretación Técnico:** Estos valores significan cuánto daño recibe cada propiedad de seguridad del Activo A. Por ejemplo, **0.96** sobre 4. Como la dimensión de la *Integridad* se considera un activo crítico, a causa del impacto por caída del activo por la degradación en base a la dependencia, pues su daño resultante es mayor a la de la *Disponibilidad* (0.48). Se han perdido puntos de valor nominales en las dimensiones del activo, traduciéndose en una pérdida directa de valor.
+> **Interpretación técnica:** estos valores indican cuánto daño recibe cada propiedad de seguridad del Activo A — por ejemplo, 0.96 sobre un máximo de 4. Dado que la dimensión de *Integridad* es un activo crítico, el impacto transferido por la caída del servidor resulta mayor en esta dimensión que en *Disponibilidad* (0.48). Se traduce en una pérdida directa de valor nominal en las dimensiones afectadas del activo.
 
 ---
 
@@ -169,11 +169,11 @@ $$	{ALE} = 9.600 	x 0.5 = \mathbf{4.800\ €/año}$$
 
 ## 7. Calcula si tiene sentido aplicar esta medida
 
-La licencia de Cloudflare Business más las horas de mantenimiento del técnico es de **1.200 € anuales**. Básicamente tenemos que hacer los cálculos con la situación inicial, antes de aplicar cualquier salvaguarda para comparar esa situación inicial con la situación después del WAF para decidir si la inversión merece la pena.
+La licencia de Cloudflare Business más las horas de mantenimiento del técnico asciende a **1.200 € anuales**. Para decidir si la inversión merece la pena, se compara la pérdida anual esperada sin ninguna salvaguarda frente al coste total de la situación con WAF (riesgo residual + coste de la solución).
 
-* **Sin protección (Pérdida anual esperada):** $4.800\ €$
-* **Con WAF (Reduce el riesgo un 60%):** $4.800 	x 0.4 = 1.920\ €$
-* **Coste del WAF:** Si le metemos el coste del WAF que son $1.200\ €$, nos deja en **3.120 € totales**.
+* **Sin protección (pérdida anual esperada):** $4.800\ €$
+* **Con WAF (reduce el riesgo un 60%):** $4.800 	x 0.4 = 1.920\ €$
+* **Coste total con WAF:** sumando el coste de la licencia ($1.200\ €$) al riesgo residual, el total asciende a **3.120 €**.
 
 ### ⚖️ Comparativa de Gastos Anuales
 * **Sin WAF:** $4.800\ €/	{año}$
