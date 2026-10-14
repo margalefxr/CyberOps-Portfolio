@@ -14,7 +14,7 @@
 ### Actividad 1 - Reconocimiento inicial
 
 Evidencia del reconocimiento inicial del entorno:
-![Reconocimiento inicial](images/image-1.png)
+![Reconocimiento inicial](../assets/image-1.png)
 
 ### Actividad 2 - Enumeración de contexto
 
