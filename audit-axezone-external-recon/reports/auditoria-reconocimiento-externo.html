@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Auditoría de reconocimiento · axezone-demo.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f2;--fg:#1b1b19;--mut:#5c5a54;--line:#d9d6cd;--acc:#132c4d;--acc2:#2c4a73;--card:#fff;
+  --warn:#faf6ec;--ok:#eef0ea;--pend:#f7ecda;
+  --alto-bg:#f8e4e1;--alto-fg:#8c231c;--alto-bd:#c24a3f;
+  --medio-bg:#faeed3;--medio-fg:#7a4e07;--medio-bd:#b9842b;
+  --bajo-bg:#e9ede6;--bajo-fg:#3c5346;--bajo-bd:#6d8a76;
+  --sans:"IBM Plex Sans",Arial,Helvetica,sans-serif;--serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e4e2db;--mut:#a3a096;--line:#363831;--acc:#9fb6d6;--acc2:#7e97b8;--card:#1c1e22;--warn:#272a1f;--ok:#1d231d;--pend:#2b2415;--alto-bg:#301917;--alto-fg:#e3978c;--alto-bd:#8c3a30;--medio-bg:#2d2412;--medio-fg:#e0b96e;--medio-bd:#8a6a24;--bajo-bg:#1b241e;--bajo-fg:#9fc0ab;--bajo-bd:#4a6a56}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e4e2db;--mut:#a3a096;--line:#363831;--acc:#9fb6d6;--acc2:#7e97b8;--card:#1c1e22;--warn:#272a1f;--ok:#1d231d;--pend:#2b2415;--alto-bg:#301917;--alto-fg:#e3978c;--alto-bd:#8c3a30;--medio-bg:#2d2412;--medio-fg:#e0b96e;--medio-bd:#8a6a24;--bajo-bg:#1b241e;--bajo-fg:#9fc0ab;--bajo-bd:#4a6a56}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--serif)}
+main{max-width:860px;margin:0 auto;padding:36px 22px 72px}
+h1,h2,h3,.sub,.meta dt,th,.sev,.cover-label,.part{font-family:var(--sans)}
+h1{font-size:1.4rem;letter-spacing:.01em;margin:0 0 2px;color:var(--acc);font-weight:700}
+.sub{color:var(--mut);margin:0 0 22px;font-size:.93rem}
+.part{background:var(--acc);color:#fff;text-align:center;padding:12px;margin:34px 0 18px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;font-size:.95rem;border-radius:1px}
+h2{font-size:.86rem;margin:34px 0 12px;padding:8px 13px;background:var(--acc);color:#fff;letter-spacing:.05em;text-transform:uppercase;font-weight:600;border-radius:1px}
+h3{font-size:1rem;margin:22px 0 7px;font-weight:600;color:var(--acc);border-left:3px solid var(--acc2);padding-left:9px}
+p{margin:6px 0 10px}
+.note{background:var(--warn);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 14px;font-size:.86rem;color:var(--mut);font-family:var(--sans)}
+.cover-label{display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--alto-fg);border:1px solid var(--alto-bd);padding:2px 8px;border-radius:1px;margin-bottom:10px;font-weight:600}
+.meta{display:grid;grid-template-columns:max-content 1fr;gap:5px 16px;background:var(--card);border:1px solid var(--line);padding:13px 17px;font-size:.9rem;font-family:var(--sans)}
+.meta dt{font-weight:600;color:var(--acc)}.meta dd{margin:0;color:var(--mut)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.82rem;background:var(--card);font-family:var(--sans)}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top;word-break:break-word;overflow-wrap:anywhere}
+th{background:#eceae2;color:var(--acc);font-size:.7rem;letter-spacing:.03em;text-transform:uppercase;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) th{background:#22252a}}
+:root[data-theme="dark"] th{background:#22252a}
+.ph{color:var(--mut);font-style:italic}
+.fiche{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);padding:3px 16px 8px;margin:11px 0}
+.fiche.min{padding:3px 16px 6px}
+.sev{display:inline-block;padding:2px 8px;border:1px solid var(--line);font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;font-weight:600;font-family:var(--sans);border-radius:1px}
+.st-ok{background:var(--ok)}.st-pend{background:var(--pend)}
+.sev-alto{background:var(--alto-bg);color:var(--alto-fg);border-color:var(--alto-bd)}
+.sev-medio{background:var(--medio-bg);color:var(--medio-fg);border-color:var(--medio-bd)}
+.sev-bajo{background:var(--bajo-bg);color:var(--bajo-fg);border-color:var(--bajo-bd)}
+code{font-family:ui-monospace,SFMono-Regular,"Courier New",monospace;font-size:.85em;background:color-mix(in srgb,var(--line) 35%,transparent);padding:0 3px;border-radius:2px;word-break:break-word;overflow-wrap:anywhere}
+pre{background:var(--card);border:1px solid var(--line);padding:10px;border-radius:2px;font-size:.76rem;font-family:ui-monospace,SFMono-Regular,"Courier New",monospace;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+pre code{background:none;padding:0;word-break:break-word}
+.mermaid{background:var(--card);border:1px solid var(--line);padding:14px;text-align:center}
+.mermaid svg{max-width:100%!important;height:auto!important}
+ol.steps li,ul li{margin:4px 0}
+a{color:var(--acc2)}
+h2{scroll-margin-top:14px}
+hr.rule{border:0;border-top:1px solid var(--line);margin:30px 0}
+.small{font-size:.86rem;color:var(--mut)}
+@page{size:A4;margin:16mm 14mm}
+@media print{
+  html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
+  main{max-width:100%;padding:0;margin:0}
+  a{color:var(--acc2)!important;text-decoration:none}
+  h2,h3{break-after:avoid}
+  .note,.meta,.fiche,pre{break-inside:avoid}
+  table{break-inside:auto}
+  tr{break-inside:avoid}
+  h1,h2,h3{break-inside:avoid}
+  .part{break-after:avoid}
+  .scroll{overflow-x:visible}
+  .mermaid{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<main>
+<div class="note" style="margin-bottom:14px"><strong>Nota de portafolio:</strong> este informe es una auditor&iacute;a real realizada con fines acad&eacute;micos. El nombre del dominio, direcciones IP, nombres de locales y de proveedores externos han sido sustituidos por valores ficticios para proteger la identidad del cliente real, conforme a la confidencialidad profesional y al RGPD. La metodolog&iacute;a, los hallazgos, su severidad y las correcciones propuestas son fieles al trabajo original.</div>
+<span class="cover-label">Confidencial</span>
+<h1>Auditoría de reconocimiento externo — axezone-demo.com</h1>
+<p class="sub">Informe de ciberseguridad (OSINT / recon pasivo) · Metodología MSA-Recon, basada en PTES, OWASP WSTG y NIST SP 800-115</p>
+
+<dl class="meta">
+<dt>Objetivo</dt><dd>axezone-demo.com (203.0.113.10 — OVH SAS, AS16276)</dd>
+<dt>Modalidad</dt><dd>Caja negra, reconocimiento pasivo y de huella mínima (sin intrusión)</dd>
+<dt>Fecha de ejecución</dt><dd>01–02/10/2026</dd>
+<dt>Autorización</dt><dd>Autorización verbal del propietario de la web; ampliación puntual a reservaspro-ejemplo.com autorizada por el responsable del ejercicio (ver §9)</dd>
+<dt>Auditores</dt><dd>Xavier Margalef</dd>
+<dt>Versión del documento</dt><dd>2.0</dd>
+<dt>Clasificación</dt><dd class="ph">Informe de muestra de portafolio — datos del cliente real anonimizados; no corresponde a una empresa identificable</dd>
+</dl>
+
+<h3 style="margin-top:24px">Índice</h3>
+<ol class="steps">
+<li><a href="#pe">Parte I — Informe ejecutivo</a></li>
+<li><a href="#s5">Parte II — Informe técnico</a>
+  <ol class="steps">
+    <li><a href="#s5-1">Metodología</a></li>
+    <li><a href="#s5-2">Arquitectura identificada</a></li>
+    <li><a href="#s5-3">Desarrollo del reconocimiento</a></li>
+    <li><a href="#s5-4">Hallazgos técnicos</a></li>
+    <li><a href="#s5-5">Cobertura y cierre</a></li>
+    <li><a href="#s5-6">Decisiones y límites de alcance</a></li>
+  </ol>
+</li>
+<li><a href="#anexos">Anexos: normativa, glosario, referencias</a></li>
+</ol>
+
+<div class="part" id="pe">Parte I — Informe ejecutivo</div>
+
+<h2 id="s2">1. Riesgo global y conclusión</h2>
+<p><strong>Riesgo global: <span class="sev">Bajo-Medio</span>.</strong> No hay vulnerabilidad crítica ni vía de ataque activa confirmada. El riesgo real está en dos áreas de negocio, no en la infraestructura técnica: el uso de cookies de rastreo sin consentimiento previo (confirmado en navegador) y la dependencia de proveedores externos sin contrato de protección de datos (DPA) verificado. Un hallazgo técnico — DNS huérfano en <code>calendar.axezone-demo.com</code> — puntúa "Alto" (CVSS 8.2) si llegara a confirmarse una toma de control del subdominio, pero esa confirmación excede lo que permite un recon pasivo; aun así es la corrección más urgente por su bajo coste y alto impacto potencial.</p>
+
+<div class="scroll"><table>
+<tr><th>Dato</th><th>Valor</th></tr>
+<tr><td>Dominio / IP principal</td><td><code>axezone-demo.com</code> → <code>203.0.113.10</code> (OVH, Francia)</td></tr>
+<tr><td>Hallazgo más grave</td><td><code>calendar.axezone-demo.com</code> → <code>198.51.100.50</code> (AWS Irlanda), DNS huérfano, puertos 80/443/21/22/8080/8443 todos <em>filtered</em>, CVSS 8.2</td></tr>
+<tr><td>Infraestructura legacy sin uso</td><td><code>203.0.113.20</code> (CDN OVH) — 3 subdominios de ciudad devuelven <code>520 Domain not allowed on CDN</code>; <code>www</code> funciona bien</td></tr>
+<tr><td>Proveedores de reservas (datos de clientes)</td><td>ReservaPro/reservaspro-ejemplo.com (<code>192.0.2.80</code>, 5 locales) y Proveedor B, EE.UU. (Local 6) — ninguno con DPA verificado</td></tr>
+<tr><td>Cookies sin consentimiento</td><td><code>_fbp</code> (Meta) y <code>_ttp</code> (TikTok), confirmadas en navegador real antes de aceptar el banner</td></tr>
+</table></div>
+
+<h2 id="s2b">2. Hallazgos, riesgo e impacto normativo</h2>
+<p class="small">Cada fila es un hallazgo del ejercicio, identificado como <strong>REC-01 a REC-19</strong> (REC = Reconocimiento, numeración correlativa propia de este informe, en el orden en que se fue documentando — no es un identificador CVE ni un estándar externo). El detalle completo de cada uno, con comandos y evidencia, está en la Parte II, §7.</p>
+<div class="scroll"><table>
+<tr><th>ID</th><th>Hallazgo</th><th>Severidad</th><th>CVSS</th><th>Impacto si no se corrige</th><th>Normativa</th><th>Estado</th></tr>
+<tr><td>REC-15</td><td>DNS huérfano, <code>calendar.axezone-demo.com</code> → AWS (posible subdomain takeover)</td><td><span class="sev sev-alto">Alto</span></td><td>8.2</td><td>Phishing/daño de marca bajo dominio legítimo si un tercero reclama la IP</td><td>RGPD Art. 32/33-34 (si deriva en brecha)</td><td>Confirmado hasta el límite del recon pasivo</td></tr>
+<tr><td>REC-10 / REC-13</td><td>Cookies de rastreo (Meta, TikTok) antes de consentimiento, mismo plugin como causa raíz</td><td><span class="sev sev-medio">Medio</span></td><td>N/A</td><td>Infracción de consentimiento confirmada en 2 plataformas</td><td>LSSI-CE Art. 22 — hasta 150.000€ por cookie, infracción más sancionada por la AEPD</td><td>Confirmado en navegador real</td></tr>
+<tr><td>REC-09</td><td>Dependencia de terceros (ReservaPro, Metricool) sin DPA verificado</td><td><span class="sev sev-medio">Medio</span></td><td>N/A</td><td>Tratamiento de datos de reserva sin base contractual verificada</td><td>RGPD Art. 28 — hasta 10M€ o 2% facturación</td><td>Abierto — verificar DPA</td></tr>
+<tr><td>REC-12</td><td>Proveedor B (Local 6) procesa datos con transferencia a EE.UU. sin garantías verificadas</td><td><span class="sev sev-medio">Bajo / Medio</span></td><td>N/A</td><td>Fallo de reserva ya confirmado en el Local 6 + transferencia internacional sin cobertura</td><td>RGPD Art. 44-49 — mismo techo que REC-09</td><td>Confirmado</td></tr>
+<tr><td>REC-19</td><td>PushOwl (push web), tercero no inventariado, timing de consentimiento sin verificar</td><td><span class="sev sev-bajo">Bajo</span></td><td>N/A</td><td>Mismo tipo de infracción que REC-10/13 si se confirma el timing</td><td>LSSI-CE Art. 22 (pendiente de confirmar)</td><td>Identificado</td></tr>
+<tr><td>REC-14</td><td>Subdominios legacy activos no detectados por M3 (crt.sh), gap de cobertura corregido con fuentes pasivas adicionales</td><td><span class="sev sev-bajo">Bajo</span></td><td>N/A</td><td>Higiene de DNS — sin impacto en el servicio real (<code>www</code> funciona)</td><td>—</td><td>Corregido</td></tr>
+<tr><td>REC-05</td><td>Sin HSTS / CSP / X-Frame-Options / X-Content-Type-Options</td><td><span class="sev sev-medio">Bajo-Medio</span></td><td>5.4</td><td>Downgrade SSL-stripping, clickjacking, MIME-sniffing</td><td>RGPD Art. 32 (medidas técnicas)</td><td>Abierto</td></tr>
+<tr><td>REC-02</td><td><code>xmlrpc.php</code> accesible</td><td><span class="sev sev-medio">Medio-Bajo</span></td><td>5.3</td><td>Fuerza bruta distribuida / amplificación DDoS pingback</td><td>ENS op.exp.4</td><td>Abierto</td></tr>
+<tr><td>REC-01 / REC-06</td><td>Versión de PHP/WordPress y plugins expuesta (<code>X-Powered-By</code>, <code>readme.html</code>, meta generator); cruzado con CVE conocidos — WPML y Site Kit parcheados, Really Simple Security sin versión visible (tuvo CVE crítico 9.8 en 2024)</td><td><span class="sev sev-bajo">Bajo</span></td><td>5.3</td><td>Si Really Simple Security estuviera en versión vulnerable, bypass de autenticación (CVSS 9.8)</td><td>ISO 27001 A.8.8</td><td>Abierto</td></tr>
+<tr><td>REC-04</td><td>DMARC en <code>p=none</code></td><td><span class="sev sev-medio">Bajo-Medio</span></td><td>N/A</td><td>Dominio suplantable en phishing dirigido</td><td>RGPD Art. 32 (si deriva en fraude)</td><td>Plan de escalado propuesto</td></tr>
+<tr><td>REC-16</td><td>Puertos adicionales en el apex (113/135/587/3306), estado inestable entre escaneos</td><td><span class="sev sev-bajo">Bajo</span></td><td>N/A</td><td>Ninguno confirmado — 3306 nunca respondió como MySQL abierto</td><td>—</td><td>Cerrado</td></tr>
+<tr><td>REC-03 / REC-07 / REC-08 / REC-11 / REC-14b / REC-17 / REC-18</td><td>Hosting compartido, puertos protegidos, balanceador OVH, candidato descartado, wildcard descartado, recon del proveedor, UDP — ver informe técnico</td><td><span class="sev sev-bajo">Informativo</span></td><td>N/A</td><td>Sin acción requerida</td><td>—</td><td>Cerrado</td></tr>
+</table></div>
+
+<h2 id="s2c">3. Prioridades de corrección</h2>
+<ol class="steps">
+<li><strong>Cookies de marketing sin consentimiento</strong> (REC-10/13) — condicionar al CMP. Mayor riesgo económico inmediato, corrección barata.</li>
+<li><strong>DNS huérfano de <code>calendar.axezone-demo.com</code></strong> (REC-15) — borrar o volver a dar de alta el registro. Acción más urgente por riesgo de suplantación.</li>
+<li><strong>Contratos DPA</strong> con ReservaPro y Proveedor B (REC-09/12) — confirmar o solicitar.</li>
+<li><strong>DNS de los 3 subdominios de ciudad</strong> (REC-14) — dar de baja.</li>
+<li><strong>Cabeceras de seguridad HTTP y versiones de software expuestas</strong> (REC-05/01/02/06) — remediación estándar de higiene.</li>
+</ol>
+<p class="small">Detalle técnico, comandos y evidencia de cada punto: Parte II. Cuantías de sanción: Anexo A (son techos legales, no una predicción de sanción real).</p>
+
+<div class="part" id="s5">Parte II — Informe técnico</div>
+
+<h2 id="s5-1">4. Metodología — MSA-Recon</h2>
+<p>MSA-Recon (Methodology-driven Security Audit) es el protocolo mínimo de reconocimiento usado en este ejercicio: 6 movimientos núcleo, siempre en el mismo orden, cada uno con un único comando de referencia. No se añaden herramientas adicionales salvo que un movimiento dé señal que lo justifique — mantiene el proceso repetible y evita ruido.</p>
+<div class="scroll"><table>
+<tr><th>#</th><th>Movimiento</th><th>Pregunta que responde</th><th>Comando núcleo</th></tr>
+<tr><td>M1</td><td>Identidad</td><td>¿Quién registra esto y hace cuánto?</td><td><code>whois &lt;dominio&gt;</code></td></tr>
+<tr><td>M2</td><td>Resolución</td><td>¿A qué IP resuelve y quién gestiona correo/DNS?</td><td><code>dig &lt;dominio&gt; A/MX/TXT/NS +short</code></td></tr>
+<tr><td>M3</td><td>Certificados</td><td>¿Hay subdominios que nadie mencionó?</td><td><code>curl crt.sh/?q=%.&lt;dominio&gt;&amp;output=json</code></td></tr>
+<tr><td>M4</td><td>Vecindad</td><td>¿Es IP dedicada o compartida?</td><td>reverse IP lookup</td></tr>
+<tr><td>M5</td><td>Huella de app</td><td>¿Qué stack corre y qué filtra en cabeceras?</td><td><code>curl -I -s -L https://&lt;dominio&gt;</code></td></tr>
+<tr><td>M6</td><td>Puertos núcleo</td><td>¿Qué más escucha además de 443?</td><td><code>nmap -sS -sV -Pn -p 80,443,21,22,8080,8443 &lt;ip&gt;</code></td></tr>
+</table></div>
+<p><strong>Dos principios transversales:</strong> <em>Sigilo</em> — todo M1-M6 es pasivo o de huella mínima, sin escaneos agresivos ni fuzzing salvo justificación puntual. <em>Trazabilidad</em> — ningún dato se documenta sin decir de dónde sale y con qué otro dato se conecta; un hallazgo no se cierra hasta tener evidencia directa, no solo una coincidencia (así se trató la relación axezone-demo.com/reservaspro-ejemplo.com, confirmada solo tras verla en código y en el diagrama de arquitectura a la vez).</p>
+
+<h2 id="s5-2">5. Arquitectura identificada</h2>
+<div class="mermaid">
+flowchart TD
+  U["Usuario / navegador"] -->|HTTPS 443| LB["OVH IPLB<br/>Load Balancer · AS16276"]
+  LB --> APP["axezone-demo.com<br/>Apache + PHP 8.3 + WordPress<br/>203.0.113.10"]
+  APP -->|widget checkout| AION["ReservaPro / reservaspro-ejemplo.com<br/>IONOS · 192.0.2.80<br/>5 de 6 locales"]
+  APP -->|proveedor distinto, sin migrar| FH["Proveedor B<br/>grupo internacional de reservas, EE.UU.<br/>Local 6 — REC-12"]
+  APP -->|tracking antes de consentimiento| TRACK["Meta Pixel · TikTok Pixel<br/>Metricool · PushOwl<br/>REC-10 / 13 / 19"]
+  APP -.->|DNS legacy, 3 subdom. rechazados| LEGACY["203.0.113.20 — OVH FR<br/>REC-14"]
+  APP -.->|DNS huérfano, sin servicio| DANGLE["198.51.100.50 — AWS Irlanda<br/>calendar.axezone-demo.com — REC-15"]
+  style DANGLE fill:#f8e4e1,stroke:#c24a3f,color:#8c231c
+  style LEGACY fill:#faeed3,stroke:#b9842b,color:#7a4e07
+</div>
+<p class="small">Diagrama construido a partir de la evidencia documentada en el inventario de §5.1 (whois, <code>dig</code>, <code>curl</code>, <code>nmap</code> y crt.sh/dnsdumpster/hackertarget) — no es un esquema teórico, cada nodo y relación tiene su comando y resultado trazables. Se omiten por claridad los activos sin hallazgo asociado (<code>www.axezone-demo.com</code>, que resuelve correctamente en la misma IP legacy; Google Tag Assistant; los dos candidatos descartados, <code>dominio-candidato-ejemplo.com</code> y <code>vecino-hosting-ejemplo.es</code>) — están todos en la tabla de §5.1. Un único WordPress sirve a 6 locales y delega reservas a dos proveedores distintos — esa falta de uniformidad es la causa confirmada del fallo de reserva en el Local 6 (REC-12).</p>
+
+<h3>5.1 Inventario de activos, dominios e IPs</h3>
+<p>Todos los dominios, subdominios e IPs que han aparecido durante el recon, con su relación con el objetivo y la evidencia que la sostiene — es la tabla que conecta los hallazgos individuales entre sí en vez de dejarlos como piezas sueltas.</p>
+<div class="scroll"><table>
+<tr><th>Activo</th><th>Tipo / relación</th><th>Evidencia de la relación</th><th>Datos que maneja</th><th>Criticidad</th><th>Ref.</th></tr>
+<tr><td><code>axezone-demo.com</code><br><code>203.0.113.10</code></td><td>Infraestructura propia (apex)</td><td>M1/M2 — whois OVH SAS, <code>dig A</code></td><td>CMS WordPress; sin PII directa (reservas delegadas a terceros)</td><td><span class="sev sev-alto">Alta</span> — núcleo del negocio digital</td><td>REC-01…08, 16, 18</td></tr>
+<tr><td><code>www.axezone-demo.com</code><br>→ <code>203.0.113.20</code></td><td>Alias del apex, en IP legacy/CDN</td><td><code>dig A</code> + <code>curl -IL</code>: 301→301→200, cadena correcta</td><td>Sirve la web real; sin PII propia</td><td><span class="sev sev-bajo">Baja</span></td><td>REC-14</td></tr>
+<tr><td>3 subdominios de ciudad<br>(*.axezone-demo.com) → <code>203.0.113.20</code></td><td>Infraestructura propia huérfana (parcial)</td><td>dnsdumpster + hackertarget; <code>curl -I</code> → 520 CDN</td><td>Ninguno activo — CDN rechaza el hostname</td><td><span class="sev sev-bajo">Baja</span> — higiene de DNS</td><td>REC-14, REC-14b</td></tr>
+<tr><td><code>calendar.axezone-demo.com</code><br>→ <code>198.51.100.50</code></td><td>Infraestructura propia huérfana</td><td><code>dig A</code> + whois AWS; <code>nmap</code> 6 puertos filtered</td><td>Desconocido — sin servicio respondiendo</td><td><span class="sev sev-alto">Media-Alta</span> — CVSS 8.2 si se confirma huérfano</td><td>REC-15</td></tr>
+<tr><td><code>reservaspro-ejemplo.com</code> / <code>calendar.*</code><br><code>192.0.2.80</code></td><td>Proveedor de reservas SaaS (ReservaPro) — tercero, autorizado por el tutor para recon</td><td><code>grep</code> código fuente + M1-M6 completo (REC-17)</td><td><strong>PII de clientes</strong>: nombre, email, teléfono (5 de 6 locales)</td><td><span class="sev sev-alto">Alta</span> — procesa datos de clientes finales</td><td>REC-09, REC-11, REC-17</td></tr>
+<tr><td><code>proveedorb-ejemplo.com</code></td><td>Proveedor de reservas SaaS — tercero, grupo internacional de reservas (EE.UU.)</td><td><code>grep</code> de código en la página del Local 6</td><td><strong>PII de clientes</strong> del Local 6 + transferencia internacional</td><td><span class="sev sev-alto">Alta</span> — PII + transferencia fuera UE</td><td>REC-12</td></tr>
+<tr><td>Metricool, Meta Pixel, TikTok Pixel, Google Tag Assistant, PushOwl</td><td>Terceros de analítica/marketing — scripts de cliente</td><td>DevTools (Network, Application → Cookies/Local Storage)</td><td>Cookies e identificadores de tracking</td><td><span class="sev sev-medio">Media</span> — infracción confirmada en 2 de 5 (REC-10/13)</td><td>REC-09, REC-10, REC-13, REC-19</td></tr>
+<tr><td><code>dominio-candidato-ejemplo.com</code></td><td>Candidato investigado y descartado</td><td>whois/dig/crt.sh/grep — ningún dato coincide con el objetivo</td><td>N/A — sin vínculo técnico</td><td><span class="sev sev-bajo">N/A</span> — cerrado</td><td>REC-11</td></tr>
+<tr><td><code>vecino-hosting-ejemplo.es</code></td><td>Vecino de hosting de reservaspro-ejemplo.com, sin relación con el objetivo</td><td>M4 reverse IP sobre 192.0.2.80</td><td>N/A — solo evidencia de multi-tenencia</td><td><span class="sev sev-bajo">N/A</span> — no es activo del objetivo</td><td>REC-17</td></tr>
+</table></div>
+
+<h2 id="s5-3">6. Desarrollo del reconocimiento</h2>
+<p>M1-M6 sobre el objetivo no dieron sorpresas por sí solos: OVH como registrador y hosting (M1/M2), IP compartida con cientos de dominios ajenos (M4), Apache+PHP 8.3+WordPress (M5), y en M6 dos puertos sin identificar (8080/8443) más un FTP atípico. Se cerraron con comandos igualmente pasivos: 21 y 8080 completan el handshake TCP pero no entregan banner — <code>tcpwrapped</code>, puerto protegido, no servicio roto (REC-07); y el servidor que respondía (OpenResty) era el balanceador IPLB de OVH, con Apache real detrás (REC-08).</p>
+<p>El encargo solo daba el dominio y una pista oral: "gestor reservapro". Localizar la integración llevó pasos en falso que se documentan por ser parte del método: un dominio de memoria sin verificar, descartado por falta de evidencia; dos candidatos plausibles entre los dominios externos de la home (<code>fh-kit.com</code>, <code>cdn.landbot.io</code>) resultaron ser un kit de botones y un chatbot. Un <code>grep -i "reservapro"</code> sobre la home no dio nada; repetido sobre una página de ubicación (<code>/ubicacion/local-1/</code>) sí reveló <code>reservaspro-ejemplo.com</code> — el dato vivía en la página de local, no en la home. <code>whois</code>/<code>dig</code> confirmaron 192.0.2.80 (Arsys/IONOS), sin relación de infraestructura con OVH salvo la integración funcional (REC-09).</p>
+<p>Más adelante se confirmó que <code>dominio-candidato-ejemplo.com</code> existe de verdad y coincide en hosting (IONOS) con reservaspro-ejemplo.com — duda razonable de si era el mismo proveedor. Registrador, nameservers, IP, ASN y referencias en código no coinciden en nada salvo el hosting compartido: insuficiente para establecer relación (REC-11). Confirmar negativos es tan parte del método como confirmar positivos.</p>
+<p>Probando el sitio como usuario real se obtuvieron dos hallazgos que ningún comando habría dado por sí solo: "Powered by ReservaPro" visible en el Local 4 (confirma REC-09, invisible por curl porque lo pinta JavaScript en runtime) y un error real al reservar en el Local 6. Repetir el <code>grep</code> de ReservaPro sobre la página del Local 6 dio vacío; sin filtrar apareció Proveedor B en su lugar (REC-12) — se completó entonces la tabla de los 6 locales en vez de asumir homogeneidad.</p>
+<p>Con DevTools en incógnito, sin tocar el banner de consentimiento, se amplió el inventario de terceros del lado del cliente: TikTok Pixel y Google Tag Assistant (REC-13), y luego PushOwl en Local Storage (REC-19). La cookie <code>_fbp</code> de Meta ya se había visto por curl, pero solo se dio por confirmada al cruzarla con la sesión de navegador real. Repitiendo <code>curl -IL</code> sobre toda la redirección, desde otra máquina, se vio <code>set-cookie: _fbp</code> con un valor nuevo en cada salto — fija el mecanismo real como la cabecera HTTP del servidor (plugin PixelYourSite), no solo JavaScript, misma causa raíz para TikTok vía <code>last_pys_landing_page</code>.</p>
+<p>M3 (crt.sh) solo devolvió el apex en la primera pasada. Cruzando dos fuentes pasivas adicionales (dnsdumpster + hackertarget) aparecieron 3 alias de ciudad en una IP legacy de OVH que el CDN rechaza (520), y que <code>www</code> resuelve a esa misma IP legacy — la hipótesis de que repetía el problema no se sostuvo: <code>www</code> redirige correctamente porque sí sigue dado de alta (REC-14). El mismo patrón, a nivel de recurso cloud, apareció en <code>calendar.axezone-demo.com</code> → AWS Irlanda, sin servicio respondiendo en ningún puerto; sin poder distinguir por recon pasivo si está dado de baja o solo firewalled, se documenta la ambigüedad (REC-15).</p>
+<p>Por instrucción explícita del responsable del ejercicio, se amplió el alcance a reservaspro-ejemplo.com — fuera de eso no se investiga infraestructura de terceros sin autorización expresa. M1-M6 sobre el proveedor confirmó hosting compartido Plesk (<code>vecino-hosting-ejemplo.es</code> ajeno en la misma IP) y descartó, tras verificación directa, una huella heurística de nmap (Go-IPFS/InfluxDB): la respuesta real es un 404 mínimo correctamente configurado (REC-17). Solo M3 quedó sin resolver: crt.sh devolvió <code>502 Bad Gateway</code> en dos intentos reales — incidencia del servicio, no de la metodología.</p>
+<p>Desde una máquina con salida de red directa se amplió el escaneo del apex más allá de M6 (top-1000), encontrando 4 puertos adicionales. Repetido 4 veces, el estado de 113/135/3306 fluctúa entre escaneos — hipótesis: un escaneo más agresivo activa más bloqueo (posible IDS/IPS). En los cuatro, 3306 nunca respondió como MySQL real, solo <code>tcpwrapped</code> o <code>filtered</code> (REC-16). Desde la misma máquina se completó un escaneo UDP real (top-20 y top-200): todos los puertos <code>open|filtered</code>, sin poder confirmar ni descartar servicios reales (REC-18). Un primer intento de UDP lanzado desde el propio entorno de trabajo se descartó: dio la misma huella contra IPs distintas y contra una IP de prueba no enrutable (TEST-NET-3), confirmando que esa salida de red está interceptada.</p>
+
+<h2 id="s5-4">7. Hallazgos técnicos</h2>
+<p class="small">CVSS 3.1 cuando aplica. La columna "Severidad" de la Parte I es una valoración contextual del equipo: en fugas de información puras sin vector de explotación demostrado (REC-01/02/05/06) se etiquetan por debajo de su rango CVSS oficial porque no se verificó ningún paso adicional que las convierta en acceso real.</p>
+
+<div class="fiche">
+<h3>REC-15 · DNS huérfano en calendar.axezone-demo.com → AWS Irlanda</h3>
+<p><span class="sev sev-alto">Alto</span> CWE-706 · CVSS 3.1: <strong>8.2</strong> (<code>AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N</code>)</p>
+<p><strong>Evidencia:</strong> <code>dig calendar.axezone-demo.com A +short</code> → <code>198.51.100.50</code>, whois confirma Amazon (AWS, eu-west-1). <code>curl -I</code> en 80 y 443 → timeout. <code>nmap -sS -sV -Pn -p 80,443,21,22,8080,8443</code> → los 6 puertos <em>filtered</em>, sin fingerprint de servicio.</p>
+<pre>$ dig calendar.axezone-demo.com A +short
+198.51.100.50
+
+$ whois 198.51.100.50 | grep -iE "orgname|netname|country"
+OrgName:    Amazon Technologies Inc.
+NetName:    AT-88-Z
+Country:    US  (región de servicio: eu-west-1, Irlanda)
+
+$ curl -I --connect-timeout 5 https://calendar.axezone-demo.com
+curl: (28) Connection timed out after 5000 milliseconds
+
+$ nmap -sS -sV -Pn -p 80,443,21,22,8080,8443 198.51.100.50
+PORT     STATE    SERVICE
+21/tcp   filtered ftp
+22/tcp   filtered ssh
+80/tcp   filtered http
+443/tcp  filtered https
+8080/tcp filtered http-proxy
+8443/tcp filtered https-alt</pre>
+<p><strong>Interpretación:</strong> "filtered" en los 6 puertos es compatible con dos escenarios que el recon pasivo no distingue: un recurso realmente huérfano (el borde de AWS descarta tráfico a una IP no asignada) o un recurso activo detrás de un security group nuevo que bloquea todo por defecto. Confirmarlo exigiría intentar reclamar la IP — fuera del alcance autorizado. En cualquier caso, el registro DNS sigue invitando a un cliente a conectarse a algo que no responde: higiene de DNS confirmada como mínimo.</p>
+<p><strong>Riesgo:</strong> si se confirmara el takeover (por el propietario, no por este equipo), un atacante podría servir contenido falso con apariencia legítima bajo el dominio — phishing, robo de credenciales, daño reputacional.</p>
+<p><strong>Remediación:</strong> el propietario debe eliminar el registro DNS si el servicio ya no existe, o reprovisionar el recurso en AWS. Acción de higiene de DNS más urgente del informe.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-10 / REC-13 · Cookies de rastreo antes de consentimiento (Meta, TikTok)</h3>
+<p><span class="sev sev-medio">Medio</span> · CVSS no aplica (cumplimiento, no vulnerabilidad técnica) — LSSI-CE Art. 22</p>
+<p><strong>Evidencia:</strong> <code>curl -I -s -L https://axezone-demo.com</code> ya muestra <code>set-cookie: _fbp=...</code> en la primera respuesta del servidor. Confirmado en navegador real (incógnito, sin tocar el banner): <code>_fbp</code> y <code>_ttp</code> presentes en Application → Cookies. Dos trazas de <code>curl -IL</code> independientes, desde máquinas distintas, muestran <code>set-cookie: _fbp</code> con un valor nuevo en <strong>cada</strong> salto de la redirección (301→301→200) — el mecanismo es la cabecera HTTP del servidor (plugin PixelYourSite), no solo JavaScript del píxel. La cookie <code>last_pys_landing_page</code>, encontrada junto a <code>_ttp</code>, conecta ambos hallazgos a la misma causa raíz.</p>
+<pre>$ curl -IL www.axezone-demo.com
+HTTP/1.1 301 Moved Permanently          (http → https)
+set-cookie: _fbp=fb.1.1790847072497.508271741; domain=axezone-demo.com; Secure
+
+HTTP/2 301                              (www → apex)
+set-cookie: _fbp=fb.1.1790847072611.1258260755; domain=axezone-demo.com; Secure
+
+HTTP/2 200                              (respuesta final)
+set-cookie: _fbp=fb.1.1790847072743.911259073; domain=axezone-demo.com; Secure
+content-type: text/html; charset=UTF-8</pre>
+<p class="small">Application → Cookies (navegador, sin tocar el banner de consentimiento): <code>_fbp</code> (dominio <code>.axezone-demo.com</code>) y <code>_ttp</code> (dominio <code>.tiktok.com</code>) presentes; <code>analytics.tiktok.com/i18n/pixel/events.js</code> cargado 2 veces en Network antes de interactuar con el banner.</p>
+<p><strong>Riesgo:</strong> cookies de marketing sin base de consentimiento válida — la infracción que la AEPD sanciona con más frecuencia en España.</p>
+<p><strong>Remediación:</strong> configurar el CMP o el propio plugin para condicionar la emisión de <code>Set-Cookie</code> a la aceptación previa de la categoría "marketing/publicidad".</p>
+</div>
+
+<div class="fiche">
+<h3>REC-09 · Dependencia de ReservaPro/reservaspro-ejemplo.com y Metricool</h3>
+<p><span class="sev sev-medio">Medio (cumplimiento)</span> · RGPD Art. 28</p>
+<p><strong>Evidencia:</strong> comentario de desarrollo sin minificar en el HTML; <code>data-integration-reservapro-url=https://local1.reservaspro-ejemplo.com</code> en páginas de ubicación; widget servido desde <code>calendar.reservaspro-ejemplo.com</code>, con Stripe.js cargado junto al checkout. <code>reservaspro-ejemplo.com</code> y sus subdominios de cliente resuelven a <code>192.0.2.80</code> (Arsys/IONOS, AS8560) — proveedor sin relación de infraestructura con OVH. Los 5 locales que usan ReservaPro están mapeados por UUID y subdominio propio en la plataforma del proveedor.</p>
+<pre>$ curl -s https://axezone-demo.com/ubicacion/local-1/ | grep -i "reservapro-"
+data-integration-reservapro-url="https://local1.reservaspro-ejemplo.com"
+
+$ dig calendar.reservaspro-ejemplo.com A +short
+192.0.2.80
+
+$ whois 192.0.2.80 | grep -iE "netname|org"
+NetName:   AS8560 (ahora IONOS SE, antes Arsys)</pre>
+<div class="scroll"><table>
+<tr><th>Local</th><th>UUID ReservaPro</th><th>Subdominio de reservas</th></tr>
+<tr><td>Local 1 (Madrid)</td><td>—</td><td><code>local1.reservaspro-ejemplo.com</code></td></tr>
+<tr><td>Local 2 (Madrid)</td><td>—</td><td><code>local2.reservaspro-ejemplo.com</code></td></tr>
+<tr><td>Local 3 (Madrid)</td><td>—</td><td><code>local3.reservaspro-ejemplo.com</code> (orden invertido)</td></tr>
+<tr><td>Local 4 (Valencia)</td><td><code>00000000-0000-4000-8000-000000000000</code></td><td><code>local4.reservaspro-ejemplo.com</code></td></tr>
+<tr><td>Local 5 (Murcia)</td><td>—</td><td><code>local5.reservaspro-ejemplo.com</code></td></tr>
+<tr><td>Local 6 (Tarragona)</td><td colspan="2">Sin integración ReservaPro — usa Proveedor B, ver REC-12</td></tr>
+</table></div>
+<p><strong>Riesgo:</strong> cadena de suministro — un fallo del proveedor afecta a axezone-demo.com igual que si fuera propio; todos los clientes del proveedor comparten un único host (punto único de fallo fuera del control del cliente auditado).</p>
+<p><strong>Dato positivo (indicio, no confirmación):</strong> la presencia de Stripe.js sugiere tokenización del pago en el cliente — los datos de tarjeta no tocarían el servidor — pero no se interceptó el flujo real de pago para confirmarlo.</p>
+<p><strong>Remediación:</strong> limpiar comentarios de desarrollo; formalizar DPA con ReservaPro y Metricool (RGPD Art. 28).</p>
+</div>
+
+<div class="fiche">
+<h3>REC-12 · Fragmentación de proveedores: ReservaPro vs Proveedor B (Local 6)</h3>
+<p><span class="sev sev-medio">Bajo (disponibilidad) / Medio (cumplimiento)</span></p>
+<p><strong>Evidencia:</strong> <code>grep -i "reservapro-uuid\|reservapro-url"</code> sobre la página del Local 6 no devuelve nada; el HTML contiene en su lugar <code>&lt;!-- Proveedor B plugin activated --&gt;</code> y su script de embed.</p>
+<p><strong>Interpretación:</strong> El Local 6 usa Proveedor B (grupo internacional de reservas, EE.UU.) en vez de ReservaPro. Hipótesis razonable de migración incompleta a partir del patrón (5 de 6 locales ya en ReservaPro) — sin fecha confirmada, no es un hecho fechado.</p>
+<p><strong>Riesgo:</strong> (a) disponibilidad — reservas perdidas en el Local 6, ya confirmado; (b) transferencia internacional de datos a EE.UU. sin DPA ni garantías verificadas (RGPD Art. 44-49, mismo techo de sanción que REC-09); (c) gestión de configuración manual e inconsistente por local.</p>
+<p><strong>Remediación:</strong> completar la migración a ReservaPro o revertir conscientemente; si Proveedor B sigue activo, exigirle DPA/garantías de transferencia internacional.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-14 · Subdominios legacy no detectados por M3</h3>
+<p><span class="sev sev-bajo">Bajo</span> CWE-200 · Gap de cobertura de M3, corregido</p>
+<p><strong>Evidencia:</strong> dnsdumpster + hackertarget (segunda fuente) revelan 3 subdominios de ciudad en <code>203.0.113.20</code>: <code>curl -I</code> devuelve <code>HTTP/1.1 520 Domain not allowed on CDN</code> (Varnish, OVH) en los tres. <code>www.axezone-demo.com</code> resuelve a la misma IP pero <code>curl -IL</code> muestra una cadena correcta 301→301→200 — ese hostname sí está dado de alta en el CDN.</p>
+<pre>$ curl -I https://local-ejemplo.axezone-demo.com
+HTTP/1.1 520 Domain not allowed on CDN
+server: Varnish
+x-cdn-pop: rbx
+
+$ curl -IL www.axezone-demo.com
+HTTP/1.1 301 Moved Permanently      (http → https)
+HTTP/2 301                          (www → apex)
+HTTP/2 200                          (OK — web real, server: Apache)</pre>
+<p><strong>Riesgo:</strong> higiene de DNS en los 3 subdominios de ciudad; sin impacto en la experiencia real del cliente (verificado expresamente para <code>www</code>).</p>
+<p><strong>Remediación:</strong> dar de baja el DNS de los 3 subdominios; para <code>www</code>, reapuntar directamente al apex actual por higiene (no hay urgencia funcional). A partir de ahora, M3 se complementa siempre con al menos dos fuentes pasivas distintas.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-19 · PushOwl — tercero no inventariado</h3>
+<p><span class="sev sev-bajo">Informativo</span> · LSSI-CE Art. 22 si se confirma el timing</p>
+<p><strong>Evidencia:</strong> <code>localStorage</code> contiene <code>pushowl_visitor_token</code> (UUID de visitante persistente) en la misma sesión de incógnito usada para REC-10/13, sin tocar el banner de consentimiento.</p>
+<p><strong>Riesgo:</strong> un identificador persistente en localStorage es funcionalmente una cookie de tracking a efectos de LSSI-CE Art. 22. A diferencia de REC-10/13, aquí no se capturó explícitamente el timing antes/después del banner.</p>
+<p><strong>Remediación:</strong> añadir al inventario de terceros con su DPA; verificar el timing de consentimiento con el mismo método usado en REC-10/13.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-05 · Sin cabeceras de seguridad HTTP</h3>
+<p><span class="sev sev-medio">Bajo-Medio</span> CWE-693 · CVSS 3.1: <strong>5.4</strong> (<code>AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N</code>)</p>
+<p><strong>Evidencia:</strong> ausentes <code>Strict-Transport-Security</code>, <code>Content-Security-Policy</code>, <code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>. El certificado TLS es correcto (SAN solo cubre el apex, sin wildcard). <code>curl -I -X OPTIONS</code> no distingue el método de un GET normal.</p>
+<p><strong>Riesgo:</strong> downgrade a HTTP en la primera visita, clickjacking, MIME-sniffing indebido.</p>
+<p><strong>Remediación:</strong> añadir las cuatro cabeceras a nivel de servidor o vía plugin de seguridad WordPress.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-02 · xmlrpc.php accesible</h3>
+<p><span class="sev sev-medio">Medio-Bajo</span> CWE-16 · CVSS 3.1: <strong>5.3</strong> (<code>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L</code>)</p>
+<p><strong>Evidencia:</strong> cabecera <code>X-Pingback</code> apunta a <code>/xmlrpc.php</code>.</p>
+<p><strong>Riesgo:</strong> vector de fuerza bruta distribuida y amplificación pingback DDoS.</p>
+<p><strong>Remediación:</strong> deshabilitar si no hay integraciones que lo requieran, o restringir por IP/WAF.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-01 · Fuga de versión PHP/CMS</h3>
+<p><span class="sev sev-bajo">Bajo</span> CWE-200 · CVSS 3.1: <strong>5.3</strong> (<code>AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N</code>)</p>
+<p><strong>Evidencia:</strong> <code>X-Powered-By: PHP/8.3</code>; <code>wp-json</code> + <code>X-Pingback</code> → WordPress.</p>
+<p><strong>Remediación:</strong> <code>expose_php = Off</code>; <code>ServerTokens Prod</code>; ocultar versión de WP.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-06 · readme.html y meta generator exponen versiones de plugins</h3>
+<p><span class="sev sev-bajo">Bajo</span> CWE-200 · CVSS 3.1: <strong>5.3</strong></p>
+<p><strong>Evidencia:</strong> <code>/readme.html</code> accesible; meta generator revela WPML 4.9.7 y Site Kit 1.188.0; Yoast, Contact Form 7 y Really Simple Security confirmados por otras vías (sin versión visible para estos tres).</p>
+<p><strong>Cruce con CVE conocidos</strong> (NVD/Wordfence/Patchstack, consulta pasiva de versión frente a dato público — no explotación):</p>
+<div class="scroll"><table>
+<tr><th>Plugin</th><th>Versión</th><th>CVE de referencia</th><th>Resultado</th></tr>
+<tr><td>WPML</td><td>4.9.7</td><td>CVE-2024-6386 (RCE vía SSTI, CVSS 9.9, afecta ≤4.6.12)</td><td>No vulnerable — versión muy por encima del parche (4.6.13)</td></tr>
+<tr><td>Site Kit by Google</td><td>1.188.0</td><td>CVE-2026-62139 (CSRF, CVSS 4.3, afecta ≤1.186.0)</td><td>No vulnerable — parcheado en 1.187.0</td></tr>
+<tr><td>Really Simple Security</td><td>No confirmada</td><td>CVE-2024-10924 (bypass de autenticación con 2FA activo, CVSS 9.8 crítico, afecta 9.0.0-9.1.1.1)</td><td>No se puede descartar — sin visibilidad de versión no es posible confirmar ni excluir exposición a este CVE crítico</td></tr>
+</table></div>
+<p><strong>Remediación:</strong> eliminar/bloquear <code>readme.html</code>; suprimir meta generator; mantener plugins actualizados. Prioritario: confirmar versión real de Really Simple Security (acceso autorizado al admin o fingerprint adicional) dado el antecedente crítico del plugin.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-04 · DMARC en modo observación (p=none)</h3>
+<p><span class="sev sev-medio">Bajo-Medio</span></p>
+<p><strong>Evidencia:</strong> <code>_dmarc.axezone-demo.com TXT</code> → <code>v=DMARC1; p=none; rua=mailto:rua@dmarc-ejemplo.com</code>.</p>
+<p><strong>Riesgo:</strong> <code>p=none</code> solo reporta, no bloquea correo que falle SPF/DKIM — el dominio sigue siendo suplantable.</p>
+<p><strong>Remediación:</strong> monitorizar los reportes RUA y escalar a <code>p=quarantine</code> y luego <code>p=reject</code>.</p>
+</div>
+
+<div class="fiche">
+<h3>REC-16 · Puertos adicionales en el apex (113/135/587/3306)</h3>
+<p><span class="sev sev-bajo">Bajo</span> CWE-200 · 4 escaneos independientes</p>
+<p><strong>Evidencia:</strong> escaneo top-1000 inicial encuentra 4 puertos fuera del set M6. Confirmación dirigida (<code>-sV</code>) y dos repeticiones más muestran que el estado de 113/135/3306 fluctúa entre escaneos (hipótesis razonable del equipo: interferencia de IDS/IPS según la agresividad del escaneo). En los 4 escaneos, 3306 nunca respondió como un MySQL real abierto — solo <code>tcpwrapped</code> o <code>filtered</code>.</p>
+<p><strong>Remediación:</strong> cerrar 113 si no está en uso; nada que remediar en 587 (correo esperado) ni en 3306 (protegido en los 4 escaneos); monitorizar 135.</p>
+</div>
+
+<div class="fiche min">
+<h3>Hallazgos cerrados sin remediación pendiente</h3>
+<p><strong>REC-03</strong> — hosting compartido sin IP dedicada (cientos de dominios ajenos en 203.0.113.10); riesgo de vecindad aceptado, sin acción obligatoria. <strong>REC-07</strong> — puertos 21/8080 con TCP completo pero sin respuesta de aplicación (<code>tcpwrapped</code>): comportamiento esperado de un puerto protegido. <strong>REC-08</strong> — el servidor OpenResty visto en M5 es el balanceador IPLB de OVH, con Apache real detrás; el puerto 80 ya redirige a HTTPS vía Really Simple Security (pero sin HSTS posterior, ver REC-05). <strong>REC-11</strong> — <code>dominio-candidato-ejemplo.com</code> investigado (whois, dig, crt.sh, grep del código) y descartado: ningún dato técnico lo vincula a axezone-demo.com. <strong>REC-14b</strong> — el subdominio con errata "origial" no es un wildcard (un nombre aleatorio no resuelve), es un registro real y distinto. <strong>REC-17</strong> — M1-M6 sobre reservaspro-ejemplo.com cerrado salvo M3 (crt.sh devolvió 502 en dos intentos reales, incidencia del servicio); confirma hosting Plesk compartido con un dominio ajeno (<code>vecino-hosting-ejemplo.es</code>). <strong>REC-18</strong> — escaneo UDP real (top-20 y top-200) sobre el apex: todos los puertos <code>open|filtered</code>, sin poder confirmar ni descartar servicios UDP reales; cerrado como intento documentado.</p>
+</div>
+
+<h2 id="s5-5">8. Cobertura y cierre</h2>
+<div class="scroll"><table>
+<tr><th>Punto</th><th>Estado</th><th>Resultado</th></tr>
+<tr><td>M1-M6 sobre el objetivo</td><td><span class="sev st-ok">Hecho</span></td><td>OVH SAS, creado 2018-01-09 · A: 203.0.113.10 · MX: mx1-3.mail.ovh.net, SPF sin DMARC propio en primera pasada (luego confirmado p=none) · vecindad: cientos de dominios ajenos · Apache+PHP 8.3+WordPress · puertos: 21 open/tcpwrapped, 22 filtered, 80/443 open (OpenResty→Apache), 8080/8443 open/tcpwrapped</td></tr>
+<tr><td>Checks de cierre (FTP, 8080/8443, Apache vs OpenResty, forzado HTTPS)</td><td><span class="sev st-ok">Resuelto</span></td><td>Los 4 puntos abiertos por el escaneo de puertos quedan explicados → REC-07/REC-08</td></tr>
+<tr><td>M1-M6 sobre reservaspro-ejemplo.com (autorizado por el tutor)</td><td><span class="sev st-ok">Cerrado salvo M3</span></td><td>→ REC-17</td></tr>
+<tr><td>Ampliación top-1000 + UDP sobre el apex</td><td><span class="sev st-ok">Hecho</span></td><td>→ REC-16, REC-18</td></tr>
+<tr><td>Cobertura DNS cruzada (dnsdumpster + hackertarget)</td><td><span class="sev st-ok">Hecho</span></td><td>→ REC-14, REC-14b, REC-15</td></tr>
+<tr><td>DevTools / navegador real (cookies, consentimiento)</td><td><span class="sev st-ok">Hecho</span></td><td>→ REC-09, REC-10, REC-13, REC-19</td></tr>
+</table></div>
+<p class="small">Único cabo suelto del documento: el timing exacto de consentimiento de PushOwl (REC-19) — ver prioridades en la Parte I.</p>
+
+<h2 id="s5-6">9. Decisiones y límites de alcance</h2>
+<ul>
+<li><strong>Por qué no se fue más allá del recon:</strong> el alcance autorizado cubre solo reconocimiento pasivo y activo mínimo (M1-M6 + cierre). Enumerar usuarios de WordPress, intentar login o explotar un plugin desactualizado exigiría autorización explícita adicional.</li>
+<li><strong>Infraestructura de terceros:</strong> el alcance autorizado cubre por defecto únicamente axezone-demo.com. La ampliación a reservaspro-ejemplo.com (192.0.2.80) se realizó bajo instrucción expresa del responsable del ejercicio, documentada con carácter previo y sujeta a los mismos principios de sigilo y reconocimiento sin intrusión que rigen el resto del trabajo. Proveedor B y Metricool no cuentan con autorización equivalente y permanecen fuera de cualquier actividad activa.</li>
+<li><strong>Escaneo UDP descartado desde el propio entorno de trabajo:</strong> un intento inicial devolvió la misma huella idéntica contra dos IPs distintas y contra una IP de prueba no enrutable (TEST-NET-3, RFC 5737) — confirma que la salida de red de ese entorno está interceptada/proxificada, así que no se documentó como hallazgo. La fuente válida fue una máquina con salida de red directa (REC-18).</li>
+<li><strong>Qué haría falta con autorización adicional:</strong> confirmar la versión real de Really Simple Security (sin versión visible por vía pasiva — ver REC-06, CVE-2024-10924 crítico pendiente de descartar), enumeración de usuarios WordPress, e interceptar el flujo real de pago para confirmar el alcance de PCI-DSS (hoy solo hay un indicio por la presencia de Stripe.js, REC-09).</li>
+</ul>
+
+<div class="part" id="anexos">Anexos</div>
+
+<h2 id="sA">A. Marco normativo aplicable</h2>
+<div class="scroll"><table>
+<tr><th>Estándar / norma</th><th>Cómo aplica aquí</th></tr>
+<tr><td><strong>RGPD + LOPDGDD</strong></td><td>Art. 5.1.f y 32 — medidas técnicas (REC-01/02/05/06); Art. 28 — ReservaPro y Metricool como encargados de tratamiento (REC-09); Art. 44-49 — transferencia internacional vía Proveedor B (REC-12); Art. 33/34 — notificación de brecha en 72h si deriva en incidente. Autoridad competente: AEPD. Sanciones hasta 10M€ o 2% de facturación anual (techo legal, no predicción de sanción real).</td></tr>
+<tr><td><strong>LSSI-CE (Ley 34/2002)</strong></td><td>Art. 22 — consentimiento previo para cookies no esenciales. Confirmado para Meta (REC-10) y TikTok (REC-13); PushOwl pendiente de confirmar (REC-19). Sanción hasta 150.000€ por cookie — la infracción más sancionada por la AEPD.</td></tr>
+<tr><td><strong>ISO/IEC 27001:2022 (Anexo A)</strong></td><td>A.8.8 gestión de vulnerabilidades (REC-01/02/06); A.8.9 gestión de configuración (REC-05); A.5.19-5.22 relaciones con proveedores (REC-09); A.8.24 criptografía (TLS).</td></tr>
+<tr><td><strong>ENS (RD 311/2022) + guías CCN-STIC</strong></td><td>op.exp.4 mantenimiento de software; mp.com.2 confidencialidad en comunicaciones; op.ext recursos externos. Voluntario para una empresa privada, exigible si presta servicio a sector público.</td></tr>
+<tr><td><strong>MAGERIT v3</strong></td><td>Amenazas: E.19 fuga de información, E.21 falta de mantenimiento, A.5 suplantación de identidad, A.11 acceso no autorizado. Impacto medio, probabilidad media-baja con el nivel de exposición encontrado.</td></tr>
+<tr><td><strong>NIS2 (UE 2022/2555)</strong></td><td>No aplica por tamaño a un negocio de 6 locales salvo que supere los umbrales de mediana empresa; se cita como marco de tendencia, especialmente en gestión de riesgo de cadena de suministro (REC-09).</td></tr>
+<tr><td><strong>Metodología de referencia</strong></td><td>M1-M2/M6 se alinean con PTES (Footprinting) y NIST SP 800-115 (Discovery); M5/M6 con OWASP WSTG-INFO-02/08/09. MITRE ATT&amp;CK: TA0043 Reconnaissance — T1590 (M1/M2), T1596 (M3), T1592 (M5), T1595 (M6), T1591 (ubicaciones y terceros).</td></tr>
+</table></div>
+<div class="note">Esta sección es orientativa, con fines formativos y de GRC — no constituye asesoramiento legal.</div>
+
+<h2 id="sB">B. Glosario</h2>
+<div class="scroll"><table>
+<tr><th>Término</th><th>Significado</th></tr>
+<tr><td>REC-XX</td><td>Identificador correlativo de cada hallazgo de este informe (Reconocimiento nº XX). Numeración propia del ejercicio, no un estándar externo</td></tr>
+<tr><td>ASN</td><td>Autonomous System Number — identificador de la red/proveedor que anuncia un rango de IPs</td></tr>
+<tr><td>CT log</td><td>Certificate Transparency log — registro público de certificados TLS, usado para descubrir subdominios</td></tr>
+<tr><td>CVSS</td><td>Common Vulnerability Scoring System — puntuación de severidad de vulnerabilidades (0-10)</td></tr>
+<tr><td>CWE</td><td>Common Weakness Enumeration — catálogo de tipos de debilidad de software</td></tr>
+<tr><td>DNS huérfano (dangling DNS)</td><td>Registro DNS que apunta a un recurso ya dado de baja — riesgo si un tercero puede reclamarlo</td></tr>
+<tr><td>DMARC</td><td>Política anti-suplantación de correo</td></tr>
+<tr><td>DPA</td><td>Data Processing Agreement — contrato de encargado de tratamiento (RGPD Art. 28)</td></tr>
+<tr><td>HSTS</td><td>Cabecera que obliga al navegador a usar siempre HTTPS con ese dominio</td></tr>
+<tr><td>Subdomain takeover</td><td>Toma de control de un subdominio aprovechando un DNS huérfano que apunta a un recurso cloud liberado</td></tr>
+<tr><td>tcpwrapped</td><td>Handshake TCP completo sin respuesta de la aplicación — típico de un puerto protegido por ACL</td></tr>
+</table></div>
+
+<h2 id="sC">C. Referencias</h2>
+<ul>
+<li>PTES — Penetration Testing Execution Standard</li>
+<li>OWASP Web Security Testing Guide (WSTG) v4.2 y OWASP Top 10:2021</li>
+<li>MITRE ATT&amp;CK — Enterprise Matrix, TA0043 Reconnaissance</li>
+<li>FIRST — CVSS v3.1 Specification Document</li>
+<li>ISO/IEC 27001:2022 — Anexo A</li>
+<li>Real Decreto 311/2022 (Esquema Nacional de Seguridad) y guías CCN-STIC</li>
+<li>MAGERIT v3 (Ministerio de Hacienda y Función Pública)</li>
+<li>Reglamento (UE) 2016/679 (RGPD); LO 3/2018 (LOPDGDD); Ley 34/2002 (LSSI-CE)</li>
+<li>Directiva (UE) 2022/2555 (NIS2)</li>
+<li>Agencia Española de Protección de Datos (AEPD) — guías y resoluciones sobre cookies</li>
+</ul>
+<p class="ph">Informe formativo de reconocimiento (recon/OSINT) sobre un dominio real, con fines académicos. Las referencias a sanciones son orientativas y no constituyen asesoramiento legal.</p>
+
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<script>
+(function(){
+  try{
+    mermaid.initialize({startOnLoad:true, theme:'neutral', securityLevel:'loose',
+      themeVariables:{fontFamily:'"IBM Plex Sans",Arial,sans-serif', primaryColor:'#eef0ea', primaryBorderColor:'#132c4d', primaryTextColor:'#1b1b19', lineColor:'#2c4a73'}});
+  }catch(e){}
+})();
+(function(){
+  function classify(t){
+    t=t.trim();
+    if(/alto|alta/i.test(t)) return 'alto';
+    if(/medio|media/i.test(t)) return 'medio';
+    if(/\b(bajo|baja|informativo)\b/i.test(t)) return 'bajo';
+    return null;
+  }
+  document.querySelectorAll('td').forEach(function(td){
+    if(td.querySelector('table,ul,ol,pre')) return;
+    var t=td.textContent||'';
+    if(t.length>70) return;
+    var c=classify(t);
+    if(c) td.classList.add('sev-'+c);
+  });
+  document.querySelectorAll('span.sev').forEach(function(sp){
+    if(sp.classList.contains('st-ok')||sp.classList.contains('st-pend')) return;
+    if(sp.classList.contains('sev-alto')||sp.classList.contains('sev-medio')||sp.classList.contains('sev-bajo')) return;
+    var c=classify(sp.textContent||'');
+    if(c) sp.classList.add('sev-'+c);
+  });
+})();
+</script>
+</body>
+</html>

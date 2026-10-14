@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Auditoría de seguridad interna · MoldTek Industrial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f2;--fg:#1b1b19;--mut:#5c5a54;--line:#d9d6cd;--acc:#132c4d;--acc2:#2c4a73;--card:#fff;
+  --warn:#faf6ec;--ok:#eef0ea;--pend:#f7ecda;
+  --alto-bg:#f8e4e1;--alto-fg:#8c231c;--alto-bd:#c24a3f;
+  --medio-bg:#faeed3;--medio-fg:#7a4e07;--medio-bd:#b9842b;
+  --bajo-bg:#e9ede6;--bajo-fg:#3c5346;--bajo-bd:#6d8a76;
+  --sans:"IBM Plex Sans",Arial,Helvetica,sans-serif;--serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e4e2db;--mut:#a3a096;--line:#363831;--acc:#9fb6d6;--acc2:#7e97b8;--card:#1c1e22;--warn:#272a1f;--ok:#1d231d;--pend:#2b2415;--alto-bg:#301917;--alto-fg:#e3978c;--alto-bd:#8c3a30;--medio-bg:#2d2412;--medio-fg:#e0b96e;--medio-bd:#8a6a24;--bajo-bg:#1b241e;--bajo-fg:#9fc0ab;--bajo-bd:#4a6a56}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e4e2db;--mut:#a3a096;--line:#363831;--acc:#9fb6d6;--acc2:#7e97b8;--card:#1c1e22;--warn:#272a1f;--ok:#1d231d;--pend:#2b2415;--alto-bg:#301917;--alto-fg:#e3978c;--alto-bd:#8c3a30;--medio-bg:#2d2412;--medio-fg:#e0b96e;--medio-bd:#8a6a24;--bajo-bg:#1b241e;--bajo-fg:#9fc0ab;--bajo-bd:#4a6a56}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--serif)}
+main{max-width:860px;margin:0 auto;padding:36px 22px 72px}
+h1,h2,h3,.sub,.meta dt,th,.sev,.cover-label,.part{font-family:var(--sans)}
+h1{font-size:1.4rem;letter-spacing:.01em;margin:0 0 2px;color:var(--acc);font-weight:700}
+.sub{color:var(--mut);margin:0 0 22px;font-size:.93rem}
+.part{background:var(--acc);color:#fff;text-align:center;padding:12px;margin:34px 0 18px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;font-size:.95rem;border-radius:1px}
+h2{font-size:.86rem;margin:34px 0 12px;padding:8px 13px;background:var(--acc);color:#fff;letter-spacing:.05em;text-transform:uppercase;font-weight:600;border-radius:1px}
+h3{font-size:1rem;margin:22px 0 7px;font-weight:600;color:var(--acc);border-left:3px solid var(--acc2);padding-left:9px}
+p{margin:6px 0 10px}
+.note{background:var(--warn);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 14px;font-size:.86rem;color:var(--mut);font-family:var(--sans)}
+.cover-label{display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--alto-fg);border:1px solid var(--alto-bd);padding:2px 8px;border-radius:1px;margin-bottom:10px;font-weight:600}
+.meta{display:grid;grid-template-columns:max-content 1fr;gap:5px 16px;background:var(--card);border:1px solid var(--line);padding:13px 17px;font-size:.9rem;font-family:var(--sans)}
+.meta dt{font-weight:600;color:var(--acc)}.meta dd{margin:0;color:var(--mut)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.82rem;background:var(--card);font-family:var(--sans)}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top;word-break:break-word;overflow-wrap:anywhere}
+th{background:#eceae2;color:var(--acc);font-size:.7rem;letter-spacing:.03em;text-transform:uppercase;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) th{background:#22252a}}
+:root[data-theme="dark"] th{background:#22252a}
+.ph{color:var(--mut);font-style:italic}
+.fiche{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);padding:3px 16px 8px;margin:11px 0}
+.fiche.min{padding:3px 16px 6px}
+.fiche.tpl{border-left-color:var(--mut);border-style:dashed}
+.sev{display:inline-block;padding:2px 8px;border:1px solid var(--line);font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;font-weight:600;font-family:var(--sans);border-radius:1px}
+.st-ok{background:var(--ok)}.st-pend{background:var(--pend)}
+.sev-alto{background:var(--alto-bg);color:var(--alto-fg);border-color:var(--alto-bd)}
+.sev-medio{background:var(--medio-bg);color:var(--medio-fg);border-color:var(--medio-bd)}
+.sev-bajo{background:var(--bajo-bg);color:var(--bajo-fg);border-color:var(--bajo-bd)}
+code{font-family:ui-monospace,SFMono-Regular,"Courier New",monospace;font-size:.85em;background:color-mix(in srgb,var(--line) 35%,transparent);padding:0 3px;border-radius:2px;word-break:break-word;overflow-wrap:anywhere}
+pre{background:var(--card);border:1px solid var(--line);padding:10px;border-radius:2px;font-size:.76rem;font-family:ui-monospace,SFMono-Regular,"Courier New",monospace;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+pre code{background:none;padding:0;word-break:break-word}
+.mermaid{background:var(--card);border:1px solid var(--line);padding:14px;text-align:center}
+.mermaid svg{max-width:100%!important;height:auto!important}
+ol.steps li,ul li{margin:4px 0}
+a{color:var(--acc2)}
+h2{scroll-margin-top:14px}
+hr.rule{border:0;border-top:1px solid var(--line);margin:30px 0}
+.small{font-size:.86rem;color:var(--mut)}
+@page{size:A4;margin:16mm 14mm}
+@media print{
+  html,body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
+  main{max-width:100%;padding:0;margin:0}
+  a{color:var(--acc2)!important;text-decoration:none}
+  h2,h3{break-after:avoid}
+  .note,.meta,.fiche,pre{break-inside:avoid}
+  table{break-inside:auto}
+  tr{break-inside:avoid}
+  h1,h2,h3{break-inside:avoid}
+  .part{break-after:avoid}
+  .scroll{overflow-x:visible}
+  .mermaid{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<main>
+
+<div class="note" style="margin-bottom:14px"><strong>Nota de portafolio:</strong> este informe es una auditor&iacute;a real realizada con fines acad&eacute;micos. El nombre de la empresa y los nombres de usuario/equipo del personal han sido sustituidos por valores ficticios para proteger la identidad del cliente real y de las personas afectadas, conforme a la confidencialidad profesional y al RGPD. Las direcciones IP mostradas son privadas (RFC 1918, 192.168.1.0/24) y no identifican por s&iacute; solas ninguna organizaci&oacute;n. La metodolog&iacute;a, los hallazgos, su severidad y las correcciones propuestas son fieles al trabajo original.</div>
+<span class="cover-label">Confidencial</span>
+<h1>Auditoría de seguridad interna — MoldTek Industrial</h1>
+<p class="sub">Reconocimiento no intrusivo de red interna · MSA-Interno</p>
+
+<dl class="meta">
+<dt>Objetivo</dt><dd>Red interna de MoldTek Industrial, rango <code>192.168.1.0/24</code> (confirmado por evidencia propia, 92 hosts activos — ver §6)</dd>
+<dt>Modalidad</dt><dd>Reconocimiento interno no intrusivo (sin explotación, sin captura de tráfico, sin manipulación de protocolo)</dd>
+<dt>Punto de acceso</dt><dd>Acceso remoto por RDP a una máquina de pruebas Windows (<code>testclient</code>, usuario <code>rdp.prueba</code>) conectada por Ethernet al segmento objetivo</dd>
+<dt>Fecha de ejecución</dt><dd>6 de octubre de 2026</dd>
+<dt>Autorización</dt><dd>Ejercicio académico (práctica MSA) realizado bajo el mismo marco de autorización y alcance que el informe de reconocimiento externo de latabernademo.com</dd>
+<dt>Auditores</dt><dd>Xavier Margalef</dd>
+<dt>Versión del documento</dt><dd>1.0</dd>
+<dt>Clasificación</dt><dd>Informe de muestra de portafolio — datos del cliente real anonimizados</dd>
+</dl>
+
+<h3 style="margin-top:24px">Índice</h3>
+<ol>
+<li><a href="#pe">Parte I — Informe ejecutivo</a>
+  <ol>
+    <li><a href="#s2">Riesgo global y conclusión</a></li>
+    <li><a href="#s2b">Hallazgos, riesgo e impacto normativo</a></li>
+    <li><a href="#s2c">Prioridades de corrección</a></li>
+  </ol>
+</li>
+<li><a href="#s5">Parte II — Informe técnico</a>
+  <ol>
+    <li><a href="#s5-1">Metodología — MSA-Interno</a></li>
+    <li><a href="#s5-2">Topología de red identificada</a></li>
+    <li><a href="#s5-3">Desarrollo del reconocimiento</a></li>
+    <li><a href="#s5-4">Hallazgos técnicos</a></li>
+    <li><a href="#s5-5">Cobertura y cierre</a></li>
+    <li><a href="#s5-6">Decisiones y límites de alcance</a></li>
+  </ol>
+</li>
+<li><a href="#anexos">Anexos: normativa, glosario, referencias</a></li>
+</ol>
+
+<div class="part" id="pe">Parte I — Informe ejecutivo</div>
+
+<h2 id="s2">1. Riesgo global y conclusión</h2>
+<p><strong>Riesgo global: <span class="sev">Medio</span>.</strong> No hay vulnerabilidad crítica confirmada ni evidencia de explotación activa. El problema de fondo no es una única vulnerabilidad grave, sino la combinación de tres patrones que se repiten: credenciales de administración sin cifrar en al menos un dispositivo (impresora), infraestructura crítica (iDRAC, hipervisores, NAS) sin segmentar del resto de la red de usuario, y un servidor con CVE conocido sin parchear desde hace más de un año. Ninguno por separado es "Alto", pero juntos describen una red sin higiene de gestión de activos ni segmentación — el patrón de riesgo típico que precede a un incidente serio, no un hallazgo puntual.</p>
+
+<p><strong>Superficie de movimiento lateral:</strong> el hallazgo con más impacto estructural no es ninguno individual, sino su combinación. MAT-05 confirma que no existe segmentación entre los puestos de usuario y la infraestructura crítica (iDRAC, hipervisores ESXi, NAS); MAT-07 confirma que, además, el propio Controlador de Dominio expone su interfaz de administración remota (RDP) a ese mismo segmento. En la práctica, esto significa que el compromiso de un solo puesto de usuario corriente —por ejemplo vía phishing, aunque esa vía de entrada concreta no se evalúa en este ejercicio (ver §9)— tendría conectividad L3 directa tanto a la gestión fuera de banda de los servidores físicos como al propio DC, sin ningún salto de red intermedio que lo impida. La correlación MITRE ATT&CK de §7 detalla las técnicas concretas (T1021, T1021.001, T1210) a las que queda expuesta esta cadena.</p>
+
+<div class="scroll"><table>
+<tr><th>Dato</th><th>Valor</th></tr>
+<tr><td>Rango de red</td><td><code>192.168.1.0/24</code>, zona AD <code>local.internal</code></td></tr>
+<tr><td>Hosts activos</td><td>92 (confirmados por ARP, MI1)</td></tr>
+<tr><td>Hallazgo más grave</td><td>Credenciales de administración en texto claro — impresora Canon LBP710Cx (MAT-04)</td></tr>
+<tr><td>Protocolos obsoletos detectados</td><td>Ninguno activo en el servidor principal (FTP/Telnet cerrados); HTTP sin TLS en 2 de 7 hosts inspeccionados</td></tr>
+<tr><td>Activos críticos/frágiles identificados</td><td>4 hipervisores ESXi y 1 iDRAC compartiendo red plana con los puestos de usuario, sin VLAN de gestión (MAT-05)</td></tr>
+</table></div>
+
+<h2 id="s2b">2. Hallazgos, riesgo e impacto normativo</h2>
+<p class="small">Cada fila es un hallazgo del ejercicio, identificado como <strong>MAT-01 a MAT-07</strong> (numeración correlativa propia de este informe, en el orden en que se documentó — no es un identificador CVE ni un estándar externo). El detalle completo de cada uno, con comandos y evidencia, está en la Parte II, §7.</p>
+<div class="scroll"><table>
+<tr><th>ID</th><th>Hallazgo</th><th>Severidad</th><th>CVSS</th><th>Impacto si no se corrige</th><th>Normativa</th><th>Estado</th></tr>
+<tr><td>MAT-04</td><td>Credenciales de administración de impresora en texto claro (HTTP)</td><td><span class="sev sev-medio">Medio</span></td><td>5.9</td><td>Captura de credenciales de administración del dispositivo por cualquiera en el mismo segmento</td><td>ISO 27001 A.8.24; RGPD Art. 32</td><td>Abierto</td></tr>
+<tr><td>MAT-05</td><td>Sin segmentación entre puestos de usuario e interfaces de gestión crítica (iDRAC, ESXi, NAS)</td><td><span class="sev sev-medio">Medio</span></td><td>N/A</td><td>Un puesto de usuario comprometido da acceso directo a toda la infraestructura crítica</td><td>ISO 27001 A.8.22; ENS mp.com</td><td>Abierto</td></tr>
+<tr><td>MAT-06</td><td>Servidor Ubuntu/Apache 2.4.58 sin configurar, con CVE-2024-24795 sin parchear</td><td><span class="sev sev-medio">Medio</span></td><td>6.3</td><td>HTTP response splitting si se publica una app real sin actualizar antes; además indica un activo sin dueño claro</td><td>ISO 27001 A.8.8</td><td>Abierto</td></tr>
+<tr><td>MAT-07</td><td>RDP del Controlador de Dominio accesible desde la red general, sin restricción</td><td><span class="sev sev-medio">Medio</span></td><td>N/A</td><td>Amplía la superficie de ataque sobre el activo más crítico del dominio (credenciales e identidad)</td><td>ISO 27001 A.8.22; ENS mp.com</td><td>Abierto</td></tr>
+<tr><td>MAT-01</td><td>SMB expuesto en el servidor principal, versión sin confirmar</td><td><span class="sev sev-bajo">Bajo (a revisar)</span></td><td>N/A</td><td>Si fuera SMBv1, vector histórico de EternalBlue/WannaCry</td><td>ENS op.exp.4</td><td>Abierto</td></tr>
+<tr><td>MAT-03</td><td>Hipervisores ESXi con al menos 2 niveles de parcheo distintos en el mismo clúster</td><td><span class="sev sev-bajo">Bajo</span></td><td>N/A</td><td>El host menos actualizado del grupo concentra más CVE sin corregir</td><td>ISO 27001 A.8.8</td><td>Abierto</td></tr>
+<tr><td>MAT-02</td><td>Servidor IIS interno sin TLS (HTTP puro)</td><td><span class="sev sev-bajo">Bajo</span></td><td>N/A</td><td>Tráfico posterior a la autenticación sin cifrar (la autenticación en sí no es texto claro)</td><td>ISO 27001 A.8.24</td><td>Abierto</td></tr>
+</table></div>
+
+<h2 id="s2c">3. Prioridades de corrección</h2>
+<ol>
+<li><strong>Credenciales de impresora en claro</strong> (MAT-04) — habilitar HTTPS en la interfaz de gestión o restringirla a VLAN de administración. Coste bajo, cierra el hallazgo más concreto.</li>
+<li><strong>Segmentación de gestión crítica</strong> (MAT-05) — crear VLAN dedicada para iDRAC/ESXi/NAS. Es la corrección estructural con más impacto de todo el informe.</li>
+<li><strong>Restringir el acceso RDP al Controlador de Dominio</strong> (MAT-07) — limitarlo a un jump host o VLAN de administración; mismo principio que MAT-05, sobre el activo más crítico de todos.</li>
+<li><strong>Parchear o dar de baja el servidor Apache huérfano</strong> (MAT-06) — identificar propietario; si no está en uso, apagarlo.</li>
+<li><strong>Confirmar versión SMB del servidor principal</strong> (MAT-01) — una comprobación de 5 minutos con acceso administrativo.</li>
+<li><strong>Uniformizar el nivel de parche del clúster ESXi</strong> (MAT-03) — alinear todos los hosts al build más reciente confirmado.</li>
+</ol>
+
+<div class="part" id="s5">Parte II — Informe técnico</div>
+
+<h2 id="s5-1">4. Metodología — MSA-Interno</h2>
+<p>Adaptación del framework MSA-Recon a un escenario de red interna, manteniendo su misma lógica (fases enumeradas, cada hallazgo trazable a un comando y su salida). Referencias de base: PTES (fases de <em>Intelligence Gathering</em> y <em>Vulnerability Analysis</em>, sin entrar en <em>Exploitation</em>), NIST SP 800-115 (técnicas de identificación y análisis de objetivos, no intrusivas), ISO/IEC 27001:2022 Anexo A (A.8 gestión de activos, A.5.7 inteligencia de amenazas), ENS/CCN-STIC (gestión de comunicaciones internas y segmentación).</p>
+<div class="scroll"><table>
+<tr><th>Fase</th><th>Pregunta que responde</th><th>Técnica</th></tr>
+<tr><td>MI1</td><td>Topología</td><td>¿Qué equipos hay, qué IP y qué servicios exponen? — descubrimiento de host + <code>nmap -sS -sV -Pn -T2/-T3</code> por rango, banner grabbing HTTP/HTTPS</td></tr>
+<tr><td>MI2</td><td>DNS interno</td><td>¿Qué servidor DNS, y está mal configurado? — <code>nslookup</code>/<code>dig</code> contra el DNS interno; comprobación de recursión abierta y transferencia de zona (AXFR) como consulta de lectura</td></tr>
+<tr><td>MI3</td><td>DHCP</td><td>¿Qué servidor DHCP y hay señales de mala configuración? — observación pasiva de la concesión ya asignada (<code>ipconfig /all</code> / <code>ip a</code>), sin solicitar leases adicionales</td></tr>
+<tr><td>MI4</td><td>Protocolos obsoletos</td><td>¿Hay SMBv1, FTP, Telnet, HTTP sin TLS, TLS obsoleto? — detección de versión de protocolo/servicio vía banner, sin scripts de explotación</td></tr>
+<tr><td>MI5</td><td>Credenciales en tránsito inseguro</td><td>¿Algún servicio transmite credenciales en claro? — identificación del protocolo (FTP/Telnet/HTTP Basic sin TLS, SNMP con community string por defecto) por banner, sin captura de tráfico real</td></tr>
+<tr><td>MI6</td><td>Vulnerabilidades del escaneo</td><td>¿Qué CVE conocidos aplican a las versiones identificadas? — cruce de cada versión de software/firmware contra NVD/Wordfence/avisos del fabricante</td></tr>
+</table></div>
+<p><strong>Reglas de compromiso:</strong> timing conservador (<code>-T2</code>/<code>-T3</code>, nunca <code>-T4</code>/<code>-T5</code>); sin categorías NSE <code>vuln</code>/<code>exploit</code>/<code>brute</code>/<code>dos</code>; sin DHCP starvation, ARP spoofing/MITM, rogue DHCP/DNS ni deauth de Wi-Fi; sin captura de tráfico real ni intentos de acceso con credenciales (ni por defecto ni por fuerza bruta); sin explotación de ningún CVE identificado en MI6 — solo correlación documental; prioridad reducida de sondas sobre activos frágiles (equipo embebido, hipervisores sin soporte).</p>
+<p><strong>Dos principios transversales:</strong> <em>No intrusión</em> — todo MI1-MI6 es pasivo o de huella mínima, reforzado explícitamente por instrucción del cliente. <em>Trazabilidad</em> — ningún dato se documenta sin decir de dónde sale y con qué otro dato se conecta.</p>
+
+<h2 id="s5-2">5. Topología de red identificada</h2>
+<p>La red objetivo es un único segmento plano <code>192.168.1.0/24</code> (sin VLAN de gestión separada, ver MAT-05), con 92 hosts activos confirmados (evidencia completa en §6). La tabla siguiente recoge los activos sobre los que se realizó inspección de aplicación (HTTP/HTTPS); el resto del inventario, descubierto pero no inspeccionado a este nivel por decisión de alcance, se detalla en la última fila.</p>
+<div class="scroll"><table>
+<tr><th>Host</th><th>IP</th><th>Servicios / banner</th><th>Clasificación</th><th>Evidencia</th><th>Ref.</th></tr>
+<tr><td><code>testclient</code></td><td>192.168.1.161</td><td>Máquina de pruebas (punto de acceso del ejercicio)</td><td><span class="sev sev-bajo">Baja</span> — no es activo de MoldTek Industrial</td><td><code>ipconfig /all</code></td><td>—</td></tr>
+<tr><td>SERVIDOR (DC/DNS/DHCP)</td><td>192.168.1.100</td><td>DNS AD-integrado, IIS 10.0 (Digest/NTLM, sin TLS), SMB 445 abierto, FTP/Telnet cerrados, Kerberos 88/LDAP 389/LDAPS 636 abiertos (esperable en un DC), <strong>RDP 3389 abierto y accesible desde la red general</strong></td><td><span class="sev sev-alto">Alta</span> — infraestructura núcleo</td><td><code>nslookup</code>, <code>curl</code>, <code>Test-NetConnection</code></td><td>MI2/MI3/MI4, MAT-01/MAT-02/MAT-07</td></tr>
+<tr><td>Hipervisor ESXi (grupo A)</td><td>192.168.1.245, .254</td><td>ESXi Host Client HTML5, CSP <code>block-all-mixed-content</code></td><td><span class="sev sev-medio">Media</span> — hipervisor de producción</td><td><code>curl -i -k -L</code></td><td>MAT-03</td></tr>
+<tr><td>Hipervisor ESXi (grupo B)</td><td>192.168.1.249, .250</td><td>ESXi Host Client HTML5, CSP <code>upgrade-insecure-requests</code> (build distinto al grupo A)</td><td><span class="sev sev-medio">Media</span> — hipervisor de producción</td><td><code>curl -i -k -L</code></td><td>MAT-03</td></tr>
+<tr><td>Impresora Canon LBP710Cx</td><td>192.168.1.10</td><td>Interfaz de gestión HTTP (80→8000), login admin sin TLS</td><td><span class="sev sev-medio">Media</span> — credenciales de admin en claro</td><td><code>curl -i</code></td><td>MAT-04</td></tr>
+<tr><td>NAS QNAP</td><td>192.168.1.98</td><td>QTS (redirige a HTTPS correctamente), FTP cerrado, SMB y NFS abiertos (función normal del NAS)</td><td><span class="sev sev-bajo">Baja</span> — panel bien configurado; SMB/NFS refuerzan MAT-05</td><td><code>curl -i -k</code>, <code>Test-NetConnection</code></td><td>MAT-05</td></tr>
+<tr><td>iDRAC (gestión remota de servidor físico)</td><td>192.168.1.112</td><td>iDRAC9, HSTS+preload, CSP estricta</td><td><span class="sev sev-alto">Alta</span> — gestión fuera de banda de hardware</td><td><code>curl -i -k</code></td><td>MAT-05</td></tr>
+<tr><td>Servidor Ubuntu/Apache sin identificar</td><td>192.168.1.244</td><td>Apache 2.4.58, página por defecto sin configurar</td><td><span class="sev sev-medio">Media</span> — activo sin dueño claro, CVE sin parchear</td><td><code>curl -i</code></td><td>MAT-06</td></tr>
+<tr><td colspan="6" class="ph">[Resto de 85 hosts del inventario ARP (MI1): puestos de usuario, impresoras adicionales, teléfonos DECT, switches/APs — pendientes de inspección de aplicación si se amplía el ejercicio. Lista completa de IPs/MAC en la evidencia de MI1, §6.]</td></tr>
+</table></div>
+
+<h2 id="s5-3">6. Desarrollo del reconocimiento</h2>
+<p>El acceso a la red se realizó desde una máquina de pruebas Windows (<code>testclient</code>, <code>192.168.1.161</code>) conectada por Ethernet al segmento objetivo. Antes de lanzar ningún escaneo activo se documentó la propia posición en la red con <code>ipconfig /all</code>, confirmando el rango de trabajo (<code>192.168.1.0/24</code>), la puerta de enlace (<code>192.168.1.1</code>) y, de forma pasiva, el servidor DHCP/DNS interno (<code>192.168.1.100</code>, concesión de 15 días) — este dato pasivo cierra ya MI3 sin necesidad de ninguna prueba activa adicional.</p>
+<pre>C:\Users\rdp.prueba&gt;ipconfig /all
+
+Configuración IP de Windows
+
+   Nombre de host. . . . . . . . . : testclient
+   Sufijo DNS principal  . . . . . : local.internal
+   Tipo de nodo. . . . . . . . . . : híbrido
+   Enrutamiento IP habilitado. . . : no
+   Proxy WINS habilitado . . . . . : no
+   Lista de búsqueda de sufijos DNS: local.internal
+
+Adaptador de Ethernet Ethernet0:
+
+   Sufijo DNS específico para la conexión. . : local.internal
+   Descripción . . . . . . . . . . . . . . . : Intel(R) 82574L Gigabit Network Connection
+   Dirección física. . . . . . . . . . . . . : 00-50-56-8E-AB-36
+   DHCP habilitado . . . . . . . . . . . . . : sí
+   Configuración automática habilitada . . . : sí
+   Dirección IPv4. . . . . . . . . . . . . . : 192.168.1.161(Preferido)
+   Máscara de subred . . . . . . . . . . . . : 255.255.255.0
+   Concesión obtenida. . . . . . . . . . . . : martes, 6 de octubre de 2026 12:37:17
+   La concesión expira . . . . . . . . . . . : miércoles, 21 de octubre de 2026 12:37:17
+   Puerta de enlace predeterminada . . . . . : 192.168.1.1
+   Servidor DHCP . . . . . . . . . . . . . . : 192.168.1.100
+   Servidores DNS. . . . . . . . . . . . . . : 192.168.1.100
+   NetBIOS sobre TCP/IP. . . . . . . . . . . : habilitado</pre>
+<p>Para MI1 se descartó el barrido ICMP estándar: ni la puerta de enlace (<code>192.168.1.1</code>) ni los primeros hosts probados respondieron a <code>ping</code>, señal de que el Firewall de Windows bloquea ICMP por defecto en los equipos de la red (comportamiento de fábrica, no una mala configuración en sí). En su lugar se forzó la resolución a nivel de enlace con un ping a la dirección de broadcast (<code>192.168.1.255</code>) seguido de lectura de la caché ARP — la resolución ARP no depende de que el host responda a ICMP, así que revela el host igualmente:</p>
+<pre>C:\Users\rdp.prueba&gt;arp -a
+
+Interfaz: 192.168.1.161 --- 0xa
+  Dirección de Internet          Dirección física      Tipo
+  192.168.1.1           68-cc-ae-9b-ce-f4     dinámico
+  192.168.1.2           d8-b3-70-58-11-7d     dinámico
+  192.168.1.3           9c-05-d6-4c-70-75     dinámico
+  [...]
+  192.168.1.100         00-50-56-8e-8f-19     dinámico
+  [...]
+  192.168.1.254         d4-ae-52-85-92-81     dinámico</pre>
+<p><strong>92 hosts activos</strong> confirmados por tabla ARP (direcciones MAC distintas, tipo <code>dinámico</code>), sobre un rango <code>/24</code> de 254 direcciones posibles — cierra MI1. El dato es coherente por orden de magnitud con la cifra de referencia del contexto inicial (~109), la diferencia se atribuye a hosts apagados o inactivos en el momento del escaneo, no a un fallo de método.</p>
+
+<p>Sobre el servidor principal (<code>192.168.1.100</code>), además del SMB ya documentado (MAT-01), se comprobó el perfil de puertos propio de un Controlador de Dominio Active Directory, con <code>Test-NetConnection</code> puerto a puerto (no intrusivo: solo confirma si el puerto responde, sin autenticación ni envío de credenciales):</p>
+<pre>C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 88 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 389 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 636 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 3389 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 3268 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 139 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True</pre>
+<p>Kerberos (88), LDAP (389), LDAPS (636), Catálogo Global (3268) y NetBIOS (139) abiertos son normales y necesarios para el funcionamiento de un Controlador de Dominio — no constituyen hallazgo por sí mismos. El puerto 3389 (RDP) abierto y accesible desde el mismo segmento que los puestos de usuario sí se documenta como hallazgo (MAT-07), ver §7. Con esto se da por cerrado el perfil de puertos/servicios de AD relevante para este ejercicio.</p>
+
+<p><strong>Sobre vulnerabilidades conocidas del sistema operativo o de la configuración de acceso de los demás activos:</strong> más allá del CVE confirmado en el servidor Apache (MAT-06), no fue posible identificar de forma fiable ninguna otra vulnerabilidad específica (CVE) en el sistema operativo de SERVIDOR, el firmware del NAS, de la impresora o del iDRAC, porque ninguno de los banners obtenidos de forma no intrusiva revela una versión de build exacta — solo el producto/modelo (ver limitación ya señalada en MAT-03 para ESXi). Citar un CVE concreto sin esa versión exacta sería una suposición, no una verificación, y este informe ha evitado precisamente ese error (ver la corrección del dato "VMware ESX 4.0" en MAT-03). Como contraste, se comprobó puntualmente si el CVE-2021-20877 (XSS en interfaces de gestión de varias impresoras Canon imageCLASS/LBP) afecta al modelo aquí identificado: según el propio aviso del fabricante, el <strong>LBP710Cx no está entre los modelos afectados</strong> — se descarta explícitamente en vez de darlo por bueno o por malo sin comprobar.</p>
+
+<p>Como prueba adicional de MI4 (protocolos obsoletos → TLS obsoleto), se intentó forzar una negociación TLS 1.0 contra el NAS (<code>192.168.1.98</code>):</p>
+<pre>C:\Users\rdp.prueba&gt;curl.exe -i -k --tlsv1.0 --tls-max 1.0 https://192.168.1.98/
+curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_UNSUPPORTED_FUNCTION (0x80090302) - No se permite la función solicitada</pre>
+<p><strong>Resultado no concluyente:</strong> el error es del lado cliente (el stack TLS de la máquina de pruebas, Schannel, tiene TLS 1.0 deshabilitado a nivel de sistema operativo y rechaza negociarlo antes de que la petición llegue al servidor). No es posible, por tanto, determinar desde este puesto si el NAS acepta o rechaza TLS 1.0 — se documenta la limitación en lugar de inferir un resultado. Confirmarlo exigiría repetir la prueba desde un cliente con TLS 1.0 habilitado explícitamente, o revisar la configuración del NAS con acceso administrativo. Por el mismo motivo (backend Schannel, no OpenSSL), <code>curl.exe -vk</code> tampoco expone el certificado presentado por los hosts HTTPS inspeccionados (asunto/emisor/caducidad) — limitación de la herramienta disponible en este puesto, no un dato sobre el objetivo.</p>
+
+<p>Sobre posible exposición de correo: se comprobaron los puertos SMTP (25) y submission (587) en SERVIDOR — ambos <strong>cerrados</strong>, sin servidor de correo expuesto en el Controlador de Dominio. El puerto 443 también respondió abierto en SERVIDOR; no se pudo identificar el servicio exacto detrás (inestabilidad puntual de la consola del puesto de pruebas al intentar el <code>curl</code>) — dado que SERVIDOR ya aloja IIS en el puerto 80, lo más probable es que sea el mismo IIS en HTTPS, pero se deja constancia de que no se confirmó con evidencia propia, en vez de asumirlo.</p>
+
+<p>Por último, se amplió el perfil de puertos del NAS más allá de su panel web:</p>
+<pre>C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.98 -Port 21 -InformationLevel Quiet -WarningAction SilentlyContinue"
+False
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.98 -Port 445 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True
+
+C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.98 -Port 2049 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True</pre>
+<p>FTP (21) cerrado; SMB (445) y NFS (2049) abiertos. Esto no se clasifica como hallazgo nuevo — son los protocolos de compartición de ficheros que constituyen la función principal de un NAS, no una desviación de lo esperado. Sí refuerza MAT-05: un NAS con SMB/NFS activos en el mismo segmento plano que los puestos de usuario, sin VLAN de gestión, amplifica el impacto de esa falta de segmentación. Comprobar si existen recursos compartidos accesibles sin autenticación sería el siguiente paso lógico, pero queda fuera de alcance por la misma razón que la sesión SMB anónima en SERVIDOR (§9): es un intento de acceso, aunque no use contraseña real.</p>
+
+<h2 id="s5-4">7. Hallazgos técnicos</h2>
+<p class="small">CVSS 3.1 cuando aplica. Formato de ficha idéntico al usado en el informe de latabernademo.com.</p>
+<div class="fiche">
+<h3>MAT-01 · SMB expuesto en el servidor principal sin confirmar versión</h3>
+<p><span class="sev sev-bajo">Bajo (a revisar)</span> CWE-200</p>
+<p><strong>Evidencia:</strong> <code>Test-NetConnection -ComputerName 192.168.1.100 -Port 445</code> → <code>TcpTestSucceeded: True</code>.</p>
+<p><strong>Riesgo:</strong> puerto SMB accesible desde el segmento de usuarios; sin herramienta de huella de protocolo (Nmap) disponible en el puesto de pruebas no se puede confirmar a distancia si el servidor permite SMBv1 (vector histórico de EternalBlue/WannaCry) o solo SMBv2/v3.</p>
+<p><strong>Remediación:</strong> confirmar con acceso administrativo al propio servidor (<code>Get-SmbServerConfiguration</code>) y deshabilitar SMBv1 si estuviera activo.</p>
+</div>
+
+<div class="fiche">
+<h3>MAT-02 · Servidor IIS interno sin TLS (HTTP puro)</h3>
+<p><span class="sev sev-bajo">Bajo</span> CWE-319</p>
+<p><strong>Evidencia:</strong> <code>curl.exe -i http://192.168.1.100</code> →</p>
+<pre>HTTP/1.1 401 Unauthorized
+Server: Microsoft-IIS/10.0
+WWW-Authenticate: Digest qop="auth",algorithm=MD5-sess,nonce="...",charset=utf-8,realm="Digest"
+WWW-Authenticate: Negotiate
+WWW-Authenticate: NTLM</pre>
+<p><strong>Interpretación:</strong> la autenticación ofrecida es Digest/Negotiate/NTLM — ninguna transmite la contraseña en texto claro, así que esto <strong>no</strong> es un caso de credenciales expuestas (MI5). El problema es más limitado: todo el tráfico posterior a la autenticación (sesión, contenido) circula sin cifrar al no haber TLS en el puerto 80.</p>
+<p><strong>Remediación:</strong> forzar HTTPS con certificado válido (interno o de CA propia) y redirigir 80→443.</p>
+</div>
+<div class="fiche">
+<h3>MAT-03 · Hipervisor ESXi expuesto, versión exacta sin confirmar por vía pasiva</h3>
+<p><span class="sev sev-bajo">Informativo</span> CWE-200</p>
+<p><strong>Evidencia:</strong></p>
+<pre>$ curl.exe -i http://192.168.1.245
+HTTP/1.1 301 Moved Permanently
+Location: https://192.168.1.245/
+
+$ curl.exe -i -k https://192.168.1.245/
+HTTP/1.1 200 OK
+Content-Security-Policy: block-all-mixed-content
+Strict-Transport-Security: max-age=31536000
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+&lt;meta http-equiv="refresh" content="0;URL='/ui'"/&gt;
+
+$ curl.exe -i -k https://192.168.1.245/ui/
+HTTP/1.1 200 OK
+[...]
+&lt;html class="no-js vui-layout-html" ng-app="esxUiApp"&gt;
+[...]
+&lt;script src="bower_components/requirejs/require.js" data-main="scripts/main"&gt;&lt;/script&gt;</pre>
+<p><strong>Corrección respecto al contexto inicial del ejercicio:</strong> el host se había referenciado como "VMware ESX 4.0 Server httpd". La evidencia propia lo contradice: <code>/ui</code> con <code>esxUiApp</code> (Angular) y cabeceras de seguridad modernas (CSP, HSTS, X-Frame-Options) corresponden al <strong>ESXi Host Client HTML5</strong>, introducido en ESXi 6.0 (2015) — una versión EOL de 2010 nunca tuvo esta interfaz. El dato original estaba desactualizado o era incorrecto; el hipervisor real es considerablemente más moderno.</p>
+<p><strong>Pendiente:</strong> la versión de build exacta no se puede fijar por recon pasivo/no intrusivo (ESXi oculta el <code>Server</code> header desde 6.x); se necesitaría acceso administrativo (<code>vCenter</code> o SSH al host) para el cruce con CVE de MI6.</p>
+<p><strong>Los otros tres hosts con la misma huella original ("VMware ESX 4.0") se confirmaron también como ESXi Host Client moderno</strong>, pero con una diferencia relevante en la cabecera <code>Content-Security-Policy</code> que delata al menos dos niveles de parcheo distintos dentro del mismo clúster:</p>
+<div class="scroll"><table>
+<tr><th>Host</th><th>Content-Security-Policy</th><th>Grupo de build</th></tr>
+<tr><td>192.168.1.245</td><td><code>block-all-mixed-content</code></td><td>A</td></tr>
+<tr><td>192.168.1.254</td><td><code>block-all-mixed-content</code></td><td>A</td></tr>
+<tr><td>192.168.1.249</td><td><code>upgrade-insecure-requests</code></td><td>B</td></tr>
+<tr><td>192.168.1.250</td><td><code>upgrade-insecure-requests</code></td><td>B</td></tr>
+</table></div>
+<p><strong>Riesgo:</strong> un clúster de hipervisores con parches desiguales sugiere falta de gestión centralizada de actualizaciones (sin Lifecycle Manager o sin aplicarlo de forma uniforme) — el host con el build más antiguo del grupo es, por definición, el que concentra más CVE sin corregir.</p>
+<p><strong>Remediación:</strong> confirmar build exacto de cada host con acceso administrativo y uniformizar el nivel de parche en todo el clúster.</p>
+</div>
+<div class="fiche">
+<h3>MAT-04 · Credenciales de administración de impresora en texto claro (HTTP)</h3>
+<p><span class="sev sev-medio">Medio</span> CWE-319 / CWE-523 · CVSS 3.1: <strong>5.9</strong> (<code>AV:A/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N</code> — vector ajustado a acceso adyacente, ya que requiere estar en el mismo segmento de red)</p>
+<p><strong>Evidencia:</strong> impresora Canon LBP710Cx (<code>192.168.1.10</code>), interfaz de gestión remota.</p>
+<pre>$ curl.exe -i http://192.168.1.10/
+&lt;SCRIPT&gt;...top.document.location.href = "http://192.168.1.10:8000/rps/login.cgi";&lt;/SCRIPT&gt;
+
+$ curl.exe -i http://192.168.1.10:8000/rps/login.cgi
+HTTP/1.1 200 OK
+Server: Catwalk
+[...]
+&lt;form name="login" action="/login" method="post" autocomplete="off"&gt;
+  ...
+  &lt;input type="password" name="password" id="password" ... /&gt;
+  ...
+  &lt;input type="radio" id="radio1" name="login_mode" value="admin" /&gt;Modo de gestión</pre>
+<p><strong>Riesgo:</strong> el formulario de "Modo de gestión" (administrador) envía la contraseña por <code>POST</code> sin que exista HTTPS en ningún puerto del dispositivo (ni 80 ni 8000) — cualquiera en el mismo segmento de red con capacidad de capturar tráfico (fuera del alcance de este ejercicio, pero trivial de hacer) obtendría la contraseña de administración del dispositivo en claro.</p>
+<p><strong>Remediación:</strong> habilitar HTTPS en la interfaz de gestión del dispositivo (la mayoría de impresoras Canon de esta gama lo soportan con certificado autofirmado) y forzar la redirección; si no es posible, restringir el acceso a la interfaz de gestión a una VLAN de administración separada.</p>
+</div>
+<div class="fiche">
+<h3>MAT-05 · Sin segmentación de red entre puestos de usuario e interfaces de gestión crítica</h3>
+<p><span class="sev sev-medio">Medio</span> CWE-1008 (arquitectura de seguridad deficiente)</p>
+<p><strong>Evidencia:</strong> iDRAC (<code>192.168.1.112</code>), los 4 hipervisores ESXi (<code>.245/.249/.250/.254</code>) y la consola del NAS (<code>.98</code>) responden en el mismo rango <code>192.168.1.0/24</code> que los puestos de trabajo de usuario (<code>PC-Usuario06</code>, <code>PC-Usuario07</code>, <code>PC-Usuario02</code>...), confirmado por la tabla ARP de MI1 — no hay ninguna VLAN de gestión separada visible desde este punto de la red.</p>
+<p><strong>Riesgo:</strong> cada interfaz individual puede estar bien configurada (iDRAC y NAS, en este caso, tienen cabeceras de seguridad correctas), pero al no existir segmentación, cualquier equipo de usuario comprometido tiene conectividad L3 directa a la gestión fuera de banda de servidores físicos (iDRAC), a los hipervisores y al NAS — un solo punto de apoyo en cualquier puesto da acceso a toda la infraestructura crítica.</p>
+<p><strong>Remediación:</strong> crear una VLAN de gestión dedicada para iDRAC/ESXi/NAS, con acceso restringido por firewall solo desde los puestos de administración de sistemas.</p>
+</div>
+<div class="fiche">
+<h3>MAT-06 · Servidor Ubuntu/Apache sin configurar, con CVE conocido pendiente de parche</h3>
+<p><span class="sev sev-medio">Medio</span> CWE-1188 (recurso desplegado con configuración por defecto) · CVE-2024-24795, CVSS 3.1: <strong>6.3</strong> (<code>AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L</code>)</p>
+<p><strong>Evidencia:</strong></p>
+<pre>$ curl.exe -i http://192.168.1.244/
+HTTP/1.1 200 OK
+Server: Apache/2.4.58 (Ubuntu)
+Last-Modified: Mon, 10 Feb 2025 11:10:45 GMT
+[...]
+&lt;title&gt;Apache2 Ubuntu Default Page: It works&lt;/title&gt;</pre>
+<p><strong>Interpretación:</strong> el servidor responde con la página de bienvenida por defecto de Apache en Ubuntu — nunca se completó el despliegue del sitio real, o es un servidor olvidado. Versión cruzada contra NVD/Rapid7: 2.4.58 queda por debajo del parche de <strong>CVE-2024-24795</strong> (HTTP response splitting, CVSS 6.3, corregido en 2.4.59).</p>
+<p><strong>Riesgo:</strong> doble — (1) gestión de activos deficiente (servidor desplegado y olvidado, sin dueño claro); (2) CVE medio sin corregir, explotable si en algún momento se expone una aplicación real detrás de este Apache sin actualizar antes.</p>
+<p><strong>Remediación:</strong> identificar al propietario/propósito de este servidor y, si no está en uso, darlo de baja; si está en uso, actualizar Apache a 2.4.59+ antes de publicar ningún contenido real.</p>
+</div>
+<div class="fiche">
+<h3>MAT-07 · Interfaz de administración remota (RDP) del Controlador de Dominio expuesta en la red general</h3>
+<p><span class="sev sev-medio">Medio</span> CWE-1008 (arquitectura de seguridad deficiente)</p>
+<p><strong>Evidencia:</strong></p>
+<pre>C:\Users\rdp.prueba&gt;powershell -Command "Test-NetConnection -ComputerName 192.168.1.100 -Port 3389 -InformationLevel Quiet -WarningAction SilentlyContinue"
+True</pre>
+<p><strong>Interpretación:</strong> el puerto 3389 (RDP) del Controlador de Dominio responde desde el mismo segmento <code>192.168.1.0/24</code> donde están los puestos de usuario, la impresora y el resto de equipos — no hay restricción de acceso visible desde este punto de la red. No se ha intentado autenticación, fuerza bruta ni ningún otro paso más allá de confirmar que el puerto responde (fuera de alcance de este ejercicio).</p>
+<p><strong>Riesgo:</strong> el Controlador de Dominio es el activo más crítico de la red (concentra credenciales e identidad de todo el dominio). Exponer su interfaz de administración remota al mismo segmento que los puestos de usuario — en vez de restringirla a una red de gestión o a un salto administrativo (jump host) — amplía la superficie de ataque: cualquier puesto de usuario comprometido puede intentar autenticarse directamente contra RDP del DC, incluyendo ataques de fuerza bruta o pulverización de contraseñas si existieran credenciales débiles (no verificado ni probado en este ejercicio).</p>
+<p><strong>Verificación adicional:</strong> se comprobó si el DC exige Autenticación a Nivel de Red (NLA) conectando con el cliente de Escritorio remoto estándar (<code>mstsc</code>) sin introducir ninguna credencial real. El cuadro "Seguridad de Windows — Escribir las credenciales" apareció <em>antes</em> de mostrar cualquier pantalla de escritorio o de inicio de sesión de Windows, lo que confirma que <strong>NLA está activo</strong>. Esto mitiga parte del riesgo (reduce la superficie de pre-autenticación, protege frente a clases de vulnerabilidad como CVE-2019-0708/BlueKeep), pero no elimina el hallazgo: NLA protege la negociación, no sustituye a la segmentación — el puerto sigue siendo alcanzable desde cualquier puesto de usuario comprometido, que podría intentar autenticarse con credenciales robadas igualmente.</p>
+<p><strong>Remediación:</strong> restringir el acceso RDP al Controlador de Dominio mediante firewall a un conjunto limitado de puestos de administración (jump host/bastión), o a una VLAN de gestión dedicada — mismo principio que MAT-05. NLA ya está correctamente activo; mantenerlo y considerar además políticas de bloqueo de cuenta ante intentos fallidos repetidos.</p>
+</div>
+<h3>Correlación con MITRE ATT&amp;CK</h3>
+<p class="small">Cada hallazgo se asocia a la técnica (Enterprise Matrix) que describiría su explotación o el riesgo que habilita — no implica que se haya ejecutado esa técnica, solo señala el vector al que queda expuesto el activo.</p>
+<div class="scroll"><table>
+<tr><th>Hallazgo</th><th>Táctica</th><th>Técnica MITRE ATT&amp;CK</th><th>Por qué</th></tr>
+<tr><td>MAT-01</td><td>Discovery</td><td>T1046 — Network Service Discovery</td><td>Puerto SMB visible y enumerable desde la red; si fuera SMBv1, habilitaría además T1210</td></tr>
+<tr><td>MAT-02</td><td>Credential Access / Collection</td><td>T1040 — Network Sniffing</td><td>Tráfico posterior a la autenticación sin cifrar, interceptable por cualquiera en el mismo segmento</td></tr>
+<tr><td>MAT-03</td><td>Lateral Movement (habilitador)</td><td>T1210 — Exploitation of Remote Services</td><td>Un hipervisor sin parchear de forma uniforme es la condición previa que esta técnica explota</td></tr>
+<tr><td>MAT-04</td><td>Credential Access</td><td>T1040 / T1557 — Network Sniffing / Adversary-in-the-Middle</td><td>Credenciales de administración viajan en claro por HTTP, capturables sin interacción del usuario</td></tr>
+<tr><td>MAT-05</td><td>Lateral Movement</td><td>T1021 — Remote Services</td><td>La falta de segmentación es lo que permite que el compromiso de un puesto de usuario alcance directamente la infraestructura crítica</td></tr>
+<tr><td>MAT-06</td><td>Initial Access</td><td>T1190 — Exploit Public-Facing Application</td><td>CVE-2024-24795 sin parchear en un servicio expuesto es la vía de entrada que describe esta técnica</td></tr>
+<tr><td>MAT-07</td><td>Lateral Movement / Credential Access</td><td>T1021.001 — Remote Desktop Protocol; T1110 — Brute Force (riesgo derivado)</td><td>RDP del DC accesible desde la red general es el vector de entrada típico de esta técnica; sin control de intentos, habilita además fuerza bruta</td></tr>
+</table></div>
+
+<h2 id="s5-5">8. Cobertura y cierre</h2>
+<div class="scroll"><table>
+<tr><th>Punto</th><th>Estado</th><th>Detalle</th></tr>
+<tr><td>MI1 — Topología</td><td><span class="sev st-ok">Hecho</span></td><td>92 hosts activos confirmados por tabla ARP sobre 192.168.1.0/24</td></tr>
+<tr><td>MI2 — DNS interno</td><td><span class="sev st-ok">Cerrado</span></td><td>Zona AD-integrada <code>local.internal</code>; AXFR correctamente rechazado (<code>Query refused</code>) — sin hallazgo</td></tr>
+<tr><td>MI3 — DHCP</td><td><span class="sev st-ok">Cerrado</span></td><td>Confirmado de forma pasiva (<code>ipconfig /all</code>) — servidor 192.168.1.100, sin indicio de mala configuración</td></tr>
+<tr><td>MI4 — Protocolos obsoletos</td><td><span class="sev st-ok">Parcial</span></td><td>FTP/Telnet cerrados en SERVIDOR; SMB (445) abierto sin confirmar versión (MAT-01); HTTP sin TLS en dos hosts (MAT-02, MAT-06)</td></tr>
+<tr><td>MI5 — Credenciales en tránsito inseguro</td><td><span class="sev st-ok">Hecho</span></td><td>1 caso confirmado (impresora, MAT-04); servidor IIS descartado (autenticación sin texto claro)</td></tr>
+<tr><td>MI6 — Vulnerabilidades del escaneo</td><td><span class="sev st-ok">Parcial</span></td><td>1 CVE confirmado (Apache 2.4.58, MAT-06); ESXi con build desigual sin CVE fijado por falta de versión exacta (MAT-03)</td></tr>
+<tr><td>Hosts con inspección de aplicación (HTTP/HTTPS)</td><td><span class="sev st-pend">7 de 92</span></td><td>SERVIDOR (.100), 4× ESXi (.245/.249/.250/.254), impresora (.10), NAS (.98), iDRAC (.112), Apache (.244) — resto del inventario pendiente de la misma pasada si se amplía el ejercicio</td></tr>
+<tr><td>TLS obsoleto</td><td><span class="sev st-pend">No concluyente</span></td><td>Prueba forzando TLS 1.0 contra el NAS bloqueada por el propio cliente de pruebas (Schannel) antes de llegar al servidor — no se pudo determinar el comportamiento real del objetivo</td></tr>
+<tr><td>Perfil de puertos AD en el Controlador de Dominio</td><td><span class="sev st-ok">Hecho</span></td><td>Kerberos/LDAP/LDAPS/Catálogo Global/NetBIOS correctos y esperables; RDP expuesto a la red general sin restricción (MAT-07)</td></tr>
+<tr><td>CVE/vulnerabilidades del OS o firmware (SERVIDOR, NAS, impresora, iDRAC)</td><td><span class="sev st-pend">No viable</span></td><td>Sin versión de build exacta en ninguno de los cuatro por banner no intrusivo, no se puede verificar CVE específico sin suponer versión; se descartó puntualmente CVE-2021-20877 para la impresora (modelo no afectado según el fabricante)</td></tr>
+<tr><td>Certificados TLS (asunto/emisor/caducidad)</td><td><span class="sev st-pend">No viable</span></td><td><code>curl.exe</code> en este puesto usa Schannel, no OpenSSL, y no expone el certificado en modo <code>-v</code> — limitación de herramienta, no del objetivo</td></tr>
+<tr><td>Perfil de servicios del NAS más allá del panel web</td><td><span class="sev st-ok">Hecho</span></td><td>FTP cerrado; SMB y NFS abiertos (función normal del NAS) — refuerza MAT-05</td></tr>
+<tr><td>Exposición de correo (SMTP) en SERVIDOR</td><td><span class="sev st-ok">Cerrado</span></td><td>Puertos 25/587 cerrados, sin servidor de correo expuesto — sin hallazgo. Puerto 443 abierto pero sin identificar el servicio exacto (inestabilidad de consola, no forzado)</td></tr>
+<tr><td>NLA en RDP del Controlador de Dominio</td><td><span class="sev st-ok">Hecho</span></td><td>Confirmado activo (prompt de credenciales antes de cualquier escritorio) — matiza MAT-07 sin eliminarlo</td></tr>
+</table></div>
+
+<h2 id="s5-6">9. Decisiones y límites de alcance</h2>
+<ul>
+<li><strong>Por qué no se fue más allá del reconocimiento:</strong> el alcance autorizado cubre únicamente enumeración y análisis de configuración visible, sin explotación. Cualquier prueba de acceso, fuerza bruta o explotación de un CVE identificado exigiría autorización explícita adicional y ventana de mantenimiento acordada.</li>
+<li><strong>Nivel de agresividad:</strong> ajustado a la baja de forma deliberada — red de producción real con equipos frágiles (hipervisores sin soporte, equipo embebido) donde un escaneo agresivo podría afectar al servicio; se prioriza el timing conservador y la ausencia de categorías NSE intrusivas sobre la cobertura exhaustiva de puertos.</li>
+<li><strong>Phishing / ingeniería social — fuera de alcance por diseño, no por límite de herramienta:</strong> MSA-Interno es una metodología de reconocimiento de red, no una campaña de ingeniería social. Evaluar la susceptibilidad real al phishing exigiría otro tipo de ejercicio por completo (envío de correos de prueba a empleados reales), con su propia autorización específica, independiente de la autorización de reconocimiento de red de este informe. No se asume ni se insinúa ningún resultado al respecto.</li>
+<li><strong>Contexto adicional no verificado, aportado por el reconocimiento previo del compañero (no por este equipo):</strong> su inventario señala un posible equipo de automatización industrial (marca no identificada, grupo NetBIOS "GRUPO-IND", <code>192.168.1.129</code> y <code>192.168.1.232</code>) en el mismo segmento que los puestos de usuario — si se confirmara, reforzaría MAT-05 al añadir maquinaria de producción (OT) a la lista de infraestructura crítica sin segmentar. También señala carpetas compartidas (incluida una de software de contabilidad) y nombres de usuario local enumerables por SMB en varios servidores. Se intentó verificar de forma independiente el primer punto (<code>curl</code> contra los dos hosts) pero <code>curl.exe</code> dejó de funcionar en el puesto de pruebas durante esta sesión (fallo incluso en <code>curl.exe --version</code>), por lo que no se pudo completar. El segundo punto (enumeración SMB) ni se intentó, por ser el mismo tipo de prueba de acceso ya excluido en el punto anterior de esta lista. Ambos quedan como contexto sin verificar por este equipo, no como hallazgos MAT-XX.</li>
+<li><strong>Qué haría falta con autorización, herramientas o acceso adicional:</strong>
+  <ul>
+    <li><em>SNMP con community string por defecto ("public")</em> — chequeo no intrusivo habitual en este tipo de ejercicio, pero no evaluado aquí por no disponer de herramienta cliente SNMP en el puesto de pruebas (mismo tipo de limitación que impidió el fingerprinting con Nmap).</li>
+    <li><em>Sesión SMB anónima/invitado (null session)</em> — deliberadamente no probada: aunque no requiere contraseña real, es un intento de autenticación y las reglas de compromiso de este ejercicio excluyen explícitamente cualquier prueba de credenciales.</li>
+    <li><em>Red Wi-Fi corporativa</em> — no evaluable desde este puesto de pruebas, conectado por Ethernet sin interfaz inalámbrica; requeriría un cliente Wi-Fi y autorización específica si MoldTek Industrial dispone de red inalámbrica.</li>
+    <li><em>Versión exacta de SO/firmware</em> (SERVIDOR, ESXi, NAS, impresora, iDRAC) y <em>dialecto SMB exacto</em> (MAT-01) — exigen acceso administrativo al activo o herramienta de fingerprinting activo (Nmap), fuera del alcance no intrusivo de este ejercicio.</li>
+    <li><em>Explotación de cualquier CVE identificado</em> (p. ej. MAT-06) — exigiría autorización explícita adicional y ventana de mantenimiento acordada; no se intenta en ningún caso dentro de este reconocimiento.</li>
+  </ul>
+</li>
+</ul>
+
+<div class="part" id="anexos">Anexos</div>
+
+<h2 id="sA">A. Marco normativo aplicable</h2>
+<div class="scroll"><table>
+<tr><th>Estándar / norma</th><th>Cómo aplica aquí</th></tr>
+<tr><td>RGPD + LOPDGDD</td><td>Art. 32 — medidas técnicas de seguridad de la red que trata datos personales (si algún host maneja PII de empleados/clientes, a confirmar en el inventario)</td></tr>
+<tr><td>ISO/IEC 27001:2022 (Anexo A)</td><td>A.8.9 gestión de configuración; A.8.20-8.22 seguridad de redes y segmentación; A.8.24 criptografía/TLS</td></tr>
+<tr><td>ENS (RD 311/2022) + guías CCN-STIC</td><td>op.mon — monitorización; mp.com — protección de comunicaciones; op.exp.4 — mantenimiento de software. Voluntario para una empresa privada, exigible si presta servicio a sector público</td></tr>
+<tr><td>NIS2 (Directiva (UE) 2022/2555, transposición española pendiente/en curso)</td><td>Solo aplicaría si MoldTek Industrial encaja como entidad "esencial" o "importante" de alguno de los 18 sectores del Anexo I/II (energía, salud, digital, manufactura crítica...) y supera los umbrales de tamaño (≥50 empleados o ≥10M€ de facturación) — no se ha confirmado el sector/tamaño exacto de MoldTek Industrial en este ejercicio, así que se cita como marco a verificar, no como obligación confirmada. Si aplicara, los hallazgos MAT-05 y MAT-07 (segmentación, exposición de gestión remota) son exactamente el tipo de medida técnica que exige (gestión de riesgos, control de acceso)</td></tr>
+<tr><td>MITRE ATT&amp;CK (Enterprise Matrix)</td><td>Marco de referencia para correlacionar cada hallazgo con la técnica de ataque que describe su explotación o el riesgo que habilita — ver tabla de correlación en §7</td></tr>
+<tr><td>CIS Controls v8</td><td>Control 4 (Configuración segura) — MAT-02/MAT-04/MAT-06; Control 12 (Gestión de infraestructura de red) — MAT-05/MAT-07, directamente aplicable a la falta de segmentación y a la exposición de RDP del DC</td></tr>
+<tr><td>Metodología de referencia</td><td>PTES, NIST SP 800-115, CVSS 3.1, catálogo CWE</td></tr>
+</table></div>
+<p class="note">Esta sección es orientativa, con fines formativos y de GRC — no constituye asesoramiento legal.</p>
+
+<h2 id="sB">B. Glosario</h2>
+<div class="scroll"><table>
+<tr><th>Término</th><th>Significado</th></tr>
+<tr><td>MAT-XX</td><td>Identificador correlativo de cada hallazgo de este informe. Numeración propia del ejercicio, no un estándar externo</td></tr>
+<tr><td>MSA-Interno</td><td>Adaptación de la metodología MSA-Recon (M1-M6, usada en el informe de latabernademo.com) a un escenario de reconocimiento de red interna (MI1-MI6)</td></tr>
+<tr><td>SMBv1</td><td>Versión obsoleta del protocolo de compartición de ficheros de Windows, sin soporte desde 2014 y origen de vulnerabilidades críticas (p. ej. EternalBlue/WannaCry)</td></tr>
+<tr><td>AXFR</td><td>Transferencia de zona DNS — si un servidor la permite sin restricción, expone toda su configuración de dominio a cualquiera que la solicite</td></tr>
+<tr><td>CVSS</td><td>Common Vulnerability Scoring System — puntuación de severidad de vulnerabilidades (0-10)</td></tr>
+<tr><td>CWE</td><td>Common Weakness Enumeration — catálogo de tipos de debilidad de software</td></tr>
+<tr><td>iDRAC</td><td>Integrated Dell Remote Access Controller — interfaz de gestión remota fuera de banda de servidores Dell; un acceso expuesto aquí equivale a control total del servidor físico</td></tr>
+<tr><td>MITRE ATT&amp;CK</td><td>Catálogo público de tácticas y técnicas de ataque reales, mantenido por MITRE; usado aquí para indicar a qué técnica concreta queda expuesto cada hallazgo (p. ej. T1021.001 para RDP), no para afirmar que esa técnica se haya ejecutado</td></tr>
+<tr><td>NIS2</td><td>Directiva (UE) 2022/2555 sobre ciberseguridad, sucesora de NIS — aplica a entidades "esenciales" o "importantes" de ciertos sectores por encima de un umbral de tamaño; aplicabilidad a MoldTek Industrial no confirmada en este ejercicio</td></tr>
+</table></div>
+
+<h2 id="sC">C. Referencias</h2>
+<ul>
+<li>PTES — Penetration Testing Execution Standard</li>
+<li>NIST SP 800-115 — Technical Guide to Information Security Testing and Assessment</li>
+<li>ISO/IEC 27001:2022 — Anexo A</li>
+<li>ENS (RD 311/2022) y guías CCN-STIC</li>
+<li>FIRST — CVSS 3.1 Specification Document</li>
+<li>MITRE — catálogo CWE y MITRE ATT&amp;CK (Enterprise Matrix)</li>
+<li>Directiva (UE) 2022/2555 (NIS2)</li>
+<li>CIS Controls v8 (Center for Internet Security)</li>
+</ul>
+<p class="ph">Estructura y nivel de detalle alineados con el informe de reconocimiento externo de latabernademo.com, adaptados a un escenario de red interna (MSA-Interno, MI1-MI6). Evidencia propia del ejercicio recogida en su totalidad en la Parte II.</p>
+
+</main>
+</body>
+</html>

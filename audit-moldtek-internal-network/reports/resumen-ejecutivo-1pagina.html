@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Auditoría de seguridad interna — MoldTek Industrial (resumen de una página)</title>
+<style>
+  @page { size: A4; margin: 11mm 14mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Calibri, "Carlito", Arial, sans-serif;
+    color: #000;
+    background: #fff;
+    margin: 0;
+    font-size: 10.3pt;
+    line-height: 1.32;
+  }
+  .hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+    margin-bottom: 7px;
+  }
+  .hdr h1 {
+    font-size: 15pt;
+    margin: 0 0 2px 0;
+    font-weight: 700;
+  }
+  .hdr .sub {
+    font-size: 9pt;
+    color: #333;
+  }
+  .hdr .meta {
+    text-align: right;
+    font-size: 8.7pt;
+    color: #222;
+  }
+  .concl {
+    font-size: 9.6pt;
+    margin: 6px 0 9px 0;
+    padding: 6px 9px;
+    border-left: 3px solid #000;
+    background: #f4f4f4;
+  }
+  .concl strong { font-weight: 700; }
+  h2.sec {
+    font-size: 10.3pt;
+    margin: 9px 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    border-bottom: 1px solid #999;
+    padding-bottom: 2px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.3pt;
+  }
+  th, td {
+    border: 1px solid #999;
+    padding: 2px 4px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #e8e8e8;
+    font-weight: 700;
+    font-size: 8.4pt;
+  }
+  td.sev {
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    color: #000;
+  }
+  .sev-medio { background: #ffcf5c; }
+  .sev-bajo  { background: #a9e0a4; }
+  .sev-info  { background: #d9d9d9; }
+  col.id   { width: 5%; }
+  col.hal  { width: 22%; }
+  col.ip   { width: 11%; }
+  col.sev  { width: 7%; }
+  col.cve  { width: 13%; }
+  col.imp  { width: 20%; }
+  col.cor  { width: 22%; }
+  .foot {
+    margin-top: 8px;
+    font-size: 8pt;
+    color: #333;
+    border-top: 1px solid #999;
+    padding-top: 4px;
+  }
+  .foot b { color: #000; }
+  .conf {
+    display: inline-block;
+    font-size: 7.3pt;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    border: 1px solid #000;
+    padding: 1px 6px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .badge {
+    display: inline-block;
+    font-weight: 700;
+    padding: 1px 7px;
+    border: 1px solid #000;
+  }
+  .legend {
+    font-size: 8pt;
+    margin: 5px 0 7px 0;
+    color: #222;
+  }
+  .legend span {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin: 0 4px 0 12px;
+    border: 1px solid #777;
+    vertical-align: middle;
+  }
+  .legend span:first-child { margin-left: 0; }
+</style>
+</head>
+<body>
+
+<span class="conf">Muestra de portafolio — anonimizado</span>
+<div class="hdr">
+  <div>
+    <h1>Auditoría de seguridad — Red interna de MoldTek Industrial</h1>
+    <div class="sub">Xavier Margalef — Reconocimiento no intrusivo (MSA-Interno)</div>
+  </div>
+  <div class="meta">
+    6 de octubre de 2026<br>
+    Rango auditado: 192.168.1.0/24
+  </div>
+</div>
+
+<div class="concl">
+<strong>Conclusión inicial:</strong> Riesgo global <span class="badge sev-medio">MEDIO</span>. No hay vulnerabilidades críticas activas, pero la combinación de credenciales sin cifrar, falta de segmentación de red y software desactualizado constituye un patrón de riesgo que debe corregirse antes de que se convierta en incidente.
+</div>
+
+<div class="legend"><span class="sev-medio"></span>Medio<span class="sev-bajo"></span>Bajo<span class="sev-info"></span>Informativo (sin riesgo directo, mejora de higiene)</div>
+
+<h2 class="sec">Hallazgos (de mayor a menor severidad)</h2>
+<table>
+<colgroup>
+  <col class="id"><col class="hal"><col class="ip"><col class="sev"><col class="cve"><col class="imp"><col class="cor">
+</colgroup>
+<tr>
+  <th>ID</th><th>Hallazgo</th><th>IP(s) — red 192.168.1.0/24</th><th>Severidad</th><th>CVE / CWE</th><th>Impacto</th><th>Corrección</th>
+</tr>
+<tr>
+  <td>MAT-06</td>
+  <td>Servidor Apache 2.4.58 sin actualizar, expuesto y sin dueño identificado</td>
+  <td>192.168.1.244</td>
+  <td class="sev sev-medio">MEDIO</td>
+  <td>CVE-2024-24795 (CVSS 6.3)</td>
+  <td>HTTP response splitting si se publica una app real sin parchear antes</td>
+  <td>Actualizar a Apache ≥2.4.59 o dar de baja el servidor si no está en uso</td>
+</tr>
+<tr>
+  <td>MAT-04</td>
+  <td>Credenciales de administración de impresora Canon transmitidas sin cifrar (HTTP)</td>
+  <td>192.168.1.10</td>
+  <td class="sev sev-medio">MEDIO</td>
+  <td>CWE-319/523 (CVSS 5.9)</td>
+  <td>Captura de contraseña de administración por cualquiera en el mismo segmento</td>
+  <td>Activar HTTPS en la interfaz de gestión o restringirla a VLAN de administración</td>
+</tr>
+<tr>
+  <td>MAT-07</td>
+  <td>RDP del Controlador de Dominio accesible desde toda la red de usuarios</td>
+  <td>192.168.1.100</td>
+  <td class="sev sev-medio">MEDIO</td>
+  <td>CWE-1008</td>
+  <td>Amplía la superficie de ataque sobre el activo más crítico (identidad del dominio)</td>
+  <td>Restringir RDP a VLAN de administración o jump host; NLA ya activo (correcto)</td>
+</tr>
+<tr>
+  <td>MAT-05</td>
+  <td>Sin segmentación entre puestos de usuario e infraestructura crítica (iDRAC, hipervisores, NAS)</td>
+  <td>.112 (iDRAC) · .245/.249/.250/.254 (ESXi) · .98 (NAS)</td>
+  <td class="sev sev-medio">MEDIO</td>
+  <td>CWE-1008</td>
+  <td>Un puesto de usuario comprometido llega directo a toda la infraestructura crítica</td>
+  <td>Crear VLAN de gestión dedicada para iDRAC/ESXi/NAS, con acceso restringido</td>
+</tr>
+<tr>
+  <td>MAT-01</td>
+  <td>Puerto SMB abierto en el servidor principal, versión sin confirmar</td>
+  <td>192.168.1.100</td>
+  <td class="sev sev-bajo">BAJO</td>
+  <td>CWE-200</td>
+  <td>Si fuera SMBv1: vector histórico de EternalBlue/WannaCry</td>
+  <td>Confirmar versión con acceso administrativo; deshabilitar SMBv1 si estuviera activo</td>
+</tr>
+<tr>
+  <td>MAT-02</td>
+  <td>Servidor interno (IIS) sin TLS — tráfico sin cifrar tras la autenticación</td>
+  <td>192.168.1.100</td>
+  <td class="sev sev-bajo">BAJO</td>
+  <td>CWE-319</td>
+  <td>Tráfico de sesión interceptable en el mismo segmento (no las credenciales)</td>
+  <td>Forzar HTTPS con certificado válido y redirección 80→443</td>
+</tr>
+<tr>
+  <td>MAT-03</td>
+  <td>Clúster de hipervisores ESXi con al menos dos niveles de parcheo distintos</td>
+  <td>.245/.254 (build A) · .249/.250 (build B)</td>
+  <td class="sev sev-info">INFO.</td>
+  <td>CWE-1188</td>
+  <td>El host menos actualizado concentra más vulnerabilidades sin corregir</td>
+  <td>Uniformizar el nivel de parche de todo el clúster</td>
+</tr>
+</table>
+
+<h2 class="sec">Impacto potencial si no se corrige</h2>
+<table>
+<colgroup><col style="width:14%"><col style="width:86%"></colgroup>
+<tr><th>Ámbito</th><th>Exposición</th></tr>
+<tr><td><b>Legal</b></td><td>RGPD Art. 83 — hasta <b>10M€/2%</b> de facturación (nivel inferior) o <b>20M€/4%</b> (nivel superior) si una vulneración deriva en brecha de datos personales confirmada. Ningún hallazgo es en sí una brecha (MAT-04 expone credenciales del dispositivo, no datos de personas), pero son el tipo de debilidad de acceso que el Art. 32 RGPD exige prevenir, y podrían derivar en una si se encadenan con datos ya almacenados (carpetas de SERVIDOR, agendas de la impresora).</td></tr>
+<tr><td><b>Económico</b></td><td>El coste medio global de una brecha de datos en 2025 es de <b>4,44M$</b> (IBM Cost of a Data Breach Report 2025) — cifra agregada y orientativa, no una estimación específica para MoldTek Industrial, que dependerá de su tamaño y sector real.</td></tr>
+<tr><td><b>Operativo / reputacional</b></td><td>Si se confirma el equipo de automatización industrial en la misma red plana (ver contexto no verificado), un incidente no afectaría solo a sistemas de oficina, sino potencialmente a la producción. A esto se suma el riesgo de pérdida de confianza de clientes/proveedores tras un incidente visible.</td></tr>
+</table>
+
+<div class="foot">
+<b>Alcance y método:</b> reconocimiento no intrusivo (MSA-Interno, red interna 192.168.1.0/24), sin explotación ni captura de credenciales. 92 hosts confirmados por evidencia propia; ≈109 según inventario previo del equipo (impresoras, DECT, cámaras, puntos de acceso, servidores), no re-verificado host por host. Normativa: ISO/IEC 27001:2022, ENS (RD 311/2022)/CCN-STIC, CIS Controls v8, MITRE ATT&amp;CK, NIS2 (aplicabilidad a confirmar).<br>
+<b>Contexto adicional no verificado</b> (reconocimiento previo del equipo, no confirmado en este ejercicio): posible equipo de automatización industrial (marca no identificada, grupo NetBIOS "GRUPO-IND") en el mismo segmento que los puestos de usuario — refuerza MAT-05; carpetas compartidas (incl. una de software de contabilidad) y usuarios locales enumerables por SMB en varios servidores — indicio de enumeración sin autenticación fuerte.<br>
+<b>Fuentes del impacto potencial:</b> Reglamento (UE) 2016/679 (RGPD), Art. 83; IBM Cost of a Data Breach Report 2025. Informe técnico completo con evidencia y trazabilidad disponible por separado.
+</div>
+
+</body>
+</html>
