@@ -2,8 +2,8 @@
 
 # 🛡️ Xavier Margalef — CyberOps Portfolio
 
-**SOC Analyst · Security Operations · Vulnerability Management**
-Técnico de soporte L3/SRE con casi 6 años de experiencia en entornos de producción, especializado ahora en ciberseguridad defensiva y ofensiva.
+**SOC & GRC Analyst · Blue Team & Incident Response · ISO 27001 & ENS**
+Técnico de soporte L3/SRE con más de 6 años de experiencia en entornos de producción, especializado ahora en seguridad defensiva (Blue Team) y gestión de riesgo (GRC).
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/xaviermargaleftech/)
 [![Email](https://img.shields.io/badge/Email-margalef.xr%40gmail.com-333?style=flat&logo=gmail&logoColor=white)](mailto:margalef.xr@gmail.com)
@@ -19,7 +19,7 @@ Técnico de soporte L3/SRE con casi 6 años de experiencia en entornos de produc
 
 Este portafolio reúne dos tipos de contenido, claramente separados para que se entienda de un vistazo qué es cada cosa:
 
-1. **Auditorías reales** — trabajo de campo sobre infraestructura de terceros, con autorización expresa, realizado en el marco de mi actividad profesional actual (colaboraciones independientes + mi colaboración part-time con **Section9**, consultora de ciberseguridad especializada en auditorías para pymes).
+1. **Auditorías reales** — trabajo de campo sobre infraestructura de terceros, con autorización expresa, realizado en el marco de mi actividad profesional actual (colaboraciones independientes + mi puesto actual como **Junior Cyber Security Analyst en Seccion9**, donde trabajo en auditorías EASM de superficie de ataque externa, correlación de amenazas vía honeypot/SIEM/NIDS — Wazuh, Suricata, Zeek — y hardening post-auditoría con Ansible).
 2. **Laboratorios y ejercicios formativos** — prácticas, retos (TryHackMe, escenarios MAGERIT/ENS) y documentación técnica de mi formación en ciberseguridad.
 
 Metodología común a ambos: identificación de activos → análisis de riesgo (MAGERIT v3 / ENS) → hallazgos trazables a evidencia → corrección priorizada por impacto, alineado con ISO/IEC 27001, NIST SP 800-115, MITRE ATT&CK, CIS Controls v8 y, cuando aplica, RGPD/NIS2.
@@ -51,8 +51,7 @@ Metodología común a ambos: identificación de activos → análisis de riesgo 
 | [`sec-threat-hunting-operations`](./sec-threat-hunting-operations) | Threat Hunting | Valoración de activos y caza de amenazas aplicando MITRE ATT&CK. |
 | [`secops-monitoring-soc-labs`](./secops-monitoring-soc-labs) | SOC / Monitorización | Investigación de un contenedor Docker no autorizado en un servidor de producción — triage, contención y análisis. |
 | [`secops-incident-forensics-ir`](./secops-incident-forensics-ir) | Forense / IR | Desglose de un incidente complejo: cadena de ataque, evidencia y lecciones aprendidas. |
-| [`sec-gamified-defense-drills`](./sec-gamified-defense-drills) | Blue Team (gamificado) | Ejercicios defensivos interactivos en Python. |
-| [`secops-cli-automation`](./secops-cli-automation) · [`automation-bash-scripting`](./automation-bash-scripting) | Automatización | Scripts Bash de administración, permisos y automatización de tareas SecOps. |
+| [`sec-gamified-defense-drills`](./sec-gamified-defense-drills) · [`secops-cli-automation`](./secops-cli-automation) · [`automation-bash-scripting`](./automation-bash-scripting) | Fundamentos / Scripting | Ejercicios introductorios de Python y Bash (CLI, permisos, automatización básica) — práctica de base, no auditorías. |
 | [`core-cybersecurity-fundamentals`](./core-cybersecurity-fundamentals) · [`core-infosec-governance`](./core-infosec-governance) | Fundamentos / Gobierno | Fundamentos de ciberseguridad y gobierno de la seguridad de la información. |
 | [`knowledge-base-engineering`](./knowledge-base-engineering) | Base de conocimiento | Apuntes técnicos de referencia (incl. stack Microsoft/Azure). |
 | [`profile-career-roadmap`](./profile-career-roadmap) | — | CV y plan de carrera. |

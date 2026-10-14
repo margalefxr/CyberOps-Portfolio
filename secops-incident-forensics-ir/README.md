@@ -1,0 +1,9 @@
+# Desglosa un Incidente Complejo · Forense e Incident Response
+
+**Metodología:** reconstrucción de la cadena de ataque paso a paso (kill chain), clasificación de causa raíz técnica vs. organizativa, correlación con obligaciones normativas.
+**Qué se hizo:** desglose de un incidente con tres pasos encadenados — XSS en un portal web obsoleto (OWASP Top 10) → robo de sesión → movimiento lateral por falta de segmentación de red hacia bases de datos de tarjetas → exfiltración facilitada por un script de backup con credenciales de administrador en texto plano.
+**Resultado clave:** ninguno de los tres pasos técnicos habría bastado por sí solo para comprometer datos de tarjetas — el incidente "complejo" es en realidad tres fallos básicos (XSS sin corregir, red plana, credenciales en claro) que se habilitan entre sí. El fallo real, de fondo, es de **gestión de proyectos IT**: nadie priorizó corregir ninguno de los tres a tiempo.
+
+## Más allá del ejercicio: por qué el reloj regulatorio ya corre
+
+El propio ejercicio pregunta qué auditoría específica "reprueba" la empresa al llegar a los datos de tarjeta — y la respuesta (**PCI-DSS**) es solo la mitad de la foto regulatoria actual. Con **NIS2** ya transpuesta en la mayoría de estados miembros, una brecha de esta magnitud en una entidad dentro de su perímetro activa un **aviso temprano en 24 horas y una notificación formal en 72 horas**, no cuando el equipo termine la investigación forense. Esto cambia por completo cómo se diseña un playbook de IR: la cadena técnica (XSS → movimiento lateral → credenciales expuestas) se investiga con calma, pero la decisión de "¿esto activa notificación regulatoria?" tiene que tomarse en las primeras horas, en paralelo, no al final. Un IR maduro de 2026 no es solo contener y erradicar — es contener, erradicar y **arrancar el reloj regulatorio correcto** desde el minuto uno.

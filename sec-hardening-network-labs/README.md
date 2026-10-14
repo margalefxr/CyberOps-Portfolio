@@ -1,0 +1,9 @@
+# Ayuntamiento de Bollullos · Risk Assessment (MAGERIT v3 / ENS, sector público)
+
+**Metodología:** MAGERIT v3 + Esquema Nacional de Seguridad (ENS) — valoración de activos en las dimensiones C/I/D/Au/T, propagación de impacto desde un sistema de soporte (servidor) hacia el activo esencial (sistema de gestión de clientes/ciudadanos).
+**Qué se hizo:** cálculo del valor propio vs. acumulado de los activos, y del impacto económico repercutido sobre el servicio ante la caída del servidor de base de datos que lo soporta.
+**Resultado clave:** en una administración pública, el activo de mayor criticidad casi nunca es el hardware — es la **disponibilidad del servicio al ciudadano**, lo que convierte cualquier interrupción en un problema normativo, no solo operativo.
+
+## Más allá del ejercicio: por qué el sector público no puede tratar esto como un lab
+
+Este escenario, aunque es un ejercicio formativo, está construido sobre un tipo de organización real donde el análisis de riesgo **no es opcional**: para una entidad local española, la aplicación del **ENS (RD 311/2022)** es obligatoria por ley, no una recomendación de buena práctica como en la empresa privada. Si el "sistema de gestión" del ejercicio tratara datos de ciudadanos (padrón, expedientes, tasas), el mismo cálculo de impacto activa además el **RGPD** por tratarse de datos de carácter personal gestionados por una administración pública — con el régimen sancionador agravado que aplica a este tipo de entidad. Y con la trasposición de **NIS2** en marcha, buena parte de la administración local pasará a estar dentro del perímetro de entidades "importantes" sujetas a supervisión. La diferencia entre resolver este ejercicio como un cálculo de MAGERIT y entenderlo como "esto me obliga la ley a hacerlo así" es, precisamente, lo que distingue a quien sabe aplicar la metodología de quien entiende por qué existe.

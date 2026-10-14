@@ -272,7 +272,7 @@ Siguiendo MAGERIT, los activos de información se sitúan en los niveles superio
 
 **Esquema**
 
-![Esquema dependencias](image.png)
+![Esquema dependencias](../assets/image.png)
 
 <div style="page-break-after: always;"></div>
 

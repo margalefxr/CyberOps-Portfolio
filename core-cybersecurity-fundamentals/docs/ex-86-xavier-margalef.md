@@ -24,13 +24,13 @@ Entrega evidencia:
 ### Actividad 2 - Middle east
 
 Entrega evidencia:
-![![medio este](../../images/assets/image-4.png)](images/image-3.png)
+![![medio este](../assets/image-4.png)](images/image-3.png)
 
 
 ### Actividad 3 - Analisis 101
 
 Entrega evidencia:
-![101](../../images/assets/image-6.png)
+![101](../assets/image-6.png)
 
 
 # Actividad 4 - Silent Exposures
@@ -66,21 +66,21 @@ Se comprobó que el servidor estaba operativo mediante un ping:
 ```bash
 ping 10.130.135.78
 ```
-![ping](../../images/assets/image-26.png)
+![ping](../assets/image-26.png)
 
 ### 2.3 Acceso y análisis web inicial
 - Se accedió a la IP mediante navegador.  
 - Se utilizaron **Dev Tools** para inspeccionar HTTP, puerto y estructura HTML.
 
 **Hallazgos:**
-- Protocolo: **HTTP** ![alt text](../../images/assets/image-22.png)  
+- Protocolo: **HTTP** ![alt text](../assets/image-22.png)  
 - Puerto: **80** ([referencia](https://stackoverflow.com/questions/3364144/is-port-number-required-in-http-host-header-parameter))  
-- Título de página en `<title>` ![title](../../images/assets/image-23.png)  
-- Código de error y motivo mediante opciones avanzadas ![error code](../../images/assets/image-24.png)
+- Título de página en `<title>` ![title](../assets/image-23.png)  
+- Código de error y motivo mediante opciones avanzadas ![error code](../assets/image-24.png)
 
 ### 2.4 Descarga de archivo de prueba
 - Se aceptaron riesgos y se descargó el archivo disponible.  
-- Contenía la flag: **"Bienvenidos a Jurassic Park"** ![fichero descargado](../../images/assets/image-25.png)  
+- Contenía la flag: **"Bienvenidos a Jurassic Park"** ![fichero descargado](../assets/image-25.png)  
 - Archivo en texto plano, útil para fases posteriores.  
 - Relevancia del uso de wordlists: [FreeCodeCamp](https://www.freecodecamp.org/news/the-power-of-wordlists-why-every-ethical-hacker-needs-one/)
 
@@ -96,20 +96,20 @@ dirb http://10.130.191.20 /root/wordlist.txt/
 gobuster dir -u http://10.130.191.20 -w /root/wordlist.txt
 dirb http://10.129.175.105 /root/wordlist.txt -N 403
 ```
-- dirb nos devuelve que hay 17 archivos en el servidor ![dirb wordlist](../../images/assets/image-28.png)
-- Gobuster nos da mas detalles como la respuesta en el acceso a los archivos (especificando los **200 y 403**)![gobuster](../../images/assets/image-29.png)
+- dirb nos devuelve que hay 17 archivos en el servidor ![dirb wordlist](../assets/image-28.png)
+- Gobuster nos da mas detalles como la respuesta en el acceso a los archivos (especificando los **200 y 403**)![gobuster](../assets/image-29.png)
 
 Para filtrar los archivos con respuesta negativa como el 403, anadimos `-N 403` al final del dirb i.e.; `dirb http://10.129.175.105  /root/wordlist.txt -N 403` que nos devuelve solo los dos archivos con 200 status
-![dirb -N](../../images/assets/image-30.png)
+![dirb -N](../assets/image-30.png)
 Este comando fue encontrado en una guia de [Linkedin](https://www.linkedin.com/pulse/dirb-cyberhorizon-defentech-zo21c) dado que otras **opciones como -b o -x o -s o no funcionaban.**
 
-- Archivos descubiertos: `config.php.bak` y `security.zip` ![200](../../images/assets/image-39.png)
+- Archivos descubiertos: `config.php.bak` y `security.zip` ![200](../assets/image-39.png)
 
 Por el momento nos encontramos delante a de una vulnerabilidad que afecta a la confidencialidad debido a que se usuarios no autorizados acceden a informacion privilegiada critica para el sistema con dos archivos con status 200.
 
 ### 3.2 Análisis de archivos críticos
-Identificamos mediante un comando grep informacion clave como el nombre de la intranet o el host con **grep "host" wordlist.txt** que nos devuelve que el host es **localhost**![grephost](../../images/assets/image-35.png).
-Para identificar el nombre de la intranet no encontramos ningun archivo con **grep** analizando el wordlist.txt ![greps](../../images/assets/image-34.png).
+Identificamos mediante un comando grep informacion clave como el nombre de la intranet o el host con **grep "host" wordlist.txt** que nos devuelve que el host es **localhost**![grephost](../assets/image-35.png).
+Para identificar el nombre de la intranet no encontramos ningun archivo con **grep** analizando el wordlist.txt ![greps](../assets/image-34.png).
 Asi que tenemos que ir mas abajo ya que es la informacion accesible mas directa que tenemos para explorar los dos archivos que nos devuelve gobuster como accesibles con 200 status code que son **config.php.bak** y **security.zip**.
 
 #### config.php.bak
@@ -119,21 +119,21 @@ Como es un **backup** de un archivo importante y probablemente tenga informacion
 wget http://10.129.175.105/config.php.bak
 cat config.php.bak
 ```
-![wget](../../images/assets/image-36.png) ![cat](../../images/assets/image-37.png)
+![wget](../assets/image-36.png) ![cat](../assets/image-37.png)
 
 - Intranet: `ingen_park_ops`  
 - Codificación: `utf8mb4`  
-- Auth keys, prefijo de base de datos y clave del parque ![configphp](../../images/assets/image-33.png) ![prepark](../../images/assets/image-38.png)
+- Auth keys, prefijo de base de datos y clave del parque ![configphp](../assets/image-33.png) ![prepark](../assets/image-38.png)
 
 #### security.zip
 ```bash
 wget http://10.129.175.105/security.zip
 ```
-- Contenido protegido con contraseña obtenida de `config.php.bak` ![password](../../images/assets/image-40.png)  
-- Llave pública `public_key.asc` (GPG, RSA 3072 bits) ![publickey](../../images/assets/image-41.png) ![GPG RSA](../../images/assets/image-42.png)
+- Contenido protegido con contraseña obtenida de `config.php.bak` ![password](../assets/image-40.png)  
+- Llave pública `public_key.asc` (GPG, RSA 3072 bits) ![publickey](../assets/image-41.png) ![GPG RSA](../assets/image-42.png)
 
 Esta extraccion es muy importante porque esto nos da la llave de acceso a conectarnos a servidor or web ya que es GPG que es una herramienta que utiliza el sistema de claves publicas y privadas para comunicar entre aplicaciones mediante **SSH**
-Para averiguar que algoritmo de cifrado usa para cifrar la clave publica, debemos aplicar el comando **gpg --show-keys public_key.asc** que nos devuelve que usa RSA de 3072 bits ![GPG RSA](../../images/assets/image-42.png) esto lo encontramos investigando mas sobre [GNU](https://www.gnupg.org/gph/es/manual.html).
+Para averiguar que algoritmo de cifrado usa para cifrar la clave publica, debemos aplicar el comando **gpg --show-keys public_key.asc** que nos devuelve que usa RSA de 3072 bits ![GPG RSA](../assets/image-42.png) esto lo encontramos investigando mas sobre [GNU](https://www.gnupg.org/gph/es/manual.html).
 
 ## 04 - Fase de Acceso Inicial y Análisis del Sistema
 
@@ -145,23 +145,23 @@ Accedemos con SSH al host del servidor, pasando de ser un usario externo a un us
 ```bash
 ssh dnedry@10.129.175.105
 ```
-![user and password](../../images/assets/image-44.png) ![acceso](../../images/assets/image-45.png)
+![user and password](../assets/image-44.png) ![acceso](../assets/image-45.png)
 
-- Directorio inicial: `/home/dnedry` identificado con `pwd`![admin](../../images/assets/image-46.png)  
-- Usuarios en el sistema: 28 con `awk -F ":" '{print $1}' /etc/passwd` encontrado en [Man7](https://man7.org/linux/man-pages/man5/passwd.5.html) ![awk](../../images/assets/image-49.png)  
-- Usuario principal de monitoreo: R.ARNOLD ![rarnold](../../images/assets/image-50.png)  
-- Hostname: `lab-nublar-os` ![hostname](../../images/assets/image-51.png)  
-- Distribución: `securityos` identificado con `cat /etc/os-release`![osrelease](../../images/assets/image-52.png)  
-- Grupos del usuario: ![groups](../../images/assets/image-53.png)
+- Directorio inicial: `/home/dnedry` identificado con `pwd`![admin](../assets/image-46.png)  
+- Usuarios en el sistema: 28 con `awk -F ":" '{print $1}' /etc/passwd` encontrado en [Man7](https://man7.org/linux/man-pages/man5/passwd.5.html) ![awk](../assets/image-49.png)  
+- Usuario principal de monitoreo: R.ARNOLD ![rarnold](../assets/image-50.png)  
+- Hostname: `lab-nublar-os` ![hostname](../assets/image-51.png)  
+- Distribución: `securityos` identificado con `cat /etc/os-release`![osrelease](../assets/image-52.png)  
+- Grupos del usuario: ![groups](../assets/image-53.png)
 
 ### 4.2 Puertos y servicios
-Ahora necesitamos hacer un analisis de la network del servidor, emepzando por mirar como checkear que puertos estan abiertos en el servidor linux buscando en [Red Hat Documentation](https://docs.redhat.com/es/documentation/red_hat_enterprise_linux/6/html/security_guide/sect-security_guide-server_security-verifying_which_ports_are_listening) donde encontramos que `nmap + IP` nos indica los puertos abiertos pero al intentar tirarlo nos da error de instalacion de que no esta instalado![nmapmal](../../images/assets/image-54.png). 
+Ahora necesitamos hacer un analisis de la network del servidor, emepzando por mirar como checkear que puertos estan abiertos en el servidor linux buscando en [Red Hat Documentation](https://docs.redhat.com/es/documentation/red_hat_enterprise_linux/6/html/security_guide/sect-security_guide-server_security-verifying_which_ports_are_listening) donde encontramos que `nmap + IP` nos indica los puertos abiertos pero al intentar tirarlo nos da error de instalacion de que no esta instalado![nmapmal](../assets/image-54.png). 
 Haciendo una busqueda concreto de **check open ports linux** encontramos en [SuperUser](https://superuser.com/questions/529830/get-a-list-of-open-ports-in-linux) que un comando mejor es `netstat -lntu` porque los flags utilizados aplican los filtros exactos a nivel de kernel, eliminando todo el ruido sin necesidad de usar grep, garantizando una visibilidad real de los sockets abiertos y reduciendo la posibilidad de falsos positivos en la enumeración de puertos.
 
 ```bash
 netstat -lntu
 ```
-- 4 puertos abiertos ![netstat lntu](../../images/assets/image-57.png)  
+- 4 puertos abiertos ![netstat lntu](../assets/image-57.png)  
 
 Al ejecutar `netstat -lntu`, buscamos confirmar la presencia del puerto 80 (servicio web) y descartar servicios innecesarios que aumenten la superficie de ataque. 
 
@@ -173,7 +173,7 @@ En el disco encontramos **18GB** disponibles. Para resolver el reto ignoramos el
 df -h
 ```
 - Porcentaje de disco usado: 009%
-- Espacio disponible: 18 GB ![df -h](../../images/assets/image-58.png)
+- Espacio disponible: 18 GB ![df -h](../assets/image-58.png)
 
 ### 4.4 Informacion sobre usuario www-data
 Ahora vamos a buscar informacion sobre **www-data** que es el usuario estándar en sistemas Linux que utiliza el servidor web para ejecutarse y gestionar los archivos de las páginas de forma aislada y segura. 
@@ -182,7 +182,7 @@ Para extraerla y verla en pantalla, ejecutamos segun lo encontrado en [Stack-Ove
 ```bash
 ps aux | grep www-data
 ```
-- Ruta y usuario www-data: **ruta /usr/sbin/lighttpd -D -f /etc/lighttpd/lighttpd.conf** ![ps aux grep](../../images/assets/image-60.png).
+- Ruta y usuario www-data: **ruta /usr/sbin/lighttpd -D -f /etc/lighttpd/lighttpd.conf** ![ps aux grep](../assets/image-60.png).
 
 
 ### 4.5 Estado de firewall
@@ -191,7 +191,7 @@ Ahora vamos a ver el estado del firewall, ya que definira los límites de movimi
 ```bash
 systemctl status ufw
 ```
-- Firewall activo ![firewall](../../images/assets/image-62.png)
+- Firewall activo ![firewall](../assets/image-62.png)
 
 ## 4.6 Enumeracion SUID
 Para proseguir buscamos los archivos del sistema que tienen permisos especiales para ejecutarse con los privilegios del propietario (que suele ser root) para la **escalada definitiva de privilegios**. Tenemos que encontrar que archivos binarios con bit SUID activo existe en el sistema y encontramos esta [guia](https://www.linuxtotal.com.mx/index.php?cont=info__tips_016) y esta [oficial de Linux](man7.org/linux/man-pages/man1/find.1.html).
@@ -199,7 +199,7 @@ Para proseguir buscamos los archivos del sistema que tienen permisos especiales 
 ```bash
 find / -perm -4000 -type f 2>/dev/null | wc -l
 ```
-- 16 archivos con bit SUID activo ![find](../../images/assets/image-61.png)
+- 16 archivos con bit SUID activo ![find](../assets/image-61.png)
 
 ## 4.7 Version paquete apt
 Proseguimos buscando la version de paquete **apt** para comprobar si el paquete es vulnerable a ataques conocidos (CVEs). Para ello tiramos de comandos encontrados en [PackageCloud](https://blog.packagecloud.io/apt-cheat-sheet/#:~:text=Use%20the%20apt%2Dcache%20show,command%20to%20install%20a%20package.) y [AskUbuntu](https://askubuntu.com/questions/110123/how-do-i-find-a-list-of-packages-with-priority-required)
@@ -215,7 +215,7 @@ dpkg-query -W -f='${Package}: ${Priority}\n' apt
 Tras obtener acceso inicial al sistema, la siguiente etapa de la auditoría se centró en la **escalada de privilegios**, cuyo objetivo es determinar si un usuario con permisos limitados puede alcanzar privilegios administrativos.  
 
 ### 5.1 Evaluación de controles de acceso: revision de sudo y su 
-Tratamos de cambiar de usuario con su pero nos retorna auth failure aun metiendo la contrasena intentando variaciones como root o user2, nos percatamos que hay que buscar un vector de ataque ![sumal](../../images/assets/image-64.png).
+Tratamos de cambiar de usuario con su pero nos retorna auth failure aun metiendo la contrasena intentando variaciones como root o user2, nos percatamos que hay que buscar un vector de ataque ![sumal](../assets/image-64.png).
 
 ```bash
 su
@@ -227,7 +227,7 @@ Revisamos una [guia de como hacer escalada de privilegios](https://delinea.com/b
 sudo -l
 ```
 
-- Observamos que `tar` no requiere password![sudo-l](../../images/assets/image-65.png) 
+- Observamos que `tar` no requiere password![sudo-l](../assets/image-65.png) 
 
 ### 5.2 Escalada mediante tar
 Buscamos en Google **"sudo -l" tar privilege escalation"** y encontramos una [guia que nos ayuda a con la escalada de privilegios a traves de tar](https://www.thehacker.recipes/infra/privilege-escalation/unix/sudo).
@@ -237,7 +237,7 @@ Abusando de las funcionalidades nativas de `tar`, se ejecutó una inyección de 
 ```bash
 sudo /bin/tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
 ```
-- Obtención de root ![root](../../images/assets/image-66.png)  
+- Obtención de root ![root](../assets/image-66.png)  
 
 ```bash
 id
@@ -249,12 +249,12 @@ cd /r00t
 cat r00t.txt
 ```
 
-La ejecución del comando anterior devolvió una shell interactiva con el ddentificador de usuario **uid=0(r00t)**. Con el control total de la máquina, se navega hacia el directorio personal del administrador para comprometer el objetivo final leyendo la flag del root![flag](../../images/assets/image-69.png)
+La ejecución del comando anterior devolvió una shell interactiva con el ddentificador de usuario **uid=0(r00t)**. Con el control total de la máquina, se navega hacia el directorio personal del administrador para comprometer el objetivo final leyendo la flag del root![flag](../assets/image-69.png)
 
 
 ## 5.4 Análisis Post-Explotación: Evaluación de controles de acceso
 Como no descubrimos que nos devuelve la respuesta de que pasa cuando se hace cambio de usuario hacemos un exit.
-- Hacemos `sudo su` para cambiar de usuario y al volver a root nos devuelve el mensaje que sucede al cambiar de usuario dandonos cuenta que no hacia falta hacer los pasos previos con `tar` para usar sudo ya que no requiere de contrasena ![sudo su](../../images/assets/image-68.png).
+- Hacemos `sudo su` para cambiar de usuario y al volver a root nos devuelve el mensaje que sucede al cambiar de usuario dandonos cuenta que no hacia falta hacer los pasos previos con `tar` para usar sudo ya que no requiere de contrasena ![sudo su](../assets/image-68.png).
 
 ## 5.5 Descifrado de IP ejecutora de proces
 Para descubrir la IP que descrubio el proceso cogemos la **flag de root** y la descriframos con [ASCI](https://elcodigoascii.com.ar/codigos-ascii/abre-llaves-curvas-codigo-ascii-123.html).
