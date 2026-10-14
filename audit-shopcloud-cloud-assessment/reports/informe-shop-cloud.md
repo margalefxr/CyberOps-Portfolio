@@ -25,7 +25,7 @@ En la auditoría ¿cuántas vulnerabilidades se han encontrado?
 What is WPScan?
 WPScan is a widely used WordPress vulnerability scanner. It’s designed to help security professionals, developers, and website administrators identify security weaknesses in WordPress installations. WPScan leverages a database of known vulnerabilities, enumerates installed plugins and themes, and checks for misconfigurations. By regularly scanning your WordPress website, you can stay one step ahead of potential attackers and maintain a secure online presence.
 
-en Kali instalamos ruby sudo apt-get install ruby-full y wpscan gem install wpscan y lo tiramos wpscan --url https://shopcloud.es (despues de una busqueda pasiva en google shopcloud) y nos deveuvelve los interesting findings![wpscan](image.png)![vulns](image-1.png)
+en Kali instalamos ruby sudo apt-get install ruby-full y wpscan gem install wpscan y lo tiramos wpscan --url https://shopcloud.es (despues de una busqueda pasiva en google shopcloud) y nos deveuvelve los interesting findings![wpscan](../assets/image.png)![vulns](../assets/image-1.png)
 como nos piden api token como tokens para funcionar nos registramos cogemos el api token y lo metemos en la terminal con. wpscan --url https://shopcloud.es --api-token <token>
 
 Descubrimos que no sabemos leer pq la pregunta nos dice: 
@@ -61,7 +61,7 @@ Medio
 
 el probelma se resolvio en la 8.0.0 tal como se indica en https://patchstack.com/database/wordpress/plugin/really-simple-ssl/vulnerability/wordpress-really-simple-ssl-plugin-7-2-3-server-side-request-forgery-ssrf-vulnerability
 
-el vector de ataque es a traves de red network https://nvd.nist.gov/vuln/detail/CVE-2024-31229![red](image-2.png)
+el vector de ataque es a traves de red network https://nvd.nist.gov/vuln/detail/CVE-2024-31229![red](../assets/image-2.png)
 se soluciono el problema en la 8.0.0 https://patchstack.com/database/wordpress/plugin/really-simple-ssl/vulnerability/wordpress-really-simple-ssl-plugin-7-2-3-server-side-request-forgery-ssrf-vulnerability
 
 ¿Cuál la última fecha de actualización del plugin? ¿A que versión se actualizó?
@@ -391,7 +391,7 @@ May 12 03:14:15 shopcloud sshd[14528]: pam_unix(sshd:session): session opened fo
 
 evidnecia
 https://tryhackme.com/room/PE87_1-ShopCloud_Pwned_MF04879y7lbp
-![pwned III](image-6.png)
+![pwned III](../assets/image-6.png)
 
 
 Fase 2: comunicar los resultados al cliente, informe

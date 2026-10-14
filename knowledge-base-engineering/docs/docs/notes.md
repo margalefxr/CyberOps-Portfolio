@@ -81,11 +81,11 @@ Concepts	Description
 Nodes	Individual devices connected to a network.
 **Links**	Communication pathways that connect nodes (wired or wireless).
 Data Sharing	The primary purpose of a network is to enable data exchange.
-LAN![LAN](image.png)
+LAN![LAN](../../assets/assets/image.png)
 
 The Internet is the largest example of a WAN, connecting millions of LANs globally.
 Wide Area Network
-WAN ![WAN](image-1.png)
+WAN ![WAN](../../assets/assets/image-1.png)
 
 Let's consider the following scenario to illustrate how LANs and WANs work together. At home, our devices—such as laptops, smartphones, and tablets—connect to our home router, forming a LAN. This router doesn't just manage local traffic; it also communicates with our ISP's WAN. Through this connection to the WAN, our home network gains the ability to access websites and online services hosted all over the world. This seamless integration between the LAN and WAN enables us to reach global content and interact with services beyond our local network.
 For instance, when accessing the Internet, a home LAN connects to an Internet Service Provider's (ISP's) WAN, which grants Internet access to all devices within the home network. An ISP is a company that provides individuals and organizations with access to the Internet.
@@ -117,7 +117,7 @@ La diferencia principal es que IP es el protocolo responsable de enrutar y entre
 What is the name of the piece of hardware that all networked devices come with?
 Network Interface Card
 
-![Puerto](image-2.png)
+![Puerto](../../assets/assets/image-2.png)
 
 Protocol	Description
 HTTP (Hypertext Transfer Protocol)	Primarily used for transferring web pages. It operates at the Application Layer, allowing browsers and servers to communicate in the delivery of web content.
@@ -220,7 +220,7 @@ A server is a powerful computer designed to provide services to other computers,
 Devices on a network will all have a physical network interface, which is a microchip board found on the device's motherboard. This network interface is assigned a unique address at the factory it was built at, called a MAC (Media Access Control ) address
 However, an interesting thing with MAC addresses is that they can be faked or "spoofed" in a process known as spoofing. This spoofing occurs when a networked device pretends to identify as another using its MAC address. When this occurs, it can often break poorly implemented security designs that assume that devices talking on a network are trustworthy. Take the following scenario: A is configured to allow any communication going to and from the MAC address of the administrator. If a device were to pretend or "spoof" this MAC address, the would now think that it is receiving communication from the administrator when it isn't.
 
-![SYS|ACK](image-3.png)
+![SYS|ACK](../../assets/assets/image-3.png)
 
 
 
@@ -242,7 +242,7 @@ tskmgr
 View advanced system settings
 
 msconfig > tools para tools interesantes
-![toools msconfig](image-4.png)
+![toools msconfig](../../assets/assets/image-4.png)
 
 compmgmt
 
@@ -386,14 +386,14 @@ La Ley de la UE: NIS2 (Obliga a reportar e implementar control).La Ley en Españ
 
 1. La Ley de la UE: NIS2El código de circulación europeo.¿Qué hace?: Obliga por ley a proteger los sistemas críticos y reportar ciberataques bajo amenaza de multas millonarias.Su función: Obligar legalmente a las organizaciones medianas y grandes a tomarse en serio la ciberseguridad.2. La Ley en España: Anteproyecto de Ley de CoordinaciónLa adaptación local del código de circulación.¿Qué hace?: Traduce la ley europea al derecho español y reparte las competencias de control en el país.Su función: Dar validez legal a las multas dentro de España y organizar el territorio.3. El Supervisor Político/Legal: SEDIA (Privado) o CCN (Público)Los radares fijados en la carretera que multan.¿Qué hacen?: Inspeccionan los niveles de seguridad y firman los expedientes de sanción si hay negligencias.Su función: Ejercer de autoridad competente y reguladora (SEDIA para empresas privadas, CCN para administraciones).4. El Supervisor Policial/Delictivo: OCC (Interior)La patrulla de la Guardia Civil de Tráfico.¿Qué hace?: Coordina a las unidades tecnológicas de la Policía y la Guardia Civil para perseguir el crimen.Su función: Investigar quién está detrás del ciberataque, rastrear el dinero y detener a los delincuentes.5. El "Bombero" Técnico: INCIBE-CERT (Privado) o CCN-CERT (Público)Las ambulancias y los mecánicos de emergencia.¿Qué hacen?: Reciben obligatoriamente las alertas de hackeo en 24 horas y ayudan técnicamente a contener la crisis.Su función: Mitigar el impacto del ataque en tiempo real y alertar al resto de conductores del peligro (INCIBE para empresas, CCN para el Estado).6. El Estándar Organizativo: ENS (Nacional) o ISO 27001 (Internacional)Las clases de la autoescuela y el examen de conducir.¿Qué hacen?: Manuales de gestión que estructuran cómo debe organizarse la empresa (políticas, contraseñas, accesos).Su función: Lograr una certificación oficial que demuestra que sabes conducir seguro (el ENS da el sello oficial del Gobierno; la ISO da el sello internacional).7. El Motor del Riesgo: MAGERIT (Software PILAR) o ISO 27005El ordenador de a bordo que calcula el desgaste de los frenos.¿Qué hacen?: Metodologías científicas que miden qué activos tienes y qué impacto económico tendría perderlos.Su función: Justificar tus inversiones ante el supervisor demostrando matemáticamente dónde hay más peligro de accidente.8. El Vigilante del Dato: AEPD (RGPD)El seguro de responsabilidad civil a terceros.¿Qué hace?: Protege exclusivamente el derecho a la privacidad y los datos personales robados en el hackeo.Su función: Multar e intervenir de forma paralela e independiente si los hackers se llevan los DNI o tarjetas de los clientes.
 
-![certificados policies](image-5.png)
+![certificados policies](../../assets/assets/image-5.png)
 
 
 pintra de derecha a izquierda hacer ingenieria inversa
-![alt text](image-6.png)
+![alt text](../../assets/assets/image-6.png)
 
 
-![modelos dependencias](image-7.png)
+![modelos dependencias](../../assets/assets/image-7.png)
 
 
 **RCE** = remote code execution
@@ -404,10 +404,10 @@ pintra de derecha a izquierda hacer ingenieria inversa
 
 
 
-![TCP/IP wireshark](image-8.png)
+![TCP/IP wireshark](../../assets/assets/image-8.png)
 
 nmap output
-![nmap output](image-9.png)
+![nmap output](../../assets/assets/image-9.png)
 
 Have you ever experienced a cyberattack? Cyberattacks target individuals,
 organizations and systems. Having an online profile has made life
@@ -8558,9 +8558,9 @@ Three PC monitors representing asset inventory. One of the PCs is under investig
 
 Asset inventory, also called asset lookup, is a list of all computing resources within an organisation's IT environment. Note that while "asset" is a vague term and can also refer to software, hardware, or employees, this room emphasises servers and workstations only. For the scenario above, asset inventory would help you get context about the HQ-FINFS-02 server.
 
-![network diagram](image-10.png)
+![network diagram](../../assets/assets/image-10.png)
 
-![playbook](image-11.png)
+![playbook](../../assets/assets/image-11.png)
 
 Enrichment: Use Threat Intelligence and identity inventory to get information about the affected user
 Investigation: Using the gathered data and
@@ -9378,7 +9378,7 @@ Modern (released in 2017, updated in 2022). 	Some frameworks, such as MITRE’s 
 The UKC is extremely detailed (18 phases). 	Other frameworks often have a small handful of phases.
 The UKC covers an entire attack - from reconnaissance, exploitation, post-exploitation and includes identifying an attacker's motivation. 	Other frameworks cover a limited amount of phases.
 The UKC highlights a much more realistic attack scenario. Various stages will often re-occur. For example, after exploiting a machine, an attacker will begin reconnaissance to pivot another system. 	Other frameworks do not account for the fact that an attacker will go back and forth between the various phases during an attack.
-![alt text](image-12.png)
+![alt text](../../assets/assets/image-12.png)
 
 
 The

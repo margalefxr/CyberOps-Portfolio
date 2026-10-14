@@ -14,7 +14,7 @@ date: ""
 **Fecha:** 14/07/2026  
 **Actividad:** [AP 12] Auditoría - Ayuntamiento Bollullos
 
-![bolludos](image-2.png)
+![bolludos](../assets/image-2.png)
 
 </div>
 </div>
@@ -59,7 +59,7 @@ En ese caso, **40.000 €** simplemente sirve para calcular las pérdidas econó
 
 ## 2. El Impacto Repercutido sobre el negocio (Activo A) por la caída del servidor (Activo B)
 
-<img src="image.png" alt="diagrama" width="50%" />
+<img src="../assets/image.png" alt="diagrama" width="50%" />
 
 $$	{Impacto} = 	{Dependencia} x {Degradación}$$
 
@@ -133,7 +133,7 @@ Entonces:
 | **Au** | $0.48 x 0.4$ | **0.192** |
 | **T** | $0.36 x 0.4$ | **0.144** |
 
-<img src="image-1.png" alt="total" width="55%" />
+<img src="../assets/image-1.png" alt="total" width="55%" />
 
 ---
 <div style="page-break-after: always;"></div>

@@ -24,7 +24,7 @@ date: ""
 
 <br>
 
-![Portada](image-2.png)
+![Portada](../assets/image-2.png)
 
 </div>
 
@@ -74,7 +74,7 @@ En MAGERIT, el valor del negocio se asigna inicialmente al activo esencial y se 
 
 <div align="center">
 
-![Diagrama](image.png)
+![Diagrama](../assets/image.png)
 
 </div>
 

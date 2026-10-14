@@ -1,0 +1,16 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+__MACOSX/
+*.swp
+.vscode/
+.idea/
+
+# Archive/export leftovers
+*.zip
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
