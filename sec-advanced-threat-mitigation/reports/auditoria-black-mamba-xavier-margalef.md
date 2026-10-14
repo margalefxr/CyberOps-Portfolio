@@ -4,10 +4,6 @@
     <p style="font-size: 18px; color: #4a5568; font-weight: 600; margin-top: 5px;">Plataforma Web Corporativa</p>
 </div>
 
-<div style="text-align: center; margin: 30px 0;">
-    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Security Audit" style="width: 85%; max-width: 550px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 0 auto; display: block;" />
-</div>
-
 <div style="background-color: #f7fafc; border-left: 5px solid #2b6cb0; padding: 20px; margin: 40px auto 0 auto; max-width: 600px; border-radius: 0 8px 8px 0;">
     <table style="width: 100%; border-collapse: collapse; font-size: 14px; background: transparent;">
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 0; font-weight: bold; color: #4a5568; width: 35%;">Cliente:</td><td style="padding: 6px 0; color: #1a202c;">Black Mamba</td></tr>
@@ -73,7 +69,7 @@ La auditoría se ha llevado a cabo sobre la infraestructura que mantiene la web 
 * Sistema operativo **Ubuntu Server** (infraestructura base).
 * **Datos de negocio y credenciales** asociadas al servicio (activos de información críticos).
 
-El análisis ha tenido encuenta las relaciones de dependencia entre los componentes para establecer la propagación del impacto. Para la valoración se han considerado las dimensiones esenciales de la seguridad de la informacion; **Confidencialidad (C)**, **Integridad (I)**, **Disponibilidad (D)**, **Autenticidad (Au)** y **Trazabilidad (T)**.
+El análisis ha tenido en cuenta las relaciones de dependencia entre los componentes para establecer la propagación del impacto. Para la valoración se han considerado las dimensiones esenciales de la seguridad de la información: **Confidencialidad (C)**, **Integridad (I)**, **Disponibilidad (D)**, **Autenticidad (Au)** y **Trazabilidad (T)**.
 
 ### 2.2 Metodología
 El proceso formal de análisis y gestión del riesgo se ha fundamentado en:

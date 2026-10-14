@@ -171,7 +171,7 @@ A partir de los resultados obtenidos mediante el uso de herramientas de asistenc
 % 3. PLAN DE ACCIÓN Y REMEDIACIÓN
 % ==============================================================================
 \chapter{Plan de Acción y Remediación (Mitigación)}
-Pasos esenciales que se deben seguir para arreglar los fallos de seguridad encontrados en la máquina ShopCloud S.L. y evitar que vuelvan a explotarlos:
+Pasos esenciales para corregir los fallos de seguridad identificados en la infraestructura de ShopCloud S.L. y prevenir su reexplotación:
 
 \subsection*{3.1 Mitigación del RCE en WP File Manager (AUD-001)}
 \begin{itemize}
@@ -193,7 +193,7 @@ Pasos esenciales que se deben seguir para arreglar los fallos de seguridad encon
     \begin{lstlisting}[language=bash]
     chmod 0755 /usr/bin/base64
     \end{lstlisting}
-    \item \textbf{Remediación Definitiva:} Hacer una revisión manual de los permisos de los binarios del sistema para asegurarse de que ninguno tenga el bit SUID activo sin necesidad. Por otra parte, eliminar el archivo antiguo \texttt{test\_conn.php} que se quedó olvidado, cambiar la clave API de Stripe que se filtró en ese script, y poner una contraseña nueva y fuerte para el acceso por SSH (\texttt{ShopCloud\_Admin2026!}) para que nadie la adivine por fuerza bruta.
+    \item \textbf{Remediación Definitiva:} Realizar una revisión manual de los binarios del sistema para confirmar que ninguno conserva el bit SUID sin necesidad real. De forma paralela, eliminar el script residual \texttt{test\_conn.php}, rotar la clave de API de Stripe expuesta en su contenido, y sustituir la contraseña de acceso SSH por una credencial robusta que resista ataques de fuerza bruta.
     \item \textbf{Responsable:} Administrador de Sistemas Principal / Seguridad de Infraestructura. \textbf{Plazo de ejecución:} 48 Horas.
 \end{itemize}
 
