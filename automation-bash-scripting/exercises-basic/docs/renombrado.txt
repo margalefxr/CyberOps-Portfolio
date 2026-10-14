@@ -1,0 +1,1 @@
+archivo1.txt renombrado con mv (ejercicio de gestión de ficheros).

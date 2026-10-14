@@ -1,0 +1,1 @@
+Copia de archivo1.txt, creada con cp (ejercicio de gestión de ficheros).

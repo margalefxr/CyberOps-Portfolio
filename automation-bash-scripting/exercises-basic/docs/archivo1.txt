@@ -1,0 +1,1 @@
+Fichero creado con touch (ejercicio de gestión de ficheros).
