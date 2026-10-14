@@ -1,121 +1,115 @@
-# [AP 08] Desglosa un incidente complejo
+# Desglose de un Incidente Complejo — GlobalPay
 
-## Portada
+**Auditor:** Xavier Margalef Riestra
+**Actividad:** Análisis forense y de respuesta ante incidentes (DFIR) sobre una brecha de datos de tarjetas
+**Fecha:** Julio 2026
 
-Nombre: Xavier Margalef Riestra
+---
 
-Actividad: [AP 08] Desglosar un incidente complejo
+## Contexto del incidente
 
-Fecha entrega: 14 de Julio 20226
+GlobalPay sufre una brecha de seguridad que culmina en la exfiltración de datos de tarjetas de pago, a través de una cadena de tres fallos técnicos encadenados y un fallo organizativo de fondo. El objetivo de este análisis es doble: determinar la respuesta inmediata correcta y, para cada paso de la cadena de ataque, identificar qué auditoría preventiva lo habría detectado antes de que ocurriera.
 
+## 1. Reacción inmediata
 
+### ¿Qué tipo de auditoría debe ejecutarse en este momento y por qué?
 
-## Actividades
+La respuesta correcta es **DFIR (Digital Forensics & Incident Response)**, no una auditoría preventiva: el ataque ya se ha producido y el objetivo pasa a ser reconstruir qué ocurrió, contener el daño y preservar evidencia, no prevenir.
 
-### Reacción Inmediata
+Las prioridades inmediatas son:
 
-#### ¿Qué tipo de auditoría debe ejecutarse en este mismo momento y por qué?
+- Identificar el origen y el vector de entrada del ataque.
+- Reconstruir la cadena de eventos (*timeline*) completa.
+- Preservar evidencia digital (logs, memoria, discos) con cadena de custodia, antes de que se sobrescriba o se pierda.
+- Establecer el alcance real de la exfiltración de datos.
 
-Respuesta a Incidentes dentro de Seguridad de la Información y Ciberseguridad
+En este caso concreto, DFIR es crítico por tres factores que elevan la urgencia por encima de un incidente ordinario:
 
-Habria que relizar un **DFIR**, ya que entra en acción después de que se ha producido un incidente o ciberataque y en esta ocasion el ataque ya ha sido perpretado y ha habido consecuencs por lo que tenemos que identificar y recopiar informacion sobre que ha pasado y como reaccionar:
+- Fuga masiva de datos de tarjetas de pago.
+- Impacto legal — investigación gubernamental ya en curso.
+- Riesgo de pérdida de la licencia de procesamiento de pagos (Visa/Mastercard).
 
-- Identificar el origen del ataque
-- Reconstruir la cadena de eventos (timeline)
-- Preservar evidencias digitales (logs, memoria, discos)
-- Establecer el alcance real de la exfiltración de datos
+**Herramientas de auditoría asistida por ordenador (CAAT) aplicables en esta fase:**
 
-En este caso concreto, **DFIR** es crítica porque hay:
+| Herramienta | Función |
+|---|---|
+| ELK Stack / Splunk | Análisis de logs masivos y correlación de eventos |
+| Wireshark | Captura y análisis de tráfico de red sospechoso |
+| Autopsy | Análisis forense de discos y recuperación de evidencia |
+| Snort / OSSEC | Detección de intrusiones previas al incidente actual |
 
-- fuga masiva de datos
-- impacto legal (investigación gobierno)
-- riesgo de pérdida de licencias (Visa/Mastercard)
-  
-**CAATs** utilizados en esta fase:
-- ELK Stack / Splunk → análisis de logs masivos
-- Wireshark → tráfico de red sospechoso
-- Autopsy → análisis forense de discos
-- Snort / OSSEC → detección de intrusiones previas
+## 2. Análisis de la cadena de ataque
 
+**Pregunta de la actividad:** si GlobalPay hubiera auditado correctamente antes del ataque, ¿qué tres auditorías preventivas específicas habrían detectado y evitado cada paso de la cadena?
 
+El marco de referencia combina gestión de proyectos IT, SDLC, seguridad de la información y ciberseguridad — cada paso técnico de la cadena tiene una auditoría preventiva específica que lo habría cortado.
 
+### Paso 1 — XSS en portal web obsoleto → robo de sesión
 
-## Análisis
-
-*Si GlobalPay hubiera hecho bien su trabajo antes del ataque, ¿qué TRES tipos específicos de auditorías preventivas habrían detectado y evitado los pasos 1, 2 y 3 del atacante? Relaciona cada auditoría con su paso correspondiente.*
-
-Aqui aplicamos gestión de proyectos IT + SDLC + Seguridad de la información + Ciberseguridad
-
-#### PASO 1: XSS en portal web obsoleto → robo de sesión
-
-Utilizamos **Aplicaciones y desarrollo (SDLC). Análisis web (Seguridad en Aplicaciones y APIs / OWASP)**
-
-Habría detectado:
-    vulnerabilidades OWASP Top 10 (XSS)
-    falta de validación de entradas
-    ausencia de testing en ciclo de vida del software
-Herramientas típicas:
-    OWASP ZAP
-    Burp Suite
-    pruebas basadas en OWASP Top 10
-
-### PASO 2 — Red sin segmentación, el atacante salta de soporte → bases de datos de tarjetas
-
-Utilizariamos **Seguridad de la información y ciberseguridad. Auditoría de redes (Network Security Assessment)**
+**Auditoría aplicable:** seguridad en aplicaciones y APIs (OWASP), dentro del ciclo SDLC.
 
 Qué habría detectado:
-    falta de segmentación VLAN
-    ausencia de arquitectura Zero Trust
-    movimiento lateral libre entre redes críticas
-CAATs:
-    Nmap → mapeo de red
-    Snort / IDS-IPS → detección de intrusiones
-    MITRE ATT&CK → modelado de técnicas de ataque
+- Vulnerabilidades del OWASP Top 10 (XSS reflejado/almacenado).
+- Falta de validación y sanitización de entradas de usuario.
+- Ausencia de testing de seguridad integrado en el ciclo de vida del software.
 
-### PASO 3 — Credenciales en texto plano. Script de backup con contraseña de administrador expuesta
+Herramientas típicas: OWASP ZAP, Burp Suite, pruebas sistemáticas contra el catálogo OWASP Top 10.
 
-Utilizariamos **Aplicaciones y desarrollo (SDLC). Análisis de código (DevSecOps / Software Security)**.
+### Paso 2 — Red sin segmentación: el atacante salta de soporte a bases de datos de tarjetas
+
+**Auditoría aplicable:** auditoría de redes (*Network Security Assessment*).
 
 Qué habría detectado:
-    credenciales hardcodeadas
-    malas prácticas de programación
-    falta de revisión de código
-CAATs:
-    SAST (Static Application Security Testing)
-    análisis de repositorios de código
-    scripts de auditoría (Python/SQL)
+- Falta de segmentación por VLAN entre entornos de soporte y entornos que procesan datos de tarjeta.
+- Ausencia de arquitectura Zero Trust — el movimiento lateral no debería ser posible sin autenticación y autorización explícitas en cada salto.
+- Movimiento lateral sin restricción entre redes críticas.
 
-### GESTIÓN DE PROYECTOS IT (**fallo estructural**) causa raiz organizativa que no forma parte del patron del atacante
-Problema:
-Portal sin actualizar durante 2 años
-**Auditoría: Gestión de proyectos IT**
+CAATs: Nmap (mapeo de red), Snort/IDS-IPS (detección de intrusiones), MITRE ATT&CK (modelado de las técnicas de movimiento lateral empleadas).
+
+### Paso 3 — Credenciales en texto plano en un script de backup con privilegios de administrador
+
+**Auditoría aplicable:** análisis de código (DevSecOps / *Software Security Review*).
+
 Qué habría detectado:
-    falta de mantenimiento del software
-    mala planificación de actualizaciones
-    ausencia de control de calidad en entregas
-Resultado: el sistema no habría quedado obsoleto
+- Credenciales hardcodeadas directamente en código o scripts.
+- Malas prácticas de desarrollo en el manejo de secretos.
+- Ausencia de revisión de código orientada a seguridad antes de desplegar.
 
-## Normativa
+CAATs: SAST (*Static Application Security Testing*), análisis automatizado de repositorios, scripts propios de auditoría (Python/SQL) para detectar patrones de credenciales expuestas.
 
-### ¿Qué auditoría específica acaba de reprobar estrepitosamente la empresa en el paso 4, enfrentándose a multas millonarias?
+### Causa raíz organizativa — gestión de proyectos IT
 
-Auditoría fallida: **Auditoría de cumplimiento normativo (Compliance)**
-Normativas incumplidas:
-    PCI-DSS (tarjetas de crédito)
-    RGPD / LOPD (datos personales)
-    ISO 27001 (seguridad de la información)
-Consecuencias:
-    multas económicas elevadas
-    investigación gubernamental
-    pérdida de licencia de procesamiento de pagos
+Los tres pasos técnicos anteriores son el *patrón* del atacante; el fallo de fondo que los habilitó a todos es distinto y no técnico: **el portal llevaba dos años sin actualizar**.
 
+**Auditoría aplicable:** gestión de proyectos IT.
 
-## Reacciones
+Qué habría detectado: falta de mantenimiento continuado del software, mala planificación de ciclos de actualización, y ausencia de control de calidad en los procesos de entrega. Con un proceso de mantenimiento mínimamente maduro, el sistema no habría llegado a quedar obsoleto y expuesto en primer lugar — es la auditoría que, de haberse hecho, habría evitado que los otros tres pasos fueran siquiera posibles.
 
-*El Director General (CEO) propone contratar urgentemente una Auditoría de Seguridad Física para evitar que esto vuelva a pasar. Como Auditor Jefe, ¿qué le responderías?*
+## 3. Incumplimiento normativo
 
-La auditoría de seguridad física no es prioritaria en este incidente. El origen del ataque es exclusivamente lógico y se encuentra en fallos de SDLC, segmentación de red y gestión de credenciales.
-Por ejemplo, el fallo de SDLC se ve cuando una web se publica con vulnerabilidades como XSS (OWASP), como si se dejara una “puerta abierta” en una aplicación accesible desde Internet.
-La falta de segmentación de red permite que, una vez dentro del sistema de soporte, el atacante acceda a bases de datos críticas, como si todas las salas de un edificio pudieran abrirse sin llaves (principio que Zero Trust evitaría).
-La mala gestión de credenciales ocurre al almacenar contraseñas en texto plano, equivalente a dejar una llave de acceso general visible en un archivo compartido.
-La respuesta correcta es una auditoría integral de ciberseguridad basada en OWASP, Zero Trust, DevSecOps y PCI-DSS. La seguridad física solo sería complementaria.
+### ¿Qué auditoría específica reprueba la empresa en el paso 4, y a qué se enfrenta?
+
+**Auditoría fallida:** cumplimiento normativo (*Compliance*).
+
+**Normativas incumplidas:**
+- **PCI-DSS** — estándar de seguridad para el procesamiento de datos de tarjetas de pago.
+- **RGPD / LOPDGDD** — protección de datos de carácter personal.
+- **ISO/IEC 27001** — gestión de la seguridad de la información.
+
+**Consecuencias directas:** sanciones económicas significativas, apertura de investigación gubernamental, y riesgo real de pérdida de la licencia de procesamiento de pagos — este último es, en la práctica, el riesgo que puede determinar la continuidad del negocio.
+
+> **Nota de actualidad (2026):** con **NIS2** ya transpuesta en la mayoría de estados miembros de la UE, una brecha de esta magnitud activaría además una obligación de notificación temprana en 24 horas y un informe formal en 72 horas — un plazo que corre en paralelo a la investigación forense, no después de ella. Un plan de respuesta a incidentes maduro en 2026 integra esta decisión regulatoria desde la primera hora, no la pospone hasta que termine el análisis técnico.
+
+## 4. Priorización de la respuesta
+
+**Planteamiento:** el CEO propone contratar urgentemente una auditoría de seguridad física para evitar que esto vuelva a ocurrir. Como auditor responsable, ¿cuál es la respuesta correcta?
+
+La auditoría de seguridad física **no es la prioridad** ante este incidente concreto. El origen del ataque es exclusivamente lógico, y se concentra en tres planos: SDLC, segmentación de red y gestión de credenciales — ninguno de los tres se corrige con controles de acceso físico a instalaciones.
+
+Para que la recomendación sea legible también para un perfil no técnico, cada fallo técnico tiene un equivalente directo en el mundo físico:
+
+- El fallo de SDLC (portal publicado con XSS sin corregir) equivale a dejar la puerta de entrada de un edificio abierta y accesible desde la calle.
+- La falta de segmentación de red equivale a que, una vez dentro de una sala cualquiera del edificio, se pueda acceder sin más llaves a la caja fuerte — exactamente lo que una arquitectura Zero Trust está diseñada para impedir.
+- Las credenciales en texto plano equivalen a dejar la llave maestra del edificio colgada y visible en un archivo compartido al que cualquier empleado tiene acceso.
+
+**Recomendación:** una auditoría integral de ciberseguridad basada en OWASP (SDLC), Zero Trust (arquitectura de red) y DevSecOps (gestión de secretos en código), alineada con los requisitos de PCI-DSS. La seguridad física puede incorporarse como medida complementaria dentro de ese plan, pero no es la prioridad que la situación exige ahora mismo.

@@ -1,26 +1,22 @@
-# [PE 86.2] Entrega Proyecto — TechSecure
-
-![Seguridad Lógica y Control de Accesos](https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=1200&h=500&q=80)
-
----
+# TechSecure: Evaluación de Seguridad Lógica y Control de Accesos
 
 <div style="text-align: center; margin-top: 50px;">
-  <h2>TechSecure: Informe de Seguridad y Control de Accesos</h2>
   <p><strong>Analista:</strong> Xavier Margalef Riestra</p>
   <p><strong>Fecha:</strong> 2026-06-03</p>
-  <p><strong>Módulo:</strong> MF0486_3</p>
-  <p><strong>Clasificación:</strong> Entregable Oficial / Evaluación</p>
+  <p><strong>Metodología:</strong> Matriz de control de accesos (IAM/RBAC) · PDCA · Zero Trust</p>
 </div>
 
 ---
+
+## Resumen
+
+TechSecure presenta dos incidentes de naturaleza distinta en el mismo periodo: un fallo de control de accesos que expone datos financieros por falta de principio de mínimo privilegio, y la conexión de un dispositivo no autorizado que introduce malware en la red interna. El análisis diseña primero la matriz de accesos que debería haber existido, y después diagnostica cada incidente aplicando el ciclo PDCA y clasificándolo correctamente entre seguridad de la información, ciberseguridad y seguridad informática — una distinción que determina qué equipo responde y con qué salvaguardas.
 
 <div style="page-break-after: always;"></div>
 
 ### Actividad 1 - Matriz de accesos
 
-Principio de Mínimo Privilegio = [PoLP que se engloba dentro del modelo Zero Trust](https://www.paloaltonetworks.es/cyberpedia/what-is-the-principle-of-least-privilege)
-
-*Me adhiero a la nomenclatura del enfoque/modelo/framework Zero Trust 2.0 IAM para realizar el ejercicio*:
+El [principio de mínimo privilegio (PoLP)](https://www.paloaltonetworks.es/cyberpedia/what-is-the-principle-of-least-privilege) se aplica aquí bajo nomenclatura IAM estándar, siguiendo el modelo Zero Trust ("nunca confiar, siempre verificar"):
 
 - **FC** (Full Control)
 - **RW** (Read/Write)
