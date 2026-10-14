@@ -1,213 +1,86 @@
 # Informe de Evaluación de Riesgos: Seis Escenarios de Incidente
 
-<div style="text-align: center; margin-top: 50px;">
-  <p><strong>Auditor:</strong> Xavier Margalef Riestra</p>
-  <p><strong>Fecha:</strong> 2026-06-01</p>
-  <p><strong>Metodología:</strong> Clasificación de salvaguardas (Técnica/Administrativa/Física) · Ciclo PDCA · Riesgo = Impacto × Probabilidad</p>
-</div>
-
----
+**Auditor:** Xavier Margalef Riestra · **Fecha:** 2026-06-01
+**Metodología:** Clasificación de salvaguardas (Técnica/Administrativa/Física) · Ciclo PDCA · Riesgo = Impacto × Probabilidad
 
 ## Resumen
 
-El informe evalúa seis escenarios de incidente de naturaleza distinta — ransomware hospitalario, filtración de datos por error humano, fallo en un sistema industrial, acceso no autorizado a un servidor bancario, robo de equipos y fraude por ingeniería social — aplicando en cada caso el mismo marco de análisis: identificación de la amenaza y la vulnerabilidad explotada, clasificación de la salvaguarda más efectiva (técnica, administrativa o física), encaje en el ciclo de mejora continua PDCA, clasificación del incidente (seguridad de la información, ciberseguridad o seguridad física) y evaluación cuantitativa del riesgo.
-
-<div style="page-break-after: always;"></div>
-
-### 1. Ataque Ransomware en un Hospital
-
-* **Amenaza principal:** Ransomware.
-
----
-
-* **Vulnerabilidad:** la falta de copias de seguridad recientes, unida a la posible ausencia de segmentación de red o de un uso correcto de virtualización para aislar servicios, que permite la propagación lateral del malware.
-
----
-
-* **Salvaguarda:**
-    * **Técnica:** copias de seguridad periódicas con el uso de crontab rescatando el término del anterior ejercicio e implementación de sistemas EDR y AV actualizados al mercado.
-    * **Administrativa:** políticas de backup.
-    * **Física:** mejora de control de acceso para evitar entrada directa de hardware con ransomware malicioso, ya que es una posibilidad considerando que no se indica cómo se infecta.
-
----
-
-* **PDCA:** aquí se vería impactado el ***Plan***, que entraría a definir y revisar la estrategia de continuidad, políticas y planes de mejora, y el ***Act***, ya que es la fase de postmortem en cuanto a recuperar los datos, limpiar el sistema e implementar salvaguardas que permite activar el ciclo y planear, un denominador común después de cualquier incidente.
-
----
-
-* **Clasificación:** **Ciberseguridad** ya que el ransomware ha vencido las implementaciones, estrategias y herramientas de seguridad existentes desde su entrada hasta su disclosure y denial, con impacto en **Seguridad de la Información** que es lo que se ha visto expuesto, lo que es el activo de la información que en este caso son los historiales críticos y por tanto la confidencialidad de los usuarios y la disponibilidad al acceso a estos.
-
----
-
-* **Evaluación de riesgo:** **Crítico**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Muy Alto***: debido a la interrupción de atención médica a la hora de revisar información vital, sumada a la propia pérdida de datos de salud muy personales (nivel derechos fundamentales) que impacta en la confidencialidad, más daño reputacional al hospital.
-    * ***Probabilidad Alta***: ya que los hospitales son objetivos frecuentes por su vulnerabilidad por sistemas informáticos débiles no al día y con datos cruciales para la vida que requieren de una recuperación urgente lo cual es más atractivo para un ciber-criminal.
-
-<div style="page-break-after: always;"></div>
-
-### 2. Filtración de Datos en una Empresa de Tecnología
-
-* **Amenaza principal:** envío accidental de datos sensibles por error humano, categorizable como [insider threat](https://www.microsoft.com/en-gb/security/business/security-101/what-is-insider-threat) involuntario.
-
----
-
-* **Vulnerabilidad:** falta de política de gestión de datos por permisos y falta de control y revisión por software de salida por canales profesionales.
-
----
-
-* **Salvaguarda:**
-    * **Administrativa:** implementar política de control de acceso y permisos IAM que limite el acceso a la información según posición o rol aplicando modelos como Bell-LaPadula + mejorar la formación y concienciación continua en los empleados acerca de la seguridad de la información.
-    * **Técnica:** implementar sistemas de monitorización, bloqueo y notificación de envío de datos sensibles o archivos con contenido relevante.
-    * **Física:** no aplicaría.
-
----
-
-* **PDCA:** ***Plan*** (definir procedimientos y políticas habladas en la sección de salvaguardas), ***Check*** (auditar, controlar y monitorizar continuamente mediante el uso de la herramienta de control de salida de datos), y ***Act*** como hemos visto antes entendiendo que esto permite activar el sistema de hardening con la planificación.
-
----
-
-* **Clasificación:** **Seguridad de la Información** debido a que no hay un ataque que ponga en juego las implementaciones y metodologías de ciberseguridad, sino que hay una falla en la estrategia y política que protege el activo información por lo cual hay que planear cómo proteger mejor esta seguridad de la información. Las herramientas existentes y sus profesionales de ciberseguridad y seguridad informática han cumplido sus papeles, el problema es que había una vulnerabilidad no prevista.
-
----
-
-* **Evaluación de riesgo:** **Crítico**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Alto***: debido a pérdida de confidencialidad de clientes que rompe uno de los principios de la seguridad de la información, sanciones por violaciones de confidencialidad, y daño reputacional.
-    * ***Probabilidad Alta***: aunque existan políticas, herramientas y concienciación, las estadísticas del sector confirman que el error humano sigue siendo la causa predominante de fallas en seguridad de la información, lo que hace probable este tipo de incidente (un caso con paralelismos reales: el envío accidental de una película completa de animación por parte de un empleado de un gran estudio, posteriormente filtrada en redes).
-
-<div style="page-break-after: always;"></div>
-
-### 3. Falla en un Sistema Crítico de una Planta Industrial
-
-* **Amenaza principal:** fallo operacional en el ICS debido a software vulnerable no parcheado que expone a la manipulación de los PLC.
-
----
-
-* **Vulnerabilidad:** bug conocido sin parchear en el software de control, falta de parcheo y revisión de CVE públicos.
-
----
-
-* **Salvaguarda:**
-    * **Técnica:** aplicar implementaciones administrativas y políticas de parcheo de vulnerabilidades conocidas, implementar pruebas testing y QA.
-    * **Administrativa:** establecimiento de estrategias y políticas de ciberseguridad rigurosas que revisen vulnerabilidades y establezcan un calendario de mantenimiento preventivo.
-    * **Física:** protección de accesos a equipos y controles industriales por vías físicas que puedan manipular los PLCs.
-
----
-
-* **PDCA:** ***Plan*** (diseño previo del calendario de mantenimiento preventivo y de la estrategia de gestión de vulnerabilidades), ***Check*** (verificar el estado del software y detectar fallos, monitorizar errores y accesos, y auditar) y ***Act*** (corregir el bug, mejorar la gestión de mantenimiento y activar la retroalimentación del ciclo).
-
----
-
-* **Clasificación:** **Ciberseguridad Industrial**.
-
----
-
-* **Evaluación de riesgo:** **Crítico**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Alto***: pérdidas económicas significativas y detención completa de la producción industrial.
-    * ***Probabilidad Alta***: el entorno industrial seguro que tiene sistemas y hardware desfasados a nivel IoT con vulnerabilidades no parcheadas de sistemas antiguos.
-
-<div style="page-break-after: always;"></div>
-
-### 4. Acceso No Autorizado a un Servidor Bancario
-
-* **Amenaza principal:** atacante externo usando credenciales extraídas de la dark web.
-
----
-
-* **Vulnerabilidad:** servidor mal configurado sin autenticación fuerte ni doble autenticación, reutilización de credenciales filtradas, y falta de sistema de monitoreo como SIEM que detecte inicios de sesión anómalos.
-
----
-
-* **Salvaguarda:**
-    * **Técnica:** autenticación multifactor (MFA o 2FA), hardening de servidores, mejorar IAM, mejora o implementación de SIEM.
-    * **Administrativa:** establecimiento de políticas y metodologías de contraseñas (por ejemplo cambiar cada mes, formato mínimo, etc), y formación y concienciación.
-    * **Física:** no aplica directamente ya que el robo ha sido por red y no por robo presencial/visual por acceso no autorizado al centro empresarial.
-
----
-
-* **PDCA:** ***Plan*** (diseñar las estrategias y políticas de acceso, contraseñas, formación para evitar desde el nivel Seguridad de la Información), ***Do*** (para solucionar el problema causado por la filtración y acceso no autorizado con todo lo que comporta: password resets, activar el MFA o 2FA, hardening del sistema y servidor), ***Check*** (monitorear y auditar accesos, revisar configuraciones periódicamente) y ***Act*** (ya que toda esta planificación y correcciones vienen dadas por una revisión postmortem).
-
----
-
-* **Clasificación:** **Ciberseguridad** ya que se ha perpetrado un ataque que ha superado las herramientas y metodologías implementadas por los equipos de ciberseguridad, y **Seguridad de la Información** ya que han faltado políticas y estrategias de las mismas.
-
----
-
-* **Evaluación de riesgo:** **Crítico**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Muy Alto***: exposición de datos bancarios, operaciones no autorizadas y fraudulentas, multas regulatorias severas, fraude directo y daño reputacional corporativo.
-    * ***Probabilidad Alta***: el uso de credenciales filtradas es un riesgo común en servicios bancarios, según reportes de incidencias hay bots atacando continuamente explorando vulnerabilidades, etc.
-
-<div style="page-break-after: always;"></div>
-
-### 5. Robo de Equipos con Información Sensible
-
-* **Amenaza principal:** robo físico de dispositivos y de sus datos no cifrados.
-
----
-
-* **Vulnerabilidad:** ausencia de cifrado en los portátiles y falta de control de acceso físico y monitoreo de actividad en las instalaciones así como de herramienta de gestión de dispositivos que permita borrado de datos en caso de robo o pérdida.
-
----
-
-* **Salvaguarda:**
-    * **Física:** aquí sí es la más importante y la más crítica que permite que el resto de vulnerabilidades sean explotadas, hay que implementar control de acceso a instalaciones, cámaras, cerraduras y vigilancia.
-    * **Técnica:** cifrado de disco y gestión de dispositivos ([MDM](https://www.ibm.com/es-es/think/topics/mobile-device-management)).
-    * **Administrativa:** políticas de seguridad física y respuesta ante robo.
-
----
-
-* **PDCA:** ***Plan*** (definir seguridad física, de perímetros, de acceso y seguridad de protección de equipos, acceso biométrico, software a implementar como MDM), ***Act*** (como ya ha pasado toca analizar, evaluar postmortem y corregir retroalimentando con Plan para entender cómo hay que corregir y buscar la mejora continua).
-
----
-
-* **Clasificación:** **Seguridad de la Información con Seguridad Física**.
-    
-    Aquí la explotación de la vulnerabilidad viene dada por una deficiente política que proteja el activo tanto en su lado físico como digital. No se han vencido medidas de ciberseguridad sino que no existían por falta de estrategia metodológica a nivel de arquitectura.
-
----
-
-* **Evaluación de riesgo:** **Alto**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Alto***: acceso a activo información que vulnera la confidencialidad, expone a posible alteración (dentro de la triada DAD como contrario a la confidencialidad, integridad y disponibilidad) y uso con fines comerciales y fraudulentos.
-    * ***Probabilidad Media***: hoy en día no tener protección física ni digital es menos probable, y la entrada física a una empresa expone al atacante en su integridad física.
-
-<div style="page-break-after: always;"></div>
-
-### 6. Fraude por Ingeniería Social
-
-* **Amenaza principal:** fraude mediante ingeniería social y phishing.
-
----
-
-* **Vulnerabilidad:** falta de política de verificación de acciones financieras y educación digital/concienciación; al empleado no ha tenido claro que ante la duda reporte o consulte.
-
----
-
-* **Salvaguarda:**
-    * **Administrativa:** políticas de verificación de pagos, formación en detección de phishing y procedimientos de doble verificación.
-    * **Técnica:** filtros antiphishing y alertas de correo electrónico.
-    * **Física:** no aplicaría.
-
----
-
-* **PDCA:** ***Plan*** (establecer las políticas de control y herramientas y software de verificación para transacciones económicas dentro de la red y/o dispositivos de trabajo, así como mejorar los planes de concienciación), ***Do*** (implementar y ejecutar los filtros técnicos antiphishing configurados y realizar las sesiones de formación/concienciación a los empleados), ***Check*** (auditar y supervisar las transacciones y cumplimiento de las políticas) y ***Act*** (entender qué ha pasado, el porqué, y planificar las mejoras).
-
----
-
-* **Clasificación:** **Seguridad de la Información**, no se compromete la infraestructura, sino que ha habido una vulnerabilidad explotada que lo ha sido por falta de previsión técnica y formativa.
-
----
-
-* **Evaluación de riesgo:** **Crítico**
-    
-    Establecido bajo el framework matemático de $\text{Riesgo} = \text{Impacto} \times \text{Probabilidad}$:
-    * ***Impacto Alto***: el desvío de 100.000 € podría equivaler a un SEV1 en incidentes provocados por fallo o bug en software, sumado al riesgo de consecuencias legales y reputacionales.
-    * ***Probabilidad Alta***: como hemos comentado antes el error humano es más del 90% de la causa de vulneraciones de la seguridad de la información, y el phishing como hemos visto en clase es el método más sencillo y barato y puede tirar de OSINT e ingeniería social al cual mucha gente tiene acceso y facilidades.
+Evaluación de seis escenarios de incidente de naturaleza distinta — ransomware hospitalario, filtración de datos por error humano, fallo en un sistema industrial, acceso no autorizado a un servidor bancario, robo de equipos y fraude por ingeniería social — aplicando en cada caso el mismo marco de análisis: amenaza y vulnerabilidad explotada, salvaguarda más efectiva por tipo (técnica/administrativa/física), fase del ciclo PDCA que activa, clasificación del incidente (seguridad de la información, ciberseguridad o seguridad física) y riesgo = impacto × probabilidad.
+
+## 1. Ataque ransomware en un hospital
+
+| | |
+|---|---|
+| **Amenaza** | Ransomware |
+| **Vulnerabilidad** | Ausencia de copias de seguridad recientes, sin segmentación de red ni aislamiento por virtualización que frene la propagación lateral |
+| **Salvaguarda técnica** | Backups periódicos automatizados (crontab) + EDR/antivirus actualizados |
+| **Salvaguarda administrativa** | Política de backup formal |
+| **Salvaguarda física** | Control de acceso a hardware, por si la infección entró por ese vector (no especificado en el enunciado) |
+| **PDCA** | *Plan* — define estrategia de continuidad y políticas de backup. *Act* — postmortem: recuperar datos, limpiar el sistema, implementar las salvaguardas e iniciar un nuevo ciclo |
+| **Clasificación** | **Ciberseguridad** — el ransomware venció las defensas existentes — con impacto directo en **Seguridad de la Información**: confidencialidad y disponibilidad de historiales clínicos |
+| **Riesgo** | **Crítico** · Impacto *muy alto* (interrupción de atención médica, pérdida de datos de salud con protección de derechos fundamentales, daño reputacional) · Probabilidad *alta* (los hospitales son objetivo frecuente por sistemas desactualizados y la urgencia de recuperar datos críticos para la vida) |
+
+## 2. Filtración de datos en una empresa tecnológica
+
+| | |
+|---|---|
+| **Amenaza** | Envío accidental de datos sensibles por error humano — [insider threat](https://www.microsoft.com/en-gb/security/business/security-101/what-is-insider-threat) involuntario |
+| **Vulnerabilidad** | Falta de política de gestión de permisos y sin control/revisión automática de la salida de datos por canales profesionales |
+| **Salvaguarda administrativa** | Control de acceso por rol (modelo tipo Bell-LaPadula) + formación continua en seguridad de la información |
+| **Salvaguarda técnica** | Monitorización, bloqueo y alerta de envío de datos sensibles (DLP) |
+| **Salvaguarda física** | No aplica |
+| **PDCA** | *Plan* — procedimientos y políticas de acceso. *Check* — auditoría continua con la herramienta DLP. *Act* — hardening con lo aprendido |
+| **Clasificación** | **Seguridad de la Información** — no hay un ataque que venza una defensa técnica; es la política la que tenía un hueco no previsto, no un fallo de herramienta |
+| **Riesgo** | **Crítico** · Impacto *alto* (pérdida de confidencialidad de clientes, sanciones, daño reputacional) · Probabilidad *alta* (el error humano sigue siendo la causa predominante en incidentes de seguridad de la información — paralelismo real: el envío accidental de una película completa por un empleado de un estudio de animación, filtrada después en redes) |
+
+## 3. Fallo en un sistema crítico de una planta industrial
+
+| | |
+|---|---|
+| **Amenaza** | Fallo operacional en el ICS por software de control vulnerable y sin parchear, que expone los PLC a manipulación |
+| **Vulnerabilidad** | Bug conocido sin parchear, sin proceso de revisión de CVE públicos |
+| **Salvaguarda técnica** | Parcheo de vulnerabilidades conocidas + testing/QA antes de desplegar cambios |
+| **Salvaguarda administrativa** | Política de ciberseguridad con calendario de mantenimiento preventivo |
+| **Salvaguarda física** | Control de acceso físico a los equipos de control industrial |
+| **PDCA** | *Plan* — calendario de mantenimiento y gestión de vulnerabilidades. *Check* — monitorización de errores/accesos y auditoría. *Act* — corregir el bug y retroalimentar la mejora |
+| **Clasificación** | **Ciberseguridad Industrial** |
+| **Riesgo** | **Crítico** · Impacto *alto* (pérdidas económicas y parada total de producción) · Probabilidad *alta* (entornos OT/IoT con hardware desfasado y vulnerabilidades sin parchear por años) |
+
+## 4. Acceso no autorizado a un servidor bancario
+
+| | |
+|---|---|
+| **Amenaza** | Atacante externo con credenciales extraídas de la dark web |
+| **Vulnerabilidad** | Servidor sin autenticación fuerte ni MFA, reutilización de credenciales filtradas, sin SIEM que detecte accesos anómalos |
+| **Salvaguarda técnica** | MFA/2FA, hardening del servidor, mejora de IAM, SIEM |
+| **Salvaguarda administrativa** | Política de contraseñas (rotación, formato mínimo) + formación |
+| **Salvaguarda física** | No aplica — el vector fue de red, no acceso presencial |
+| **PDCA** | *Plan* — políticas de acceso, contraseñas y formación. *Do* — reset de contraseñas, activar MFA, hardening. *Check* — auditoría periódica de accesos y configuración. *Act* — postmortem |
+| **Clasificación** | **Ciberseguridad** (el ataque venció las defensas existentes) + **Seguridad de la Información** (faltaban políticas de base) |
+| **Riesgo** | **Crítico** · Impacto *muy alto* (exposición de datos bancarios, operaciones fraudulentas, multas regulatorias, daño reputacional) · Probabilidad *alta* (las credenciales filtradas son un vector común en banca; bots exploran continuamente este tipo de vulnerabilidad) |
+
+## 5. Robo de equipos con información sensible
+
+| | |
+|---|---|
+| **Amenaza** | Robo físico de dispositivos con datos sin cifrar |
+| **Vulnerabilidad** | Sin cifrado de disco en los portátiles, sin control de acceso físico ni monitorización de instalaciones, sin MDM para borrado remoto |
+| **Salvaguarda física** | La más crítica aquí — es la que habilita el resto: control de acceso, cámaras, cerraduras, vigilancia |
+| **Salvaguarda técnica** | Cifrado de disco + [MDM](https://www.ibm.com/es-es/think/topics/mobile-device-management) |
+| **Salvaguarda administrativa** | Política de seguridad física y respuesta ante robo |
+| **PDCA** | *Plan* — seguridad de perímetro, acceso biométrico, despliegue de MDM. *Act* — postmortem y retroalimentación a Plan |
+| **Clasificación** | **Seguridad de la Información + Seguridad Física** — no se vence ninguna medida de ciberseguridad porque no existía la estrategia de arquitectura que las sustentara |
+| **Riesgo** | **Alto** · Impacto *alto* (pérdida de confidencialidad, riesgo de alteración, uso fraudulento) · Probabilidad *media* (la falta simultánea de protección física y digital es menos común hoy, y el acceso físico expone al atacante) |
+
+## 6. Fraude por ingeniería social
+
+| | |
+|---|---|
+| **Amenaza** | Fraude mediante phishing / ingeniería social |
+| **Vulnerabilidad** | Sin política de verificación para acciones financieras ni formación — el empleado no tenía claro que debía reportar la duda |
+| **Salvaguarda administrativa** | Política de verificación de pagos por doble canal + formación en detección de phishing |
+| **Salvaguarda técnica** | Filtros antiphishing y alertas de correo |
+| **Salvaguarda física** | No aplica |
+| **PDCA** | *Plan* — políticas de verificación y formación. *Do* — desplegar filtros y sesiones de formación. *Check* — auditar transacciones y cumplimiento. *Act* — analizar causa y mejorar |
+| **Clasificación** | **Seguridad de la Información** — no se compromete infraestructura; la vulnerabilidad fue de previsión técnica y formativa |
+| **Riesgo** | **Crítico** · Impacto *alto* (desvío de 100.000 €, equivalente a un SEV1 por su magnitud, más riesgo legal y reputacional) · Probabilidad *alta* (el error humano explica más del 90% de las vulneraciones de seguridad de la información, y el phishing es el vector más barato y accesible) |
