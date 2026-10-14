@@ -4,7 +4,7 @@ Documentación técnica y resolución de laboratorios prácticos — y, a partir
 
 ## 🔍 Casos de auditoría real
 
-A diferencia del resto del repositorio (laboratorios, retos y ejercicios formativos — ver más abajo), las siguientes carpetas documentan **trabajo de campo real**: auditorías realizadas de forma independiente sobre infraestructura de terceros, con autorización expresa del responsable en cada caso.
+A diferencia del resto del repositorio (laboratorios, retos y ejercicios formativos — ver más abajo), las siguientes carpetas documentan **trabajo de campo real**: auditorías sobre infraestructura de terceros, con autorización expresa del responsable en cada caso, realizadas en el marco de mi actividad profesional actual — una combinación de colaboraciones independientes (freelance) y mi colaboración part-time con Section9, una consultora de ciberseguridad especializada en auditorías para pequeñas y medianas empresas.
 
 | Caso | Tipo | Resumen |
 |---|---|---|
